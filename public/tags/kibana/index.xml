@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kibana on Hugo tranquilpeak theme</title>
+    <link>--baseUrl=/tags/kibana/</link>
+    <description>Recent content in kibana on Hugo tranquilpeak theme</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 11 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="--baseUrl=/tags/kibana/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker-compose 部署ELK</title>
+      <link>--baseUrl=/2021/05/docker-compose-%E9%83%A8%E7%BD%B2elk/</link>
+      <pubDate>Tue, 11 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2021/05/docker-compose-%E9%83%A8%E7%BD%B2elk/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

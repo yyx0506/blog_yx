@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Elasticsearch 使用 7",
+  
+  "datePublished": "2022-05-21T00:00:00Z",
+  "dateModified": "2022-05-21T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "\/2022\/05\/elasticsearch-%E4%BD%BF%E7%94%A8-7\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.101.0 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elasticsearch 使用 7">
+<meta name="twitter:title" content="Elasticsearch 使用 7">
+<meta property="og:url" content="/2022/05/elasticsearch-%E4%BD%BF%E7%94%A8-7/">
+<meta property="twitter:url" content="/2022/05/elasticsearch-%E4%BD%BF%E7%94%A8-7/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2022-05-21T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2022-05-21T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="features">
+    
+  
+  
+    
+      <meta property="article:tag" content="Elasticsearch">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>Elasticsearch 使用 7</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2022/05/elasticsearch-%E4%BD%BF%E7%94%A8-7/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      Elasticsearch 使用 7
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2022-05-21T00:00:00Z">
+        
+  May 21, 2022
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="/categories/features">features</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h3 id="elasticsearch-使用-7">Elasticsearch 使用 7</h3>
+<pre tabindex="0"><code>这篇文章主要是讲述Elasticsearch 的聚合分类 如下图所示
+</code></pre><p><img src="/img/es7infos1.png" alt=""></p>
+<pre tabindex="0"><code>目前主流的还是使用  Bucket aggregations 分桶聚合  Metric aggregations 指标聚合 Pipeline  aggregations 管道聚合
+tips ： aggregations关键字可使用aggs代替
+</code></pre><h4 id="1-分桶聚合-bucket-aggregations">1: 分桶聚合 Bucket aggregations</h4>
+<pre tabindex="0"><code>使用场景分析 ： 我们在jd tm tb 买东西时最相要看到的就是 销量 评价 分桶 就是可以将相同内容的 东西进行分桶。
+比如 小米手机 华为手机 苹果手机 和其他手机 进行分桶 对应出来的就是5个桶 小米手机下可以分为红米 小米 又是两个桶
+每个型号又可以分为不同的桶。
+所以即按照一定的规则将文档分配到不同的桶中，达到分类分析的目的就是分桶聚合 ，目前es 已经有25种 分桶聚合的类型了
+</code></pre><h5 id="如下图所示">如下图所示</h5>
+<p><img src="/img/es7infos2.png" alt=""></p>
+<pre tabindex="0"><code>聚合分析是数据库中重要的功能特性，完成对一个查询的数据集中数据的聚合计算，如：找出某字段（或计算表达式
+的结果）的最大值、最小值，计算和、平均值等。Elasticsearch作为搜索引擎兼数据库，同样提供了强大的聚合分析
+能力。
+对一个数据集求最大、最小、和、平均值等指标的聚合，在ES中称为指标聚合 metric 而关系型数据库中除了有聚合
+函数外，还可以对查询出的数据进行分组group by，再在组上进行指标聚合。在 ES 中group by 称为分桶，桶聚合
+bucketing
+Elasticsearch聚合分析语法 在查询请求体中以aggregations节点按如下语法定义聚合分析：
+
+&#34;aggregations&#34; : { 
+		&#34;&lt;aggregation_name&gt;&#34; : { &lt;!--聚合的名字 --&gt; 
+				&#34;&lt;aggregation_type&gt;&#34; : { &lt;!--聚合的类型 --&gt;
+        		&lt;aggregation_body&gt; &lt;!--聚合体：对哪些字段进行聚合 --&gt; }
+        		[,&#34;meta&#34; : { [&lt;meta_data_body&gt;] } ]? &lt;!--元 --&gt; [,&#34;aggregations&#34; : { [&lt;sub_aggregation&gt;]+ } 
+        		]? &lt;!--在聚合里面在定义子聚合 --&gt; 
+				}
+}
+</code></pre><h4 id="1-terms-术语聚合-如下图所示">1: terms 术语聚合 如下图所示</h4>
+<p><img src="/img/es7infos3.png" alt=""></p>
+<pre tabindex="0"><code>其中 ES 检索时会把所有的对象返回 如果不希望返回 就指定 &#34;size&#34;: 0 对于text类型的文本聚合时要指定keyword
+aggs 是aggregations 的简写 same_name 是我们自己取的聚合后的名字 terms 是我们指定的聚合类型 fild 是聚合文本
+GET test/_search
+{
+  &#34;size&#34;: 0,
+  &#34;aggs&#34;: {
+    &#34;same_name&#34;: {
+      &#34;terms&#34;: {
+        &#34;field&#34;: &#34;name.keyword&#34;
+      }
+    }
+  }
+}
+</code></pre><h4 id="2rare-terms--稀有术语聚合如下图所示">2:Rare Terms  稀有术语聚合如下图所示</h4>
+<p><img src="/img/es7infos4.png" alt=""></p>
+<pre tabindex="0"><code>在 Terms Aggs 中，聚合结果的排序是默认根据 doc_count 的值降序排列，但在实际使用过程中，我们有时候希望根据 doc_count 的值升序排列，这个时候就应该使用  Rare Terms【之所以不使用 Terms aggs再去改变排序规则，是因为聚合精度问题】
+注意max_doc_count参数：术语出现的最大文档数【返回的bucket 的 doc_count &lt;= 该值】，默认值为1，最大值为100。
+
+GET test/_search
+{
+  &#34;size&#34;: 0,
+  &#34;aggs&#34;: {
+    &#34;same_name&#34;: {
+      &#34;rare_terms&#34;: {
+        &#34;field&#34;: &#34;name.keyword&#34;,
+        &#34;max_doc_count&#34;: 10
+      }
+    }
+  }
+}
+</code></pre><h4 id="3histogram-直方图聚合如下图所示">3:Histogram 直方图聚合如下图所示</h4>
+<p><img src="/img/es7infos5.png" alt=""></p>
+<pre tabindex="0"><code>例如 我们按照 用户的年龄进行聚合 可以得到用户在各年龄端的分布 interval 代表的是区间分布
+GET test/_search
+{
+  &#34;size&#34;: 0,
+  &#34;aggs&#34;: {
+    &#34;same_name&#34;: {
+      &#34;histogram&#34;: {
+        &#34;field&#34;: &#34;age&#34;,
+        &#34;interval&#34;: 10 
+      }
+    }
+  }
+}
+</code></pre><h4 id="4date-histogram-日期直方图聚合如下图所示">4:Date histogram 日期直方图聚合如下图所示</h4>
+<p><img src="/img/es7infos6.png" alt=""></p>
+<pre tabindex="0"><code>GET test/_search
+{
+  &#34;size&#34;: 0,
+  &#34;aggs&#34;: {
+    &#34;price&#34;: {
+      &#34;date_histogram&#34;: {
+        &#34;field&#34;: &#34;datatime&#34;,
+        &#34;calendar_interval&#34;: &#34;day&#34;,
+        &#34;format&#34;: &#34;yyyy-MM-dd&#34;
+      }
+    }
+  }
+}
+</code></pre><h4 id="5auto-interval-date-histogram-自动间隔日期直方图聚合如下图所示">5:Auto-interval Date Histogram 自动间隔日期直方图聚合如下图所示</h4>
+<p><img src="/img/es7infos7.png" alt=""></p>
+<pre tabindex="0"><code>场景示例：还是通过博客的创建时间做聚合，这次我希望返回3个bucket
+GET  test/_search
+{
+  &#34;size&#34;: 0,
+  &#34;aggs&#34;: {
+    &#34;createTime&#34;: {
+      &#34;auto_date_histogram&#34;: {
+        &#34;field&#34;: &#34;datatime&#34;,
+        &#34;format&#34;: &#34;yyyy-MM-dd&#34;,
+        &#34;buckets&#34;: 3
+      }
+    }
+  }
+}
+</code></pre><h4 id="6range-范围聚合如下图所示">6:Range 范围聚合如下图所示</h4>
+<p><img src="/img/es7infos8.png" alt=""></p>
+<pre tabindex="0"><code>场景示例：查看年龄在20-25 25-30 以及30以上的用户数量
+GET test/_search
+{
+  &#34;size&#34;: 0,
+  &#34;aggs&#34;: {
+    &#34;user_ages&#34;: {
+      &#34;range&#34;: {
+        &#34;field&#34;: &#34;age&#34;,
+        &#34;ranges&#34;: [
+          {
+            &#34;from&#34;: 20,
+            &#34;to&#34;: 25
+          },
+          {
+            &#34;from&#34;: 25,
+            &#34;to&#34;: 30
+          },
+          {
+            &#34;from&#34;: 30
+          }
+        ]
+      }
+    }
+  }
+}
+</code></pre><h4 id="7date-range-日期范围聚合如下图所示">7:Date Range 日期范围聚合如下图所示</h4>
+<p><img src="/img/es7infos9.png" alt=""></p>
+<pre tabindex="0"><code>场景示例：获取过去到10个月之前的所有商品总数和10个月之前的商品总数：
+POST /product/_search
+{
+  &#34;aggs&#34;: {
+    &#34;range&#34;: {
+      &#34;date_range&#34;: {
+        &#34;field&#34;: &#34;date&#34;,
+        &#34;format&#34;: &#34;yyyy-MM&#34;,
+        &#34;ranges&#34;: [
+          {
+            &#34;to&#34;: &#34;now-10M/M&#34;
+          },
+          {
+            &#34;from&#34;: &#34;now-10M/M&#34;
+          }
+        ]
+      }
+    }
+  }
+}
+
+注意：to：date &lt; 现在减去10个月，向下舍入到月初；from：date &gt; = 现在减去10个月，向下舍入到月初。
+</code></pre><h4 id="8ip-range-ip范围聚合如下图所示">8:IP Range IP范围聚合如下图所示</h4>
+<p><img src="/img/es7infos10.png" alt=""></p>
+<pre tabindex="0"><code>POST /ip_addresses/_search
+{
+  &#34;size&#34;: 10,
+  &#34;aggs&#34;: {
+    &#34;ip_ranges&#34;: {
+      &#34;ip_range&#34;: {
+        &#34;field&#34;: &#34;ip&#34;,
+        &#34;ranges&#34;: [
+          {
+            &#34;to&#34;: &#34;10.0.0.5&#34;
+          },
+          {
+            &#34;from&#34;: &#34;10.0.0.1&#34;
+          }
+        ]
+      }
+    }
+  }
+}
+</code></pre><h4 id="9composite-复合聚合如下图所示">9:Composite 复合聚合如下图所示</h4>
+<p><img src="/img/es7infos11.png" alt=""></p>
+<pre tabindex="0"><code>1）对于Composite Agg 需要看两个示例，一个是翻页的示例：
+POST /teamwork_task/_search
+{
+  &#34;size&#34;: 0,
+  &#34;aggs&#34;: {
+    &#34;my_buckets&#34;: {
+      &#34;composite&#34;: {
+        &#34;size&#34;: 2,
+        &#34;sources&#34;: [
+          {
+            &#34;customName&#34;: {
+              &#34;terms&#34;: {
+                &#34;field&#34;: &#34;team_id&#34;
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+结果：
+  &#34;aggregations&#34;: {
+    &#34;my_buckets&#34;: {
+      &#34;after_key&#34;: {
+        &#34;customName&#34;: 135
+      },
+      &#34;buckets&#34;: [
+        {
+          &#34;key&#34;: {
+            &#34;customName&#34;: 128
+          },
+          &#34;doc_count&#34;: 2
+        },
+        {
+          &#34;key&#34;: {
+            &#34;customName&#34;: 135
+          },
+          &#34;doc_count&#34;: 3
+        }
+      ]
+    }
+  }
+}
+翻页查询：查询 body不变，添加上次返回的 after即可
+POST /teamwork_task/_search
+{
+  &#34;size&#34;: 0,
+  &#34;aggs&#34;: {
+    &#34;my_buckets&#34;: {
+      &#34;composite&#34;: {
+        &#34;size&#34;: 2,
+        &#34;sources&#34;: [
+          {
+            &#34;customName&#34;: {
+              &#34;terms&#34;: {
+                &#34;field&#34;: &#34;team_id&#34;
+              }
+            }
+          }
+        ],
+        &#34;after&#34;: {
+          &#34;customName&#34;: 135
+        }
+      }
+    }
+  }
+}
+
+2）问卷结果统计示例：假设有A、B两道题，每题都有2个答案，那么 Composite聚合就可以得到所有可能组合的答案的问卷数
+POST /question_index/_search
+{
+  &#34;size&#34;: 0,
+  &#34;aggs&#34;: {
+    &#34;my_buckets&#34;: {
+      &#34;composite&#34;: {
+        &#34;sources&#34;: [
+          {
+            &#34;question_A&#34;: {
+              &#34;terms&#34;: {
+                &#34;field&#34;: &#34;question_A&#34;
+              }
+            }
+          },
+          {
+            &#34;question_B&#34;: {
+              &#34;terms&#34;: {
+                &#34;field&#34;: &#34;question_B&#34;
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+结果：
+  &#34;aggregations&#34;: {
+    &#34;my_buckets&#34;: {
+      &#34;after_key&#34;: {
+        &#34;question_A&#34;: &#34;B&#34;,
+        &#34;question_B&#34;: 1
+      },
+      &#34;buckets&#34;: [{
+            &#34;key&#34;: {
+                &#34;question_A&#34;: &#34;a&#34;,
+                &#34;question_B&#34;: &#34;c&#34;
+            },
+            &#34;doc_count&#34;: 1
+        },
+        {
+            &#34;key&#34;: {
+                &#34;question_A&#34;: &#34;a&#34;,
+                &#34;question_B&#34;: &#34;d&#34;
+            },
+            &#34;doc_count&#34;: 1
+        },
+        {
+            &#34;key&#34;: {
+                &#34;question_A&#34;: &#34;b&#34;,
+                &#34;question_B&#34;: &#34;c&#34;
+            },
+            &#34;doc_count&#34;: 1
+        },
+        {
+            &#34;key&#34;: {
+                &#34;question_A&#34;: &#34;b&#34;,
+                &#34;question_B&#34;: &#34;d&#34;
+            },
+            &#34;doc_count&#34;: 1
+        }]
+    }
+  }
+</code></pre><h4 id="10filter-过滤器聚合-如下图所示">10:Filter 过滤器聚合 如下图所示</h4>
+<p><img src="/img/es7infos12.webp" alt=""></p>
+<pre tabindex="0"><code>比如 我们获取 名字是 qqqq 的所有人的平均年龄 
+POST test/_search
+{
+    &#34;size&#34;: 0, 
+    &#34;aggs&#34; : {
+        &#34;a_ages&#34; : {
+            &#34;filter&#34; : { &#34;term&#34;: { &#34;name.keyword&#34;: &#34;qqqq&#34; } },
+            &#34;aggs&#34; : {
+                &#34;avg_price&#34; : { &#34;avg&#34; : { &#34;field&#34; : &#34;age&#34; } }
+            }
+        }
+    }
+}
+</code></pre><p>本篇博客暂时讲到这里 ，下一篇我们继续讲解es 的使用</p>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/elasticsearch/">Elasticsearch</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2022/05/elasticsearch-%E4%BD%BF%E7%94%A8-8/" data-tooltip="Elasticsearch 使用 8" aria-label="NEXT: Elasticsearch 使用 8">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2022/05/elasticsearch-%E4%BD%BF%E7%94%A8-6/" data-tooltip="Elasticsearch 使用 6" aria-label="PREVIOUS: Elasticsearch 使用 6">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2022/05/elasticsearch-%E4%BD%BF%E7%94%A8-7/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2022/05/elasticsearch-%E4%BD%BF%E7%94%A8-7/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=/2022/05/elasticsearch-%E4%BD%BF%E7%94%A8-7/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '\/2022\/05\/elasticsearch-%E4%BD%BF%E7%94%A8-7\/';
+        
+          this.page.identifier = '\/2022\/05\/elasticsearch-%E4%BD%BF%E7%94%A8-7\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2022 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2022/05/elasticsearch-%E4%BD%BF%E7%94%A8-8/" data-tooltip="Elasticsearch 使用 8" aria-label="NEXT: Elasticsearch 使用 8">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2022/05/elasticsearch-%E4%BD%BF%E7%94%A8-6/" data-tooltip="Elasticsearch 使用 6" aria-label="PREVIOUS: Elasticsearch 使用 6">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2022/05/elasticsearch-%E4%BD%BF%E7%94%A8-7/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2022/05/elasticsearch-%E4%BD%BF%E7%94%A8-7/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=/2022/05/elasticsearch-%E4%BD%BF%E7%94%A8-7/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2022%2F05%2Felasticsearch-%25E4%25BD%25BF%25E7%2594%25A8-7%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2022%2F05%2Felasticsearch-%25E4%25BD%25BF%25E7%2594%25A8-7%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=%2F2022%2F05%2Felasticsearch-%25E4%25BD%25BF%25E7%2594%25A8-7%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

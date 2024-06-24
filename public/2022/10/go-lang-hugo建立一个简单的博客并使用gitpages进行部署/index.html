@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "GO Lang + Hugo建立一个简单的博客并使用gitpages进行部署",
+  
+  "datePublished": "2022-10-31T00:00:00Z",
+  "dateModified": "2022-10-31T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "\/2022\/10\/go-lang-hugo%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B9%B6%E4%BD%BF%E7%94%A8gitpages%E8%BF%9B%E8%A1%8C%E9%83%A8%E7%BD%B2\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.88.1 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GO Lang &#43; Hugo建立一个简单的博客并使用gitpages进行部署">
+<meta name="twitter:title" content="GO Lang &#43; Hugo建立一个简单的博客并使用gitpages进行部署">
+<meta property="og:url" content="/2022/10/go-lang-hugo%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B9%B6%E4%BD%BF%E7%94%A8gitpages%E8%BF%9B%E8%A1%8C%E9%83%A8%E7%BD%B2/">
+<meta property="twitter:url" content="/2022/10/go-lang-hugo%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B9%B6%E4%BD%BF%E7%94%A8gitpages%E8%BF%9B%E8%A1%8C%E9%83%A8%E7%BD%B2/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2022-10-31T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2022-10-31T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="features">
+    
+  
+  
+    
+      <meta property="article:tag" content="GO">
+    
+      <meta property="article:tag" content="设计模式">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>GO Lang &#43; Hugo建立一个简单的博客并使用gitpages进行部署</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2022/10/go-lang-hugo%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B9%B6%E4%BD%BF%E7%94%A8gitpages%E8%BF%9B%E8%A1%8C%E9%83%A8%E7%BD%B2/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      GO Lang &#43; Hugo建立一个简单的博客并使用gitpages进行部署
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2022-10-31T00:00:00Z">
+        
+  October 31, 2022
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="/categories/features">features</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h3 id="go-设计模式--介绍与实现">GO 设计模式  介绍与实现</h3>
+<h4 id="设计模式是什么">设计模式是什么</h4>
+<pre tabindex="0"><code>设计模式(英语 design pattern)是对面向对象设计中反复出现的问题的解决方案。这个术语是在1990年代由Erich Gamma等人从建筑设计领域引入到计算机科学中来的。这个术语的含义还存有争议。算法不是设计模式，因为算法致力于解决问题而非设计问题。设计模式通常描述了一组相互紧密作用的类与对象。设计模式提供一种讨论软件设计的公共语言，使得熟练设计者的设计经验可以被初学者和其他设计者掌握。设计模式还为软件重构提供了目标。
+
+以上 就是设计模式的介绍。 首先一个前提就是 设计模式是以 面向对象为基础  大家都知道 go 的面向对象和 其他语言不同 
+go 没有类也没有继承的概念 它更像是一种方法的组合 而不是继承 
+
+
+设计模式有三大类 
+
+1 创建型模式 2 结构型模式 行为型模式
+
+-----------------------------创建型模式-----------------------------
+单例模式（Singleton Pattern）：保证一个类仅有一个对象，并提供一个访问它的全局访问点。
+工厂模式（Factory Pattern）：定义一个用于创建对象的接口，让子类决定将哪一个类实例化，FactoryMethod使一个类的实例化延迟到其子类。
+抽象工厂模式（Abstract Factory Pattern）：提供一个创建一系列相关或相互依赖对象的接口，而无需指定它们的具体类。
+建造者模式（Builder Pattern）：将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。
+原型模式（Prototype Pattern）:用原型实例指定创建对象的种类，并且通过拷贝这个原型来创建新的对象。
+-----------------------------结构型模式-----------------------------
+适配器模式（Adapter Pattern）：将一个类的接口转换成客户希望的另一个接口。Adapter模式使得原本由于接口不兼容而不能一起工作的那些类可以一起工作。
+桥接模式（Bridge Pattern）：将抽象部分与它的实现部分分离，使他们都可以独立地变化。
+装饰模式（Decorator Pattern）：动态地给一个对象添加一些额外的职责。就扩展功能而言，Decorator模式比生成子类的方式更为灵活。
+组合模式（Composite Pattern）：将对象组合成树形结构以表示“部分-整体”的层次结构。Composite 使得客户对单个对象和复合对象的使用具有一致性。
+外观模式（Facade Pattern）：为子系统中的一组接口提供一个一致的接口。Façade模式定义了一个高层接口，这个接口使得这一子系统更加容易使用。
+享元模式（Flyweight Pattern）：运用共享技术有效地支持大量细粒度的对象。
+代理模式（Proxy Pattern）:为其他对象提供一个代理以控制对这个对象的访问。
+-----------------------------行为型模式-----------------------------
+模版方法模式（Template Pattern）:定义一个操作中的算法的骨架，而将一些步骤延迟到子类。TemplateMethod 使得子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤。
+命令模式（Command Pattern）：将一个请求封装为一个对象，从而使你可用不同的请求对客户进行参数化，对请求排队或记录请求日志，以及支持可取消的操作。
+迭代器模式（Iterator Pattern）：提供一种方法顺序访问一个聚合对象中各个元素，而又不需暴露该对象的内部表示。
+观察者模式（Observer Pattern）：定义对象间的一种一对多的依赖关系，以便当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并自动刷新。
+中介者模式（Mediator Pattern）：用一个中介对象来封装一系列的对象交互。中介者使各对象不需要显示地相互引用，从而使其耦合松散，而且可以独立地改变它们之间的交互。
+备忘录模式（Memento Pattern）：在不破坏封装性的前提下，捕获一个对象的内部状态，并在该对象之外保持该状态，这样以后就可以将该对象恢复到保存的状态。
+解释器模式（Interpreter Pattern）：定义一个语言，定义它的文法的一种表示，并定义一个解释器，该解释器使用该表示来解释语言中的句子。
+状态模式（State Pattern）:允许一个对象在其内部状态改变时改变它的行为。对象看起来似乎修改了它所属的类。
+策略模式（Strategy Pattern）:定义一系列的算法，把它们一个个封装起来，并且使他们可相互替换。本模式使得算法的变化可以独立于使用它的客户。
+责任链模式（Chain of Responsibility Pattern）：为解除请求的发送者和接收者之间的耦合，而使多个对象都有机会处理这个请求。将这些对象连成一条链，并沿着这条链传递该请求，直到有对象处理它。
+访问者模式（Visitor Pattern）:表示一个作用于某对象结构中的各元素的操作。它使你可以在不改变各元素类别的前提下定义作用于这些元素的新操作。
+</code></pre><h4 id="2-go-的设计模式怎么设计">2: go 的设计模式怎么设计</h4>
+<pre tabindex="0"><code>对于面向对象软件系统的设计而言，在支持可维护性的同时，提高系统的可复用性是一个至关重要的问题，如何同时提高一个软件系统的可维护性和可复用性是面向对象设计需要解决的核心问题之一。在面向对象设计中，可维护性的复用是以设计原则为基础的。每一个原则都蕴含一些面向对象设计的思想，可以从不同的角度提升一个软件结构的设计水平。
+面向对象设计原则为支持可维护性复用而诞生，这些原则蕴含在很多设计模式中，它们是从许多设计方案中总结出的指导性原则。面向对象设计原则也是我们用于评价一个设计模式的使用效果的重要指标之一。
+
+其实原则的目的就是 高内聚 低耦合
+
+--------------------------------------1 单一职责原则--------------------------------------
+
+类的职责单一，对外只提供一种功能，而引起类变化的原因都应该只有一个。
+
+--------------------------------------2 开闭原则--------------------------------------
+类的改动是通过增加代码进行的，而不是修改源代码
+
+--------------------------------------3 里式代换原则--------------------------------------
+
+任何抽象类（interface接口 对于 go 来讲 也是接口）出现的地方都可以用他的实现类进行替换，实际就是虚拟机制，语言级别实现面向对象功能。
+
+--------------------------------------4 依赖倒转原则--------------------------------------
+
+依赖于抽象(接口)，不要依赖具体的实现(类)，也就是针对接口编程。
+
+--------------------------------------5 接口隔离原则--------------------------------------
+
+不应该强迫用户的程序依赖他们不需要的接口方法。一个接口应该只提供一种对外功能，不应该把所有操作都封装到一个接口中去。
+
+--------------------------------------6 合成复用原则--------------------------------------
+
+如果使用继承，会导致父类的任何变换都可能影响到子类的行为。如果使用对象组合，就降低了这种依赖关系。对于继承和组合，优先使用组合。
+
+--------------------------------------7 迪米特法则--------------------------------------
+
+一个对象应当对其他对象尽可能少的了解，从而降低各个对象之间的耦合，提高系统的可维护性。例如在一个程序中，各个模块之间相互调用时，通常会提供一个统一的接口来实现。这样其他模块不需要了解另外一个模块的内部实现细节，这样当一个模块内部的实现发生改变时，不会影响其他模块的使用。（黑盒原理）
+
+</code></pre><h4 id="3-单一规则">3 单一规则</h4>
+<pre tabindex="0"><code>单一职责原则
+类的职责单一，对外只提供一种功能，而引起类变化的原因都应该只有一个。
+
+
+package main
+
+import &quot;fmt&quot;
+
+type ClothesShop struct {}
+
+func (cs *ClothesShop) OnShop() {
+	fmt.Println(&quot;休闲的装扮&quot;)
+}
+
+type ClothesWork struct {}
+
+func (cw *ClothesWork) OnWork() {
+	fmt.Println(&quot;工作的装扮&quot;)
+}
+
+func main() {
+	//工作的时候
+	cw := new(ClothesWork)
+	cw.OnWork()
+
+	//shopping的时候
+	cs := new(ClothesShop)
+	cs.OnShop()
+}
+
+
+在面向对象编程的过程中，设计一个类，建议对外提供的功能单一，接口单一，影响一个类的范围就只限定在这一个接口上，一个类的一个接口具备这个类的功能含义，职责单一不复杂。
+
+
+</code></pre><h4 id="4开闭原则">4:开闭原则</h4>
+<pre tabindex="0"><code>开闭原则
+package main
+
+import &quot;fmt&quot;
+
+//我们要写一个结构体,Banker银行业务员
+type Banker struct {
+}
+
+//存款业务
+func (this *Banker) Save() {
+	fmt.Println( &quot;进行了 存款业务...&quot;)
+}
+
+//转账业务
+func (this *Banker) Transfer() {
+	fmt.Println( &quot;进行了 转账业务...&quot;)
+}
+
+//支付业务
+func (this *Banker) Pay() {
+	fmt.Println( &quot;进行了 支付业务...&quot;)
+}
+
+func main() {
+	banker := &amp;Banker{}
+
+	banker.Save()
+	banker.Transfer()
+	banker.Pay()
+}
+
+代码很简单，就是一个银行业务员，他可能拥有很多的业务，比如Save()存款、Transfer()转账、Pay()支付等。那么如果这个业务员模块只有这几个方法还好，但是随着我们的程序写的越来越复杂，银行业务员可能就要增加方法，会导致业务员模块越来越臃肿。
+这样的设计会导致，当我们去给Banker添加新的业务的时候，会直接修改原有的Banker代码，那么Banker模块的功能会越来越多，出现问题的几率也就越来越大，假如此时Banker已经有99个业务了，现在我们要添加第100个业务，可能由于一次的不小心，导致之前99个业务也一起崩溃，因为所有的业务都在一个Banker类里，他们的耦合度太高，Banker的职责也不够单一，代码的维护成本随着业务的复杂正比成倍增大。
+
+
+
+所以以上，当我们给一个系统添加一个功能的时候，不是通过修改代码，而是通过增添代码来完成，那么就是开闭原则的核心思想了。所以要想满足上面的要求，是一定需要interface来提供一层抽象的接口的。
+
+
+package main
+
+import &quot;fmt&quot;
+
+//抽象的银行业务员
+type AbstractBanker interface{
+	DoBusi()	//抽象的处理业务接口
+}
+
+//存款的业务员
+type SaveBanker struct {
+	//AbstractBanker
+}
+
+func (sb *SaveBanker) DoBusi() {
+	fmt.Println(&quot;进行了存款&quot;)
+}
+
+//转账的业务员
+type TransferBanker struct {
+	//AbstractBanker
+}
+
+func (tb *TransferBanker) DoBusi() {
+	fmt.Println(&quot;进行了转账&quot;)
+}
+
+//支付的业务员
+type PayBanker struct {
+	//AbstractBanker
+}
+
+func (pb *PayBanker) DoBusi() {
+	fmt.Println(&quot;进行了支付&quot;)
+}
+
+
+func main() {
+	//进行存款
+	sb := &amp;SaveBanker{}
+	sb.DoBusi()
+
+	//进行转账
+	tb := &amp;TransferBanker{}
+	tb.DoBusi()
+	
+	//进行支付
+	pb := &amp;PayBanker{}
+	pb.DoBusi()
+
+}
+
+
+当然我们也可以根据AbstractBanker设计一个小框架
+
+
+//实现架构层(基于抽象层进行业务封装-针对interface接口进行封装)
+func BankerBusiness(banker AbstractBanker) {
+	//通过接口来向下调用，(多态现象)
+	banker.DoBusi()
+}
+
+
+func main() {
+	//进行存款
+	BankerBusiness(&amp;SaveBanker{})
+
+	//进行存款
+	BankerBusiness(&amp;TransferBanker{})
+
+	//进行存款
+	BankerBusiness(&amp;PayBanker{})
+}
+
+
+最后的最后
+再看开闭原则定义:
+开闭原则:一个软件实体如类、模块和函数应该对扩展开放，对修改关闭。
+简单的说就是在修改需求的时候，应该尽量通过扩展来实现变化，而不是通过修改已有代码来实现变化。
+
+
+----------------------------------接口的意义所在----------------------------------
+好了，现在interface已经基本了解，那么接口的意义最终在哪里呢，想必现在你已经有了一个初步的认知，实际上接口的最大的意义就是实现多态的思想，就是我们可以根据interface类型来设计API接口，那么这种API接口的适应能力不仅能适应当下所实现的全部模块，也适应未来实现的模块来进行调用。 调用未来可能就是接口的最大意义所在吧，这也是为什么架构师那么值钱，因为良好的架构师是可以针对interface设计一套框架，在未来许多年却依然适用。
+
+
+package main
+
+import &quot;fmt&quot;
+
+// === &gt; 奔驰汽车 &lt;===
+type Benz struct {
+
+}
+
+func (this *Benz) Run() {
+	fmt.Println(&quot;Benz is running...&quot;)
+}
+
+// === &gt; 宝马汽车  &lt;===
+type BMW struct {
+
+}
+
+func (this *BMW) Run() {
+	fmt.Println(&quot;BMW is running ...&quot;)
+}
+
+
+//===&gt; 司机张三  &lt;===
+type Zhang3 struct {
+	//...
+}
+
+func (zhang3 *Zhang3) DriveBenZ(benz *Benz) {
+	fmt.Println(&quot;zhang3 Drive Benz&quot;)
+	benz.Run()
+}
+
+func (zhang3 *Zhang3) DriveBMW(bmw *BMW) {
+	fmt.Println(&quot;zhang3 drive BMW&quot;)
+	bmw.Run()
+}
+
+//===&gt; 司机李四 &lt;===
+type Li4 struct {
+	//...
+}
+
+func (li4 *Li4) DriveBenZ(benz *Benz) {
+	fmt.Println(&quot;li4 Drive Benz&quot;)
+	benz.Run()
+}
+
+func (li4 *Li4) DriveBMW(bmw *BMW) {
+	fmt.Println(&quot;li4 drive BMW&quot;)
+	bmw.Run()
+}
+
+func main() {
+	//业务1 张3开奔驰
+	benz := &amp;Benz{}
+	zhang3 := &amp;Zhang3{}
+	zhang3.DriveBenZ(benz)
+
+	//业务2 李四开宝马
+	bmw := &amp;BMW{}
+	li4 := &amp;Li4{}
+	li4.DriveBMW(bmw)
+}
+
+我们来看上面的代码和图中每个模块之间的依赖关系，实际上并没有用到任何的interface接口层的代码，显然最后我们的两个业务 张三开奔驰, 李四开宝马，程序中也都实现了。但是这种设计的问题就在于，小规模没什么问题，但是一旦程序需要扩展，比如我现在要增加一个丰田汽车 或者 司机王五， 那么模块和模块的依赖关系将成指数级递增，想蜘蛛网一样越来越难维护和捋顺。
+
+如果我们在设计一个系统的时候，将模块分为3个层次，抽象层、实现层、业务逻辑层。那么，我们首先将抽象层的模块和接口定义出来，这里就需要了interface接口的设计，然后我们依照抽象层，依次实现每个实现层的模块，在我们写实现层代码的时候，实际上我们只需要参考对应的抽象层实现就好了，实现每个模块，也和其他的实现的模块没有关系，这样也符合了上面介绍的开闭原则。这样实现起来每个模块只依赖对象的接口，而和其他模块没关系，依赖关系单一。系统容易扩展和维护。
+
+我们在指定业务逻辑也是一样，只需要参考抽象层的接口来业务就好了，抽象层暴露出来的接口就是我们业务层可以使用的方法，然后可以通过多态的线下，接口指针指向哪个实现模块，调用了就是具体的实现方法，这样我们业务逻辑层也是依赖抽象成编程。
+
+我们就将这种的设计原则叫做依赖倒转原则。
+
+来一起看一下修改的代码：
+
+package main
+
+import &quot;fmt&quot;
+
+// ===== &gt;   抽象层  &lt; ========
+type Car interface {
+	Run()
+}
+
+type Driver interface {
+	Drive(car Car)
+}
+
+// ===== &gt;   实现层  &lt; ========
+type BenZ struct {
+	//...
+}
+
+func (benz * BenZ) Run() {
+	fmt.Println(&quot;Benz is running...&quot;)
+}
+
+type Bmw struct {
+	//...
+}
+
+func (bmw * Bmw) Run() {
+	fmt.Println(&quot;Bmw is running...&quot;)
+}
+
+type Zhang_3 struct {
+	//...
+}
+
+func (zhang3 *Zhang_3) Drive(car Car) {
+	fmt.Println(&quot;Zhang3 drive car&quot;)
+	car.Run()
+}
+
+type Li_4 struct {
+	//...
+}
+
+func (li4 *Li_4) Drive(car Car) {
+	fmt.Println(&quot;li4 drive car&quot;)
+	car.Run()
+}
+
+
+// ===== &gt;   业务逻辑层  &lt; ========
+func main() {
+	//张3 开 宝马
+	var bmw Car
+	bmw = &amp;Bmw{}
+
+	var zhang3 Driver
+	zhang3 = &amp;Zhang_3{}
+
+	zhang3.Drive(bmw)
+
+	//李4 开 奔驰
+	var benz Car
+	benz = &amp;BenZ{}
+
+	var li4 Driver
+	li4 = &amp;Li_4{}
+
+	li4.Drive(benz)
+}
+</code></pre><h4 id="5-合成服用原则">5 合成服用原则</h4>
+<pre tabindex="0"><code>如果使用继承，会导致父类的任何变换都可能影响到子类的行为。如果使用对象组合，就降低了这种依赖关系。对于继承和组合，优先使用组合。
+
+package main
+
+import &quot;fmt&quot;
+
+type Cat struct {}
+
+func (c *Cat) Eat() {
+	fmt.Println(&quot;小猫吃饭&quot;)
+}
+
+//给小猫添加一个 可以睡觉的方法 （使用继承来实现）
+type CatB struct {
+	Cat
+}
+
+func (cb *CatB) Sleep() {
+	fmt.Println(&quot;小猫睡觉&quot;)
+}
+
+//给小猫添加一个 可以睡觉的方法 （使用组合的方式）
+type CatC struct {
+	C *Cat
+}
+
+func (cc *CatC) Sleep() {
+	fmt.Println(&quot;小猫睡觉&quot;)
+}
+
+
+func main() {
+	//通过继承增加的功能，可以正常使用
+	cb := new(CatB)
+	cb.Eat()
+	cb.Sleep()
+
+	//通过组合增加的功能，可以正常使用
+	cc := new(CatC)
+	cc.C = new(Cat)
+	cc.C.Eat()
+	cc.Sleep()
+}
+</code></pre><h4 id="tips--最后总结">Tips  最后总结</h4>
+<p>单一职责原则：一个类对外只提供一种功能</p>
+<p>开闭原则：增加功能时去增加代码而不是修改代码</p>
+<p>依赖倒转原则：模块与模块依赖抽象而不是具体实现</p>
+<p>合成复用原则：通过组合来实现父类方法</p>
+<p>迪米特法则：依赖第三方来实现解耦</p>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/go/">GO</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2022/10/docker-compose-%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83%E4%BB%A5%E5%8F%8A%E6%90%AD%E5%BB%BAredis/" data-tooltip="Docker-compose 命名规范以及搭建redis" aria-label="PREVIOUS: Docker-compose 命名规范以及搭建redis">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2022/10/go-lang-hugo%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B9%B6%E4%BD%BF%E7%94%A8gitpages%E8%BF%9B%E8%A1%8C%E9%83%A8%E7%BD%B2/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2022/10/go-lang-hugo%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B9%B6%E4%BD%BF%E7%94%A8gitpages%E8%BF%9B%E8%A1%8C%E9%83%A8%E7%BD%B2/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=/2022/10/go-lang-hugo%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B9%B6%E4%BD%BF%E7%94%A8gitpages%E8%BF%9B%E8%A1%8C%E9%83%A8%E7%BD%B2/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '\/2022\/10\/go-lang-hugo%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B9%B6%E4%BD%BF%E7%94%A8gitpages%E8%BF%9B%E8%A1%8C%E9%83%A8%E7%BD%B2\/';
+        
+          this.page.identifier = '\/2022\/10\/go-lang-hugo%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B9%B6%E4%BD%BF%E7%94%A8gitpages%E8%BF%9B%E8%A1%8C%E9%83%A8%E7%BD%B2\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2022 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2022/10/docker-compose-%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83%E4%BB%A5%E5%8F%8A%E6%90%AD%E5%BB%BAredis/" data-tooltip="Docker-compose 命名规范以及搭建redis" aria-label="PREVIOUS: Docker-compose 命名规范以及搭建redis">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2022/10/go-lang-hugo%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B9%B6%E4%BD%BF%E7%94%A8gitpages%E8%BF%9B%E8%A1%8C%E9%83%A8%E7%BD%B2/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2022/10/go-lang-hugo%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B9%B6%E4%BD%BF%E7%94%A8gitpages%E8%BF%9B%E8%A1%8C%E9%83%A8%E7%BD%B2/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=/2022/10/go-lang-hugo%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B9%B6%E4%BD%BF%E7%94%A8gitpages%E8%BF%9B%E8%A1%8C%E9%83%A8%E7%BD%B2/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2022%2F10%2Fgo-lang-hugo%25E5%25BB%25BA%25E7%25AB%258B%25E4%25B8%2580%25E4%25B8%25AA%25E7%25AE%2580%25E5%258D%2595%25E7%259A%2584%25E5%258D%259A%25E5%25AE%25A2%25E5%25B9%25B6%25E4%25BD%25BF%25E7%2594%25A8gitpages%25E8%25BF%259B%25E8%25A1%258C%25E9%2583%25A8%25E7%25BD%25B2%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2022%2F10%2Fgo-lang-hugo%25E5%25BB%25BA%25E7%25AB%258B%25E4%25B8%2580%25E4%25B8%25AA%25E7%25AE%2580%25E5%258D%2595%25E7%259A%2584%25E5%258D%259A%25E5%25AE%25A2%25E5%25B9%25B6%25E4%25BD%25BF%25E7%2594%25A8gitpages%25E8%25BF%259B%25E8%25A1%258C%25E9%2583%25A8%25E7%25BD%25B2%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=%2F2022%2F10%2Fgo-lang-hugo%25E5%25BB%25BA%25E7%25AB%258B%25E4%25B8%2580%25E4%25B8%25AA%25E7%25AE%2580%25E5%258D%2595%25E7%259A%2584%25E5%258D%259A%25E5%25AE%25A2%25E5%25B9%25B6%25E4%25BD%25BF%25E7%2594%25A8gitpages%25E8%25BF%259B%25E8%25A1%258C%25E9%2583%25A8%25E7%25BD%25B2%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Golang 5",
+  
+  "datePublished": "2022-08-29T00:00:00Z",
+  "dateModified": "2022-08-29T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "\/2022\/08\/golang-5\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.101.0 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang 5">
+<meta name="twitter:title" content="Golang 5">
+<meta property="og:url" content="/2022/08/golang-5/">
+<meta property="twitter:url" content="/2022/08/golang-5/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2022-08-29T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2022-08-29T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="features">
+    
+  
+  
+    
+      <meta property="article:tag" content="golang">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>Golang 5</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2022/08/golang-5/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      Golang 5
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2022-08-29T00:00:00Z">
+        
+  August 29, 2022
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="/categories/features">features</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h3 id="golang-5">Golang 5</h3>
+<h4 id="1golang-函数函数定义">1：Golang 函数（函数定义）</h4>
+<p>函数是组织好的、可重复使用的、用于执行指定任务的代码块</p>
+<p>Go语言支持：函数、匿名函数和闭包 ( GO 没有class 的概念 所以函数机器的重要)</p>
+<p>Go语言中定义函数使用func关键字，具体格式如下( 这个有点像 JS 了)：</p>
+<pre tabindex="0"><code>func 函数名(参数)(返回值) {
+    函数体
+}
+</code></pre><p>其中：</p>
+<ul>
+<li>函数名：由字母、数字、下划线组成。但函数名的第一个字母不能是数字。在同一个包内，函数名也不能重名</li>
+</ul>
+<p>示例</p>
+<pre tabindex="0"><code>// 求两个数的和
+func sumFn(x int, y int) int {
+	return x + y
+}
+
+func main() {
+	result := sumFn(1, 2)
+	fmt.Println(result)
+}
+</code></pre><p>获取可变的参数，可变参数是指函数的参数数量不固定。Go语言中的可变参数通过在参数名后面加&hellip; 来标识。</p>
+<p>注意：可变参数通常要作为函数的最后一个参数</p>
+<pre tabindex="0"><code>func sunFn2(x ...int) int {
+	sum := 0
+	for _, num := range x {
+		sum = sum + num
+	}
+	return sum
+}
+// 调用方法
+func main() {
+	result := sunFn2(1, 2, 3, 4, 5, 7)
+	fmt.Println(result)
+}
+</code></pre><p>方法多返回值，Go语言中函数支持多返回值，同时还支持返回值命名，函数定义时可以给返回值命名，并在函数体中直接使用这些变量，最后通过return关键字返回</p>
+<pre tabindex="0"><code>// 方法多返回值
+func sunFn4(x int, y int)(sum int, sub int) {
+	sum = x + y
+	sub = x -y
+	return
+}
+</code></pre><h4 id="2-函数类型和变量">2: 函数类型和变量</h4>
+<p>我们可以使用type关键字来定义一个函数类型，具体格式如下</p>
+<pre tabindex="0"><code>type calculation func(int, int) int
+</code></pre><p>上面语句定义了一个calculation类型，它是一种函数类型，这种函数接收两个int类型的参数并且返回一个int类型的返回值。</p>
+<p>简单来说，凡是满足这两个条件的函数都是calculation类型的函数，例如下面的add 和 sub 是calculation类型</p>
+<pre tabindex="0"><code>type calc func(int, int) int
+// 求两个数的和
+func sumFn(x int, y int) int{
+	return x + y
+}
+func main() {
+    var c calc
+    c = add
+}
+</code></pre><pre tabindex="0"><code>方法作为参数
+/**
+	传递两个参数和一个方法
+ */
+func sunFn (a int, b int, sum func(int, int)int) int {
+	return sum(a, b)
+}
+
+或者使用switch定义方法，这里用到了匿名函数
+
+// 返回一个方法
+type calcType func(int, int)int
+func do(o string) calcType {
+	switch o {
+		case &#34;+&#34;:
+			return func(i int, i2 int) int {
+				return i + i2
+			}
+		case &#34;-&#34;:
+			return func(i int, i2 int) int {
+				return i - i2
+			}
+		case &#34;*&#34;:
+			return func(i int, i2 int) int {
+				return i * i2
+			}
+		case &#34;/&#34;:
+			return func(i int, i2 int) int {
+				return i / i2
+			}
+		default:
+			return nil
+
+	}
+}
+
+func main() {
+	add := do(&#34;+&#34;)
+	fmt.Println(add(1,5))
+}
+</code></pre><h4 id="3-匿名函数">3: 匿名函数</h4>
+<p>函数当然还可以作为返回值，但是在Go语言中，函数内部不能再像之前那样定义函数了，只能定义匿名函数。匿名函数就是没有函数名的函数，匿名函数的定义格式如下</p>
+<pre tabindex="0"><code>func (参数)(返回值) {
+    函数体
+}
+</code></pre><p>匿名函数因为没有函数名，所以没有办法像普通函数那样调用，所以匿名函数需要保存到某个变量或者作为立即执行函数：</p>
+<pre tabindex="0"><code>func main() {
+	func () {
+		fmt.Println(&#34;匿名自执行函数&#34;)
+	}()
+}
+</code></pre><h4 id="4-golang中的闭包">4: Golang中的闭包</h4>
+<p>全局变量和局部变量</p>
+<p>全局变量的特点：</p>
+<ul>
+<li>常驻内存</li>
+<li>污染全局</li>
+</ul>
+<p>局部变量的特点</p>
+<ul>
+<li>不常驻内存</li>
+<li>不污染全局</li>
+</ul>
+<h5 id="闭包">闭包</h5>
+<ul>
+<li>可以让一个变量常驻内存</li>
+<li>可以让一个变量不污染全局</li>
+</ul>
+<p>闭包可以理解成 “定义在一个函数内部的函数”。在本质上，闭包就是将函数内部 和 函数外部连接起来的桥梁。或者说是函数和其引用环境的组合体。</p>
+<ul>
+<li>闭包是指有权访问另一个函数作用域中的变量的函数</li>
+<li>创建闭包的常见的方式就是在一个函数内部创建另一个函数，通过另一个函数访问这个函数的局部变量</li>
+</ul>
+<p>注意：由于闭包里作用域返回的局部变量资源不会被立刻销毁，所以可能会占用更多的内存，过度使用闭包会导致性能下降，建议在非常有必要的时候才使用闭包。</p>
+<pre tabindex="0"><code>// 闭包的写法：函数里面嵌套一个函数，最后返回里面的函数就形成了闭包
+func adder() func() int {
+	var i = 10
+	return func() int {
+		return i + 1
+	}
+}
+
+func main() {
+	var fn = adder()
+	fmt.Println(fn())
+	fmt.Println(fn())
+	fmt.Println(fn())
+}
+最后输出的结果 ----- 
+
+11
+11
+11
+
+另一个闭包的写法，让一个变量常驻内存，不污染全局
+
+func adder2() func(y int) int {
+	var i = 10
+	return func(y int) int {
+		i = i + y
+		return i
+	}
+}
+
+func main() {
+	var fn2 = adder2()
+	fmt.Println(fn2(10))
+	fmt.Println(fn2(10))
+	fmt.Println(fn2(10))
+}
+</code></pre><h4 id="5-defer语句">5: defer语句</h4>
+<p>Go 语言中的defer 语句会将其后面跟随的语句进行延迟处理。在defer归属的函数即将返回时，将延迟处理的语句按defer定义的逆序进行执行，也就是说，先被defer的语句最后被执行，最后被defer的语句，最先被执行。</p>
+<pre tabindex="0"><code>// defer函数
+fmt.Println(&#34;1&#34;)
+defer fmt.Println(&#34;2&#34;)
+fmt.Println(&#34;3&#34;)
+fmt.Println(&#34;4&#34;)
+
+defer将会延迟执行
+
+1
+3
+4
+2
+</code></pre><p>如果有多个defer修饰的语句，将会逆序进行执行</p>
+<pre tabindex="0"><code>// defer函数
+fmt.Println(&#34;1&#34;)
+defer fmt.Println(&#34;2&#34;)
+defer fmt.Println(&#34;3&#34;)
+fmt.Println(&#34;4&#34;)
+
+运行结果   ----- 
+1
+4
+3
+2
+</code></pre><p>如果需要用defer运行一系列的语句，那么就可以使用匿名函数</p>
+<pre tabindex="0"><code>func main() {
+	fmt.Println(&#34;开始&#34;)
+	defer func() {
+		fmt.Println(&#34;1&#34;)
+		fmt.Println(&#34;2&#34;)
+	}()
+	fmt.Println(&#34;结束&#34;)
+}
+
+运行结果
+
+开始
+结束
+1
+2
+</code></pre><p>在Go语言的函数中return语句在底层并不是原子操作，它分为返回值赋值和RET指令两步。而defer语句执行的时机就在返回值赋值操作后，RET指令执行前.</p>
+<h4 id="6-panicrevocer处理异常">6: panic/revocer处理异常</h4>
+<p>Go语言中是没有异常机制，但是使用panic / recover模式来处理错误</p>
+<ul>
+<li>panic：可以在任何地方引发</li>
+<li>recover：只有在defer调用函数内有效</li>
+</ul>
+<pre tabindex="0"><code>func fn1() {
+	fmt.Println(&#34;fn1&#34;)
+}
+
+func fn2() {
+	panic(&#34;抛出一个异常&#34;)
+}
+func main() {
+    fn1()
+	fn2()
+    fmt.Println(&#34;结束&#34;)
+}
+
+上述程序会直接抛出异常，无法正常运行
+fn1
+panic: 抛出一个异常
+</code></pre><p>解决方法就是使用 recover进行异常的监听</p>
+<pre tabindex="0"><code>func fn1() {
+	fmt.Println(&#34;fn1&#34;)
+}
+
+func fn2() {
+	// 使用recover监听异常
+	defer func() {
+		err := recover()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}()
+	panic(&#34;抛出一个异常&#34;)
+}
+func main() {
+    fn1()
+	fn2()
+    fmt.Println(&#34;结束&#34;)
+}
+</code></pre><p>模拟一个读取文件的方法，这里可以主动发送使用panic  和 recover</p>
+<pre tabindex="0"><code>func readFile(fileName string) error {
+	if fileName == &#34;main.go&#34; {
+		return nil
+	} else {
+		return errors.New(&#34;读取文件失败&#34;)
+	}
+}
+
+func myFn () {
+	defer func() {
+		e := recover()
+		if e != nil {
+			fmt.Println(&#34;给管理员发送邮件&#34;)
+		}
+	}()
+	err := readFile(&#34;XXX.go&#34;)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func main() {
+	myFn()
+}
+</code></pre><h4 id="7-内置函数">7: 内置函数</h4>
+<table>
+<thead>
+<tr>
+<th>内置函数</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>close</td>
+<td>主要用来关闭channel</td>
+</tr>
+<tr>
+<td>len</td>
+<td>用来求长度，比如string、array、slice、map、channel</td>
+</tr>
+<tr>
+<td>new</td>
+<td>用来分配内存、主要用来分配值类型，比如 int、struct ，返回的是指针</td>
+</tr>
+<tr>
+<td>make</td>
+<td>用来分配内存，主要用来分配引用类型，比如chan、map、slice</td>
+</tr>
+<tr>
+<td>append</td>
+<td>用来追加元素到数组、slice中</td>
+</tr>
+<tr>
+<td>panic\recover</td>
+<td>用来处理错误</td>
+</tr>
+</tbody>
+</table>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/golang/">golang</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2022/08/golang-4/" data-tooltip="Golang 4" aria-label="PREVIOUS: Golang 4">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2022/08/golang-5/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2022/08/golang-5/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=/2022/08/golang-5/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '\/2022\/08\/golang-5\/';
+        
+          this.page.identifier = '\/2022\/08\/golang-5\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2022 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--disabled">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2022/08/golang-4/" data-tooltip="Golang 4" aria-label="PREVIOUS: Golang 4">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2022/08/golang-5/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2022/08/golang-5/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=/2022/08/golang-5/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2022%2F08%2Fgolang-5%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2022%2F08%2Fgolang-5%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=%2F2022%2F08%2Fgolang-5%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

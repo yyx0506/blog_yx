@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Golang  结构体",
+  
+  "datePublished": "2022-09-01T00:00:00Z",
+  "dateModified": "2022-09-01T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "--baseUrl=\/2022\/09\/golang-%E7%BB%93%E6%9E%84%E4%BD%93\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.114.1 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang  结构体">
+<meta name="twitter:title" content="Golang  结构体">
+<meta property="og:url" content="--baseUrl=/2022/09/golang-%E7%BB%93%E6%9E%84%E4%BD%93/">
+<meta property="twitter:url" content="--baseUrl=/2022/09/golang-%E7%BB%93%E6%9E%84%E4%BD%93/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2022-09-01T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2022-09-01T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="features">
+    
+  
+  
+    
+      <meta property="article:tag" content="golang">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>Golang  结构体</title>
+
+    <link rel="icon" href="--baseUrl=/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="--baseUrl=/2022/09/golang-%E7%BB%93%E6%9E%84%E4%BD%93/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="--baseUrl=/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="--baseUrl=/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="--baseUrl=/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="--baseUrl=/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" target="_blank" rel="noopener" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      Golang  结构体
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2022-09-01T00:00:00Z">
+        
+  September 1, 2022
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="--baseUrl=/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="--baseUrl=/categories/features">features</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h3 id="golang-8-结构体">Golang 8 结构体</h3>
+<h4 id="1-结构体">1: 结构体</h4>
+<p>Golang中没有“类”的概念，Golang中的结构体和其他语言中的类有点相似。和其他面向对象语言中的类相比，Golang中的结构体具有更高的扩展性和灵活性。</p>
+<p>Golang中的基础数据类型可以装示一些事物的基本属性，但是当我们想表达一个事物的全部或部分属性时，这时候再用单一的基本数据类型就无法满足需求了，Golang提供了一种自定义数据类型，可以封装多个基本数据类型，这种数据类型叫结构体，英文名称struct。也就是我们可以通过struct来定义自己的类型了。</p>
+<h4 id="2-type关键字">2: Type关键字</h4>
+<p>Golang中通过type关键词定义一个结构体，需要注意的是，数组和结构体都是值类型，在这个和Java是有区别的</p>
+<p>python 中则是 不可变的如 数字 字符串 元组等为值类型 列表与字典都是址类型</p>
+<p>自定义类型</p>
+<p>在Go语言中有一些基本的数据类型，如string、整型、浮点型、布尔等数据类型，Go语言中可以使用type关键字来定义自定义类型。</p>
+<pre tabindex="0"><code>type myInt int
+</code></pre><p>上面代码表示：将mylnt定义为int类型，通过type关键字的定义，mylnt就是一种新的类型，它具有int的特性。</p>
+<p>示例：如下所示，我们定义了一个myInt类型</p>
+<pre tabindex="0"><code>type myInt int
+func main() {
+	var a myInt = 10
+	fmt.Printf(&#34;%v %T&#34;, a, a)
+}
+</code></pre><p>输出查看它的值以及类型，能够发现该类型就是myInt类型</p>
+<pre tabindex="0"><code>10 main.myInt
+</code></pre><p>除此之外，我们还可以定义一个方法类型</p>
+<pre tabindex="0"><code>func fun(x int, y int)int {
+	return x + y
+}
+func main() {
+	var fn myFn = fun
+	fmt.Println(fn(1, 2))
+}
+</code></pre><p>然后调用并输出</p>
+<pre tabindex="0"><code>3
+</code></pre><p>类型别名</p>
+<p>Golang1.9版本以后添加的新功能</p>
+<p>类型别名规定：TypeAlias只是Type的别名，本质上TypeAlias与Type是同一个类型。就像一个孩子小时候有大名、小名、英文名，但这些名字都指的是他本人</p>
+<pre tabindex="0"><code>type TypeAlias = Type
+</code></pre><p>我们之前见过的rune 和 byte 就是类型别名，他们的底层代码如下</p>
+<pre tabindex="0"><code>type byte = uint8
+type rune = int32
+</code></pre><h4 id="3-结构体定义和初始化">3: 结构体定义和初始化</h4>
+<p>使用type  和 struct关键字来定义结构体，具体代码格式如下所示：</p>
+<pre tabindex="0"><code>/**
+	定义一个人结构体
+ */
+type Person struct {
+	name string
+	age int
+	sex string
+}
+func main() {
+	// 实例化结构体
+	var person Person
+	person.name = &#34;张三&#34;
+	person.age = 20
+	person.sex = &#34;男&#34;
+	fmt.Printf(&#34;%#v&#34;, person)
+}
+</code></pre><blockquote>
+<p>注意：结构体首字母可以大写也可以小写，大写表示这个结构体是公有的，在其它的包里面也可以使用，小写表示结构体属于私有的，在其它地方不能使用</p>
+</blockquote>
+<p>例如：</p>
+<pre tabindex="0"><code>type Person struct {
+	Name string
+	Age int
+	Sex string
+}
+</code></pre><h5 id="实例化结构体">实例化结构体</h5>
+<p>刚刚实例化结构体用到了：var person Person</p>
+<pre tabindex="0"><code>// 实例化结构体
+var person Person
+person.name = &#34;张三&#34;
+person.age = 20
+person.sex = &#34;男&#34;
+</code></pre><h5 id="实例化结构体2">实例化结构体2</h5>
+<p>我们下面使用另外一个方式来实例化结构体，通过new关键字来实例化结构体，得到的是结构体的地址，格式如下</p>
+<pre tabindex="0"><code>var person2 = new(Person)
+person2.name = &#34;李四&#34;
+person2.age = 30
+person2.sex = &#34;女&#34;
+fmt.Printf(&#34;%#v&#34;, person2)
+</code></pre><p>输出如下所示，从打印结果可以看出person2是一个结构体指针</p>
+<pre tabindex="0"><code>&amp;main.Person{name:&#34;李四&#34;, age:30, sex:&#34;女&#34;}
+</code></pre><p>需要注意：在Golang中支持对结构体指针直接使用，来访问结构体的成员</p>
+<pre tabindex="0"><code>person2.name = &#34;李四&#34;
+// 等价于
+(*person2).name = &#34;李四&#34;
+</code></pre><h5 id="实例化结构体3">实例化结构体3</h5>
+<p>使用&amp;对结构体进行取地址操作，相当于对该结构体类型进行了一次new实例化操作</p>
+<pre tabindex="0"><code>// 第三种方式实例化
+var person3 = &amp;Person{}
+person3.name = &#34;赵四&#34;
+person3.age = 28
+person3.sex = &#34;男&#34;
+fmt.Printf(&#34;%#v&#34;, person3)
+</code></pre><h5 id="实例化结构体4">实例化结构体4</h5>
+<p>使用键值对的方式来实例化结构体，实例化的时候，可以直接指定对应的值</p>
+<pre tabindex="0"><code>// 第四种方式初始化
+var person4 = Person{
+    name: &#34;张三&#34;,
+    age: 10,
+    sex: &#34;女&#34;,
+}
+fmt.Printf(&#34;%#v&#34;, person4)
+</code></pre><h5 id="实例化结构体5">实例化结构体5</h5>
+<p>第五种和第四种差不多，不过是用了取地址，然后返回的也是一个地址</p>
+<pre tabindex="0"><code>// 第五种方式初始化
+var person5 = &amp;Person{
+    name: &#34;孙五&#34;,
+    age: 10,
+    sex: &#34;女&#34;,
+}
+fmt.Printf(&#34;%#v&#34;, person5)
+</code></pre><h5 id="实例化结构体6">实例化结构体6</h5>
+<p>第六种方式是可以简写结构体里面的key</p>
+<pre tabindex="0"><code>var person6 = Person{
+    &#34;张三&#34;,
+    5,
+    &#34;女&#34;,
+}
+fmt.Println(person6)
+</code></pre><h4 id="5-结构体方法和接收者">5: 结构体方法和接收者</h4>
+<p>在go语言中，没有类的概念但是可以给类型（结构体，自定义类型）定义方法。所谓方法就是定义了接收者的函数。接收者的概念就类似于其他语言中的this 或者self。</p>
+<p>方法的定义格式如下：</p>
+<pre tabindex="0"><code>func (接收者变量 接收者类型) 方法名(参数列表)(返回参数) {
+    函数体
+}
+</code></pre><p><strong>其中</strong></p>
+<ul>
+<li>接收者变量：接收者中的参数变量名在命名时，官方建议使用接收者类型名的第一个小写字母，而不是self、this之类的命名。例如，Person类型的接收者变量应该命名为p，Connector类型的接收者变量应该命名为c等。、</li>
+<li>接收者类型：接收者类型和参数类似，可以是指针类型和非指针类型。
+<ul>
+<li>非指针类型：表示不修改结构体的内容</li>
+<li>指针类型：表示修改结构体中的内容</li>
+</ul>
+</li>
+<li>方法名、参数列表、返回参数：具体格式与函数定义相同</li>
+</ul>
+<p>如果示例所示：</p>
+<pre tabindex="0"><code>/**
+	定义一个人结构体
+ */
+type Person struct {
+	name string
+	age int
+	sex string
+}
+
+// 定义一个结构体方法
+func (p Person) PrintInfo() {
+	fmt.Print(&#34; 姓名: &#34;, p.name)
+	fmt.Print(&#34; 年龄: &#34;, p.age)
+	fmt.Print(&#34; 性别: &#34;, p.sex)
+	fmt.Println()
+}
+func (p *Person) SetInfo(name string, age int, sex string)  {
+	p.name = name
+	p.age = age
+	p.sex = sex
+}
+
+func main() {
+	var person = Person{
+		&#34;张三&#34;,
+		18,
+		&#34;女&#34;,
+	}
+	person.PrintInfo()
+	person.SetInfo(&#34;李四&#34;, 18, &#34;男&#34;)
+	person.PrintInfo()
+}
+</code></pre><p>运行结果为：</p>
+<pre tabindex="0"><code> 姓名: 张三 年龄: 18 性别: 女
+ 姓名: 李四 年龄: 18 性别: 男
+</code></pre><p>注意，因为结构体是值类型，所以我们修改的时候，因为是传入的指针</p>
+<pre tabindex="0"><code>func (p *Person) SetInfo(name string, age int, sex string)  {
+	p.name = name
+	p.age = age
+	p.sex = sex
+}
+</code></pre><h4 id="6-给任意类型添加方法">6: 给任意类型添加方法</h4>
+<p>在Go语言中，接收者的类型可以是任何类型，不仅仅是结构体，任何类型都可以拥有方法。</p>
+<p>举个例子，我们基于内置的int类型使用type关键字可以定义新的自定义类型，然后为我们的自定义类型添加方法。</p>
+<pre tabindex="0"><code>type myInt int
+func fun(x int, y int)int {
+	return x + y
+}
+func (m myInt) PrintInfo()  {
+	fmt.Println(&#34;我是自定义类型里面的自定义方法&#34;)
+}
+func main() {
+	var a myInt = 10
+	fmt.Printf(&#34;%v %T \n&#34;, a, a)
+	a.PrintInfo()
+}
+</code></pre><h4 id="7-结构体的匿名字段">7: 结构体的匿名字段</h4>
+<p>结构体允许其成员字段在声明时没有字段名而只有类型，这种没有名字的字段就被称为匿名字段</p>
+<p>匿名字段默认采用类型名作为字段名，结构体要求字段名称必须唯一，因此一个结构体中同种类型的匿名字段只能一个</p>
+<pre tabindex="0"><code>/**
+	定义一个人结构体
+ */
+type Person struct {
+	string
+	int
+}
+
+func main() {
+	// 结构体的匿名字段
+	var person = Person{
+		&#34;张三&#34;,
+		18
+	}
+}
+</code></pre><p>结构体的字段类型可以是：基本数据类型，也可以是切片、Map 以及结构体</p>
+<p>如果结构体的字段类似是：指针、slice、和 map 的零值都是nil，即还没有分配空间</p>
+<p>如果需要使用这样的字段，需要先make，才能使用</p>
+<pre tabindex="0"><code>/**
+	定义一个人结构体
+ */
+type Person struct {
+	name string
+	age int
+	hobby []string
+	mapValue map[string]string
+}
+
+func main() {
+	// 结构体的匿名字段
+	var person = Person{}
+	person.name = &#34;张三&#34;
+	person.age = 10
+
+	// 给切片申请内存空间
+	person.hobby = make([]string, 4, 4)
+	person.hobby[0] = &#34;睡觉&#34;
+	person.hobby[1] = &#34;吃饭&#34;
+	person.hobby[2] = &#34;打豆豆&#34;
+
+	// 给map申请存储空间
+	person.mapValue = make(map[string]string)
+	person.mapValue[&#34;address&#34;] = &#34;北京&#34;
+	person.mapValue[&#34;phone&#34;] = &#34;123456789&#34;
+
+	// 加入#打印完整信息
+	fmt.Printf(&#34;%#v&#34;, person)
+}
+</code></pre><p>同时我们还支持结构体的嵌套，如下所示</p>
+<pre tabindex="0"><code>// 用户结构体
+type User struct {
+	userName string
+	password string
+	sex string
+	age int
+	address Address // User结构体嵌套Address结构体
+}
+
+// 收货地址结构体
+type Address struct {
+	name string
+	phone string
+	city string
+}
+
+func main() {
+	var u User
+	u.userName = &#34;moguBlog&#34;
+	u.password = &#34;123456&#34;
+	u.sex = &#34;男&#34;
+	u.age = 18
+	
+	var address Address
+	address.name = &#34;张三&#34;
+	address.phone = &#34;110&#34;
+	address.city = &#34;北京&#34;
+	u.address = address
+	fmt.Printf(&#34;%#v&#34;, u)
+}
+</code></pre><h4 id="8-嵌套结构体的字段名冲突">8: 嵌套结构体的字段名冲突</h4>
+<p>嵌套结构体内部可能存在相同的字段名，这个时候为了避免歧义，需要指定具体的内嵌结构体的字段。（例如，父结构体中的字段 和 子结构体中的字段相似）</p>
+<p>默认会从父结构体中寻找，如果找不到的话，再去子结构体中在找</p>
+<p>如果子类的结构体中，同时存在着两个相同的字段，那么这个时候就会报错了，因为程序不知道修改那个字段的为准。</p>
+<p>结构体的继承</p>
+<p>结构体的继承，其实就类似于结构体的嵌套，如下所示，我们定义了两个结构体，分别是Animal 和 Dog，其中每个结构体都有各自的方法，然后通过Dog结构体 继承于 Animal结构体</p>
+<pre tabindex="0"><code>// 用户结构体
+type Animal struct {
+	name string
+}
+func (a Animal) run() {
+	fmt.Printf(&#34;%v 在运动 \n&#34;, a.name)
+}
+// 子结构体
+type Dog struct {
+	age int
+	// 通过结构体嵌套，完成继承
+	Animal
+}
+func (dog Dog) wang()  {
+	fmt.Printf(&#34;%v 在汪汪汪 \n&#34;, dog.name)
+}
+
+func main() {
+	var dog = Dog{
+		age: 10,
+		Animal: Animal{
+			name: &#34;阿帕奇&#34;,
+		},
+	}
+	dog.run();
+	dog.wang();
+}
+</code></pre><p>运行后，发现Dog拥有了父类的方法</p>
+<pre tabindex="0"><code>阿帕奇 在运动 
+阿帕奇 在汪汪汪
+</code></pre><h4 id="9-go中的结构体和json相互转换">9: Go中的结构体和Json相互转换</h4>
+<p>JSON（JavaScript Object Notation）是一种轻量级的数据交换格式。易于人阅读和编写。同时也易于机器解析和生成。RESTfull Api接口中返回的数据都是json数据。</p>
+<pre tabindex="0"><code>{
+    &#34;name&#34;: &#34;张三&#34;,
+    &#34;age&#34;: 15
+}
+</code></pre><p>比如我们Golang要给App或者小程序提供Api接口数据，这个时候就需要涉及到结构体和Json之间的相互转换
+Golang JSON序列化是指把结构体数据转化成JSON格式的字符串，Golang JSON的反序列化是指把JSON数据转化成Golang中的结构体对象</p>
+<p>Golang中的序列化和反序列化主要通过“encoding/json”包中的 json.Marshal() 和 son.Unmarshal()</p>
+<pre tabindex="0"><code>// 定义一个学生结构体，注意结构体的首字母必须大写，代表公有，否则将无法转换
+type Student struct {
+	ID string
+	Gender string
+	Name string
+	Sno string
+}
+func main() {
+	var s1 = Student{
+		ID: &#34;12&#34;,
+		Gender: &#34;男&#34;,
+		Name: &#34;李四&#34;,
+		Sno: &#34;s001&#34;,
+	}
+	// 结构体转换成Json（返回的是byte类型的切片）
+	jsonByte, _ := json.Marshal(s1)
+	jsonStr := string(jsonByte)
+	fmt.Printf(jsonStr)
+}
+</code></pre><p>将字符串转换成结构体类型</p>
+<pre tabindex="0"><code>// 定义一个学生结构体，注意结构体的首字母必须大写，代表公有，否则将无法转换
+type Student struct {
+	ID string
+	Gender string
+	Name string
+	Sno string
+}
+func main() {
+	// Json字符串转换成结构体
+	var str = `{&#34;ID&#34;:&#34;12&#34;,&#34;Gender&#34;:&#34;男&#34;,&#34;Name&#34;:&#34;李四&#34;,&#34;Sno&#34;:&#34;s001&#34;}`
+	var s2 = Student{}
+	// 第一个是需要传入byte类型的数据，第二参数需要传入转换的地址
+	err := json.Unmarshal([]byte(str), &amp;s2)
+	if err != nil {
+		fmt.Printf(&#34;转换失败 \n&#34;)
+	} else {
+		fmt.Printf(&#34;%#v \n&#34;, s2)
+	}
+}
+</code></pre><p>注意</p>
+<p>我们想要实现结构体转换成字符串，必须保证结构体中的字段是公有的，也就是首字母必须是大写的，这样才能够实现结构体 到 Json字符串的转换。</p>
+<p>结构体标签Tag</p>
+<p>Tag是结构体的元信息，可以在运行的时候通过反射的机制读取出来。Tag在结构体字段的后方定义，由一对反引号包裹起来，具体的格式如下：</p>
+<pre tabindex="0"><code>key1：&#34;value1&#34; key2：&#34;value2&#34;
+</code></pre><p>结构体tag由一个或多个键值对组成。键与值使用冒号分隔，值用双引号括起来。同一个结构体字段可以设置多个键值对tag，不同的键值对之间使用空格分隔。</p>
+<p>注意事项：为结构体编写Tag时，必须严格遵守键值对的规则。结构体标签的解析代码的容错能力很差，一旦格式写错，编译和运行时都不会提示任何错误，通过反射也无法正确取值。例如不要在key和value之间添加空格。</p>
+<p>如下所示，我们通过tag标签，来转换字符串的key</p>
+<pre tabindex="0"><code>// 定义一个Student体，使用结构体标签
+type Student2 struct {
+	Id string `json:&#34;id&#34;` // 通过指定tag实现json序列化该字段的key
+	Gender string `json:&#34;gender&#34;`
+	Name string `json:&#34;name&#34;`
+	Sno string `json:&#34;sno&#34;`
+}
+func main() {
+	var s1 = Student2{
+		Id: &#34;12&#34;,
+		Gender: &#34;男&#34;,
+		Name: &#34;李四&#34;,
+		Sno: &#34;s001&#34;,
+	}
+	// 结构体转换成Json
+	jsonByte, _ := json.Marshal(s1)
+	jsonStr := string(jsonByte)
+	fmt.Println(jsonStr)
+
+	// Json字符串转换成结构体
+	var str = `{&#34;Id&#34;:&#34;12&#34;,&#34;Gender&#34;:&#34;男&#34;,&#34;Name&#34;:&#34;李四&#34;,&#34;Sno&#34;:&#34;s001&#34;}`
+	var s2 = Student2{}
+	// 第一个是需要传入byte类型的数据，第二参数需要传入转换的地址
+	err := json.Unmarshal([]byte(str), &amp;s2)
+	if err != nil {
+		fmt.Printf(&#34;转换失败 \n&#34;)
+	} else {
+		fmt.Printf(&#34;%#v \n&#34;, s2)
+	}
+}
+</code></pre><p>嵌套结构体和Json序列化反序列化</p>
+<p>和刚刚类似，我们同样也是使用的是 json.Marshal()</p>
+<pre tabindex="0"><code>// 嵌套结构体 到 Json的互相转换
+
+// 定义一个Student结构体
+type Student3 struct {
+	Id int
+	Gender string
+	Name string
+}
+
+// 定义一个班级结构体
+type Class struct {
+	Title string
+	Students []Student3
+}
+
+func main() {
+	var class = Class{
+		Title: &#34;1班&#34;,
+		Students: make([]Student3, 0),
+	}
+	for i := 0; i &lt; 10; i++ {
+		s := Student3{
+			Id: i + 1,
+			Gender: &#34;男&#34;,
+			Name: fmt.Sprintf(&#34;stu_%v&#34;, i + 1),
+		}
+		class.Students = append(class.Students, s)
+	}
+	fmt.Printf(&#34;%#v \n&#34;, class)
+
+	// 转换成Json字符串
+	strByte, err := json.Marshal(class)
+	if err != nil {
+		fmt.Println(&#34;打印失败&#34;)
+	} else {
+		fmt.Println(string(strByte))
+	}
+}
+</code></pre>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="--baseUrl=/tags/golang/">golang</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/09/golang-%E5%8C%85/" data-tooltip="Golang  包" aria-label="NEXT: Golang  包">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/08/golang-%E6%8C%87%E9%92%88/" data-tooltip="Golang  指针" aria-label="PREVIOUS: Golang  指针">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2022/09/golang-%E7%BB%93%E6%9E%84%E4%BD%93/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2022/09/golang-%E7%BB%93%E6%9E%84%E4%BD%93/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2022/09/golang-%E7%BB%93%E6%9E%84%E4%BD%93/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '--baseUrl=\/2022\/09\/golang-%E7%BB%93%E6%9E%84%E4%BD%93\/';
+        
+          this.page.identifier = '\/2022\/09\/golang-%E7%BB%93%E6%9E%84%E4%BD%93\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2023 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/09/golang-%E5%8C%85/" data-tooltip="Golang  包" aria-label="NEXT: Golang  包">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/08/golang-%E6%8C%87%E9%92%88/" data-tooltip="Golang  指针" aria-label="PREVIOUS: Golang  指针">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2022/09/golang-%E7%BB%93%E6%9E%84%E4%BD%93/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2022/09/golang-%E7%BB%93%E6%9E%84%E4%BD%93/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2022/09/golang-%E7%BB%93%E6%9E%84%E4%BD%93/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl%3D%2F2022%2F09%2Fgolang-%25E7%25BB%2593%25E6%259E%2584%25E4%25BD%2593%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl%3D%2F2022%2F09%2Fgolang-%25E7%25BB%2593%25E6%259E%2584%25E4%25BD%2593%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl%3D%2F2022%2F09%2Fgolang-%25E7%25BB%2593%25E6%259E%2584%25E4%25BD%2593%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('--baseUrl=/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="--baseUrl=/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

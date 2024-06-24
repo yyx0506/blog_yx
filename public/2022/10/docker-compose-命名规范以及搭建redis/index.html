@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Docker-compose 命名规范以及搭建redis",
+  
+  "datePublished": "2022-10-11T00:00:00Z",
+  "dateModified": "2022-10-11T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "--baseUrl=\/2022\/10\/docker-compose-%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83%E4%BB%A5%E5%8F%8A%E6%90%AD%E5%BB%BAredis\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.114.1 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker-compose 命名规范以及搭建redis">
+<meta name="twitter:title" content="Docker-compose 命名规范以及搭建redis">
+<meta property="og:url" content="--baseUrl=/2022/10/docker-compose-%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83%E4%BB%A5%E5%8F%8A%E6%90%AD%E5%BB%BAredis/">
+<meta property="twitter:url" content="--baseUrl=/2022/10/docker-compose-%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83%E4%BB%A5%E5%8F%8A%E6%90%AD%E5%BB%BAredis/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2022-10-11T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2022-10-11T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="featureshu">
+    
+  
+  
+    
+      <meta property="article:tag" content="docker">
+    
+      <meta property="article:tag" content="redis">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>Docker-compose 命名规范以及搭建redis</title>
+
+    <link rel="icon" href="--baseUrl=/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="--baseUrl=/2022/10/docker-compose-%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83%E4%BB%A5%E5%8F%8A%E6%90%AD%E5%BB%BAredis/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="--baseUrl=/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="--baseUrl=/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="--baseUrl=/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="--baseUrl=/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" target="_blank" rel="noopener" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      Docker-compose 命名规范以及搭建redis
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2022-10-11T00:00:00Z">
+        
+  October 11, 2022
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="--baseUrl=/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="--baseUrl=/categories/featureshu">featureshu</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h3 id="docker-日常使用">Docker 日常使用</h3>
+<h3 id="1-一些命名规范">1 一些命名规范</h3>
+<pre tabindex="0"><code>规范 一直是 程序猿的必备要求。好的规范 能够提高代码的可读性 以及后续维护性
+docker 也不例外 
+
+镜像的 名称 以及格式通常为 
+DOCKER_REGISTRY/repo/name:tag，各个字段具体含义如下：
+
+-----------------------基础镜像-----------------------
+DOCKER_REGISTRY：企业统一的Docker Registry地址；
+repo：镜像仓库，用来管理某一类镜像；
+name：某个镜像的具体名称，一般的命名规则为：系统名称+系统版本+服务名+服务版本（如果公司约定了主要使用的系统名称和版本，则可以省略系统名称+系统版本部分，直接使用服务名作为镜像的名称）。例如：centos7.6-nginx-1.47。
+tag：某个镜像具体的标签。例如：2.0。
+需要注意的是：镜像的名称需要限制为[a-z0-9],其中可以出现的符号为[-._]，不能出现中文以及中文符号，包括镜像名称中的: 也必须是英文的冒号，不然创建容器的时候会失败。
+
+然后这个冒号 在 镜像名称中只能出现一次（ 这是 一个大坑 ）
+
+上文我们说到，我们采用一个独立的仓库来管理企业的基础镜像，例如使用public仓库来管理所有的基础镜像，下面我们来约定基础镜像的命名规则：DOCKER_REGISTRY/repo/name:tag；
+
+repo：统一用public仓库来进行管理；
+
+name：描述该image中所提供的软件，各软件间通过“-”连接；
+
+tag：依次顺序描述该image中所提供的软件的版本，各版本间通过“-”连接。
+
+-----------------------业务镜像-----------------------
+
+业务镜像的命名规则以项目为仓库进行隔离，例如在一个支付项目中，我们使用payment镜像仓库，另一个风控项目使用risk-control镜像仓库，下面是我们约定的镜像命名规范：
+
+repo：用项目名作为仓库，来管理该项目下的所有镜像。
+
+name：描述该image中所包含的业务。
+
+tag：commit id（前7位）和timestamp（12位，yymmddHHMMSS）组合成唯一标识，中间通过“-”连接。
+
+当然了这个主要是 大开发团队中 才会出现的  
+
+
+例如 yyx123456/nana:app_infos-1.0.2  第一个代表用户名 第二个代表仓库名 后面则是 业务名称和版本号
+</code></pre><h3 id="2-docker-compose-搭建-redis">2 docker-compose 搭建 redis</h3>
+<pre tabindex="0"><code>先创建目录和配置文件
+cd /usr/local
+mkdir redis
+cd redis/
+touch docker-compose.yaml
+touch redis.conf
+
+然后编译 docker-compose.yaml 文件
+
+version: &#34;3.3&#34;
+services:
+    redis:
+        image: &#34;redis:latest&#34;
+        container_name: redis-single
+        restart: always
+        ports:
+          - &#34;6379:6379&#34;
+        volumes:
+          - ./redis.conf:/etc/redis/redis.conf:rw
+          - ./data:/data:rw
+        command:
+          # 执行的命令
+          redis-server /etc/redis/redis.conf --appendonly yes
+
+
+再然后编译 redis.conf 文件
+requirepass 123456
+appendonly yes
+#cluster-enable yes
+
+
+然后测试连接可行   后续我们只需要 将 redis.conf 文件编写成自己可用的即可 比如密码的设置 以及 缓存的选择
+一般来说 主要用到的 也就是下面的一些内容了。
+
+
+     bind 0.0.0.0
+     protected-mode yes
+     port 6379
+     tcp-backlog 511
+     timeout 0
+     tcp-keepalive 300
+     daemonize  no
+     supervised no
+     pidfile /var/run/redis/redis.pid
+     loglevel notice
+     logfile /data/redis/redis.log
+     databases 16
+     always-show-logo yes
+     save 900 1
+     save 300 10
+     save 60 10000
+     stop-writes-on-bgsave-error yes
+     rdbcompression yes
+     rdbchecksum yes
+     dbfilename dump.rdb
+     dir /data/redis/
+     slave-serve-stale-data yes
+     slave-read-only yes
+     repl-diskless-sync no
+     repl-diskless-sync-delay 5
+     repl-disable-tcp-nodelay no
+     slave-priority 100
+     maxmemory 495000000
+     lazyfree-lazy-eviction no
+     lazyfree-lazy-expire no
+     lazyfree-lazy-server-del no
+     slave-lazy-flush no
+     appendonly no
+     appendfilename &#34;appendonly.aof&#34;
+     appendfsync everysec
+     no-appendfsync-on-rewrite no
+     auto-aof-rewrite-percentage 100
+     auto-aof-rewrite-min-size 64mb
+     aof-load-truncated yes
+     aof-use-rdb-preamble no
+     lua-time-limit 5000
+     slowlog-log-slower-than 10000
+     slowlog-max-len 128
+     latency-monitor-threshold 0
+     notify-keyspace-events &#34;&#34;
+     hash-max-ziplist-entries 512
+     hash-max-ziplist-value 64
+     list-max-ziplist-size -2
+     list-compress-depth 0
+     set-max-intset-entries 512
+     zset-max-ziplist-entries 128
+     zset-max-ziplist-value 64
+     hll-sparse-max-bytes 3000
+     activerehashing yes
+     client-output-buffer-limit normal 0 0 0
+     client-output-buffer-limit slave 256mb 64mb 60
+     client-output-buffer-limit pubsub 32mb 8mb 60
+     hz 10
+     aof-rewrite-incremental-fsync yes
+</code></pre>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="--baseUrl=/tags/docker/">docker</a>
+
+  <a class="tag tag--primary tag--small" href="--baseUrl=/tags/redis/">redis</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/10/k8s-%E4%BD%BF%E7%94%A8/" data-tooltip="k8s 使用" aria-label="NEXT: k8s 使用">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/10/python-%E7%BB%A7%E6%89%BF%E5%A4%9A%E6%80%81/" data-tooltip="python 继承多态" aria-label="PREVIOUS: python 继承多态">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2022/10/docker-compose-%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83%E4%BB%A5%E5%8F%8A%E6%90%AD%E5%BB%BAredis/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2022/10/docker-compose-%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83%E4%BB%A5%E5%8F%8A%E6%90%AD%E5%BB%BAredis/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2022/10/docker-compose-%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83%E4%BB%A5%E5%8F%8A%E6%90%AD%E5%BB%BAredis/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '--baseUrl=\/2022\/10\/docker-compose-%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83%E4%BB%A5%E5%8F%8A%E6%90%AD%E5%BB%BAredis\/';
+        
+          this.page.identifier = '\/2022\/10\/docker-compose-%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83%E4%BB%A5%E5%8F%8A%E6%90%AD%E5%BB%BAredis\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2023 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/10/k8s-%E4%BD%BF%E7%94%A8/" data-tooltip="k8s 使用" aria-label="NEXT: k8s 使用">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/10/python-%E7%BB%A7%E6%89%BF%E5%A4%9A%E6%80%81/" data-tooltip="python 继承多态" aria-label="PREVIOUS: python 继承多态">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2022/10/docker-compose-%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83%E4%BB%A5%E5%8F%8A%E6%90%AD%E5%BB%BAredis/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2022/10/docker-compose-%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83%E4%BB%A5%E5%8F%8A%E6%90%AD%E5%BB%BAredis/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2022/10/docker-compose-%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83%E4%BB%A5%E5%8F%8A%E6%90%AD%E5%BB%BAredis/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl%3D%2F2022%2F10%2Fdocker-compose-%25E5%2591%25BD%25E5%2590%258D%25E8%25A7%2584%25E8%258C%2583%25E4%25BB%25A5%25E5%258F%258A%25E6%2590%25AD%25E5%25BB%25BAredis%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl%3D%2F2022%2F10%2Fdocker-compose-%25E5%2591%25BD%25E5%2590%258D%25E8%25A7%2584%25E8%258C%2583%25E4%25BB%25A5%25E5%258F%258A%25E6%2590%25AD%25E5%25BB%25BAredis%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl%3D%2F2022%2F10%2Fdocker-compose-%25E5%2591%25BD%25E5%2590%258D%25E8%25A7%2584%25E8%258C%2583%25E4%25BB%25A5%25E5%258F%258A%25E6%2590%25AD%25E5%25BB%25BAredis%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('--baseUrl=/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="--baseUrl=/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

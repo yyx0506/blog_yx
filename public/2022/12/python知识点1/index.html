@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Python知识点1",
+  
+  "datePublished": "2022-12-01T00:00:00Z",
+  "dateModified": "2022-12-01T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "--baseUrl=\/2022\/12\/python%E7%9F%A5%E8%AF%86%E7%82%B91\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.114.1 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python知识点1">
+<meta name="twitter:title" content="Python知识点1">
+<meta property="og:url" content="--baseUrl=/2022/12/python%E7%9F%A5%E8%AF%86%E7%82%B91/">
+<meta property="twitter:url" content="--baseUrl=/2022/12/python%E7%9F%A5%E8%AF%86%E7%82%B91/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2022-12-01T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2022-12-01T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="features">
+    
+  
+  
+    
+      <meta property="article:tag" content="python">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>Python知识点1</title>
+
+    <link rel="icon" href="--baseUrl=/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="--baseUrl=/2022/12/python%E7%9F%A5%E8%AF%86%E7%82%B91/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="--baseUrl=/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="--baseUrl=/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="--baseUrl=/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="--baseUrl=/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" target="_blank" rel="noopener" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      Python知识点1
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2022-12-01T00:00:00Z">
+        
+  December 1, 2022
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="--baseUrl=/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="--baseUrl=/categories/features">features</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h3 id="1网络模型">1.网络模型</h3>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/8367699/1648630958169-8f3bf03a-13bb-4851-88e2-b5972ea9cbb9.png?x-oss-process=image%2Fresize%2Cw_937%2Climit_0#crop=0&amp;crop=0&amp;crop=1&amp;crop=1&amp;from=url&amp;id=pbKI4&amp;margin=%5Bobject%20Object%5D&amp;originHeight=513&amp;originWidth=937&amp;originalType=binary&amp;ratio=1&amp;rotation=0&amp;showTitle=false&amp;status=done&amp;style=none&amp;title=" alt="">
+**http(s) 应⽤层 **
+**socks 会话层 **
+**tcp、udp 传输层 **
+<strong>ip ⽹络层</strong></p>
+<h3 id="1简述http协议和https协议的区别">1.简述HTTP协议和HTTPS协议的区别</h3>
+<p>HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私数据信息非常不安全，为了保证这些隐私数据的加密传输，于是网景公司设计了SSL协议用于对HTTP协议传输的数据进行加密，从而诞生了HTTPS，简单来说HTTPS协议就是SSL+HTTP协议构建的，他们的区别有：
+A：TPHTTPS协议需要到ca申请证书，一般免费证书较少，因此需要一定的费用
+B：HTTOP信息是明文传递的，HTTPS则是具有安全性的SSL加密协议传输的
+C：使用完全不同的连接方式，端口也不一样，HTTP通常是80端口，THTTPS是443
+D：HTTP的连接是无状态的，HTTPS是由SSL+HTTP协议构建的可进行加密传输的协</p>
+<h3 id="2三次握手四次挥手">2.三次握手四次挥手</h3>
+<p>客户端向服务器发送消息报文请求连接
+服务器收到请求后，回复报文确定可以连接
+客户端收到回复，发送最终报文连接建立</p>
+<p>主动方发送报文请求断开连接
+被动方收到请求后，立即回复，表示准备断开
+被动方准备就绪，再次发送报文表示可以断开
+主动方收到确定，发送最终报文完成断开</p>
+<h3 id="3在网页里输入域名按下确定的过程后发生了什么">3.在网页里输入域名，按下确定的过程后，发生了什么</h3>
+<p>域名解析
+域名解析检查顺序为：浏览器自身DNS缓存&mdash;》OS自身的DNS缓存&ndash;》读取host文件&ndash;》本地域名服务器&ndash;》权限域名服务器&ndash;》根域名服务器。如果有且没有过期，则结束本次域名解析。域名解析成功之后，进行后续操作
+2.tcp3次握手建立连接
+3.建立连接后，发起http请求
+4.服务器端响应http请求，浏览器得到到http请求的内容；
+5.浏览器解析html代码，并请求html代码中的资源
+6. 浏览器对页面进行渲染，展现在用户面前</p>
+<h3 id="4tcp协议和ip协议有啥区别">4.TCP协议和IP协议有啥区别？</h3>
+<p>我们以现实生活中货物运输举例，现实生活中货物运输都是把货物打包好封成一件一件的去运输，网络世界中也是如此，IP协议就是规定了数据传输时候的单元和格式，比作货物运输就是规定了货物打包时候的尺寸和包装的程序，除了这以外IP还定义了数据包的递交办法和路由选择，但是IP所传输的数据是单向的，也就是说IP只管发，对方收没收到不知道，TCP就不一样，它提供了可靠的面向是对象的数据流传输服务的股则和约定，简单的说就是TCP模式中，对方发一个数据包给你，你要发一个确认数据包给对方</p>
+<h3 id="5scrapy的工作流程和去重机制">5.scrapy的工作流程和去重机制</h3>
+<p>首先spiders将需要发送请求的url通过scrapyEngine(引擎)交给Schedule(调度器)，然后Schedule(调度器)处理后，经ScrapyEngine，DownloaderMiddlewares交给Downloader，Downloader向互联网发送请求，并接受下载响应，将响应经ScrapyEngine，SpiderMiddlewares交给Spiders，然后Spiders处理response，提取数据并将数据经scrapyEngine交给itemPipeline保存(可以是本地，可以是数据库)，最后提取url重新经scrapyEngine交给scheduler经下一个循环，直到无url请求程序停止结束为止
+去重机制：scrapy是通过hashlib算法转成长度一致的url，然后通过set集合去重的，去重的中间件在scrapy的dupefilters.py文件中：&mdash;&gt;有个去重器RFDupeFilter()，有个函数叫request_seen()，每次执行之前会执行request_seen()函数生成一个指纹，然后就是去重器中的self.fingerprints=set()，通过上句代码就实现了set集合去重了</p>
+<h3 id="6-线程进程协程你是怎么理解的一般在什么场景中使用他们">6. 线程，进程，协程你是怎么理解的，一般在什么场景中使用他们</h3>
+<p>进程：一个运行的程序或代码就是一个进程，进程是系统进行资源分配的最小单位，拥有自己的内存空间，他们之间互相独立，数据不共享，使用场景：cpu密集型中操作，比如对视频高清解码，需要到大量的计算
+线程：调度执行的最小单位，不能独立存在，依赖进程的存在而存在，一个进程至少一个线程，多个线程之间内存共享，使用场景：IO密集型操作，读写数据较多时
+携程：用户态的轻量级线程，调度用户控制，拥有自己的寄存器上下文的栈，使用场景：python中的多线程</p>
+<h3 id="7使用线程池开启多线程应该注意什么问题">7.使用线程池开启多线程应该注意什么问题</h3>
+<p>线程池开启多线程的时候，会同步发送类似请求给服务器，导致服务器瞬间压力，正确的做法是逐步开启线程，最终达到最大线程数，而不是同步开启，同步开启会导致风控机制的快速触发，再就是应该注意线程锁，变量控制以及线程阻塞问题</p>
+<h3 id="8造成线程阻塞的原因可能有哪些">8.造成线程阻塞的原因可能有哪些</h3>
+<p>A：线程执行了Thread.sleep()方法，当前线程放弃CPU，睡眠一段时间后在执行
+B：线程执行了一段同步代码，但是尚且无法获得相关的同步锁，只能进入阻塞状态，等到获取到了同步锁，才能恢复执行
+C：线程执行了一个对象的wait()方法，直接进入阻塞状态
+D：线程在执行某些IO操作，因为等待相关的资源而进入阻塞状态，比如监听键盘，但是目前没有输出值所以进入阻塞状态</p>
+<h3 id="9分布式">9.分布式</h3>
+<p>只问原理和实现，scrapy比较熟悉可以跟他吹scrapy-redis，延伸去说feapder，这个面试到现在的公司没有一个知道，侧面展示你的技术紧跟潮流
+都不吹的话就说自己没用框架实现，用一个简单生产者消费者的模式，两个进程，基于redis一个存，存的进程可以里面写异步加快连接获取，另外一个进程一个取，下面的spiders做个多线程也能简单地满足大部分公司的需求，不是框架的缘故自己好扩展</p>
+<h3 id="10-异步协程线程">10. 异步协程，线程</h3>
+<p>主要问题aiohttp和asyncio
+线程的锁是个咋回事，python因为锁的缘故一直被诟病假的多线程，看面试官深不深入跟你吹这个锁，不过基本点到为止，锁的好处跟坏处说完也就差不多了</p>
+<h3 id="11请说明http协议中get请求和post请求的区别">11.请说明http协议中，get请求和post请求的区别</h3>
+<p>GET方法
+GET是获取的意思，顾名思义就是获取信息。
+GET是默认的HTTP请求方法。
+GET方法把参数通过key/value形式存放在URL里面，如果参数是英文数字原样显示，如果是中文或者其他字符加密（Base64）URL长度一般有限制所以GET方法的参数长度不能太长。由于参数显示再地址栏所以不安全，一般需要保密的请求不使用GET。
+POST方法
+POST是邮件的意思，顾名思义就像一封信一样将参数放在信封里面传输。它用于修改服务器上的数据，一般这些数据是应该保密的，就像信件一样，信的内容只能收信的人看见。例入当用户输入账号和密码登录时账号和密码作为参数通过HTTP请求传输到服务器，这时候肯定不能用GET方法将账号密码直接显示再URL上，这时候就应该用POST方法保证数据的保密性。</p>
+<ol>
+<li>get是从服务器上获取数据，post是向服务器传送数据。</li>
+<li>GET请求把参数包含在URL中，将请求信息放在URL后面，POST请求通过request body传递参数，将请求信息放置在报文体中。</li>
+<li>get传送的数据量较小，不能大于2KB。post传送的数据量较大，一般被默认为不受限制。但理论上，IIS4中最大量为80KB，IIS5中为100KB。</li>
+<li>get安全性非常低，get设计成传输数据，一般都在地址栏里面可以看到，post安全性较高，post传递数据比较隐私，所以在地址栏看不到， 如果没有加密，他们安全级别都是一样的，随便一个监听器都可以把所有的数据监听到。</li>
+<li>GET请求能够被缓存，GET请求会保存在浏览器的浏览记录中，以GET请求的URL能够保存为浏览器书签，post请求不具有这些功能。</li>
+<li>HTTP的底层是TCP/IP，GET和POST的底层也是TCP/IP，也就是说，GET/POST都是TCP链接。GET和POST能做的事情是一样一样的。你要给GET加上request body，给POST带上url参数，技术上是完全行的通的。</li>
+</ol>
+<p>7.GET产生一个TCP数据包，对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）；POST产生两个TCP数据包，对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok（返回数据），并不是所有浏览器都会在POST中发送两次包，Firefox就只发送一次。</p>
+<h3 id="12有用异步自实现爬虫框架吗有的话说出其架构思路可控方法有缺点">12.有用异步自实现爬虫框架吗？有的话说出其架构思路，可控方法，有缺点</h3>
+<h3 id="13请简述javascript中原型链以及常见的javascript指纹检测对象有哪些">13.请简述javascript中原型链以及常见的javascript指纹检测对象有哪些？</h3>
+<h3 id="14常见的反扒产品反扒参数反扒措施有哪些">14.常见的反扒产品？反扒参数？反扒措施有哪些</h3>
+<h3 id="15android逆向中androidmainfestxml文件的主要作用如何找到启动函数入口">15.android逆向中，androidMainFest.xml文件的主要作用，如何找到启动函数入口</h3>
+<p>AndroidManifest.xml是Android应用的入口文件，它描述了package中暴露的组件（activities, services, 等等），他们各自的实现类，各种能被处理的数据和启动位置。 除了能声明程序中的Activities, ContentProviders, Services, 和Intent Receivers,还能指定permissions和instrumentation（安全控制和测试）。</p>
+<h3 id="16justtrustme的原理">16.justtrustme的原理</h3>
+<p>JustTrustMe 一个用来禁用、绕过 SSL 证书检查的基于 Xposed 模块。
+JustTrustMe 是将 APK 中所有用于校验 SSL 证书的 API 都进行了 Hook，从而绕过证书检
+查的</p>
+<h3 id="17了解过ssl-pinning吗">17.了解过ssl-pinning吗？</h3>
+<p>客户端会做两个证书间的一次性校验，那么就通过hook的方式将此次校验的结果返回true或者干脆不让其做校验</p>
+<h3 id="18ssl-pinning-的客户端证书是怎末获取的">18.ssl-pinning 的客户端证书是怎末获取的？</h3>
+<p>checkServerTrusted方法中取出证书链中对应网站的证书（也就是第一个），和预置的证书去判断是否相同，如果不同则抛出异常。
+这里可以不校验证书，只校验证书的部分信息（其实，安装了openssl环境的话，基本上所有服务器的ssl证书都能拿到，所以安全性问题不存在的~~）</p>
+<h3 id="19常见的加固方案如何脱壳">19.常见的加固方案，如何脱壳</h3>
+<p>apk加壳原理：壳apk的dex文件读取源apk的 classes.dex 文件，加密后写入新的dex文件，组成新的apk
+加壳apk加载过程：新apk被点击, 壳apk会把源classes.dex文件读取出来，解密后, 把源classes.dex给加载起来
+frida脱壳思路： 在壳apk把源classes.dex文件读取出来解密之后, 将源classes.dex文件内容从内存中dump出来, 写入自定义dex文件中</p>
+<h3 id="20注入框架和hook框架的原理">20.注入框架和hook框架的原理</h3>
+<h3 id="21app逆向">21.app逆向</h3>
+<p>说个简单的流程，尽量把每一步会遇到的问题和解决办法稍微带一下
+so进洞绑定如何判断（这个我回答的就一个看so文件是否有java名，jni里找下绑定，要是混淆了，hook RegisterNatives，直接unidbg里调也可以）
+大部分公司不需要你直接so底层算法直接搞出来，你会调用就能满足需求了，目前我没遇到非要我搞定底层，认怂的时候就认怂，底层这块认怂没关系
+frida、xposed哪个用了说那个，hook的原理,frida的原理，hook到的是个传参是object该如何处理，如何找到加密入口
+破解后你是如何处理，java层的和native层的各自说下破解后是咋调用的，java层改写成python或者变成jar包，so的话rpc或者unidbg，unicorn</p>
+<h3 id="22ida常用命令">22.ida常用命令</h3>
+<p>shift + f12 查看so文件中的所有常量字符串的值
+f5:汇编转 c
+/ :添加注释
+N:变量重命名
+X:查看某变量的所有引用
+H:常量改16进制 ，便于查看是否加密算法的初始化链接变量的一致</p>
+<h3 id="23apktool">23：apktool</h3>
+<p>反编译apk包：
+apktool d test.apk
+重打包成apk：
+apktool b test</p>
+<h3 id="24smali">24：smali:</h3>
+<p>apktool d 反编译代码成smali文件：smali一种类似汇编格式
+可以修改/增删smali代码，重打包成apk后执行
+结合java代码看smali代码
+25：APP简单启动顺序：点击APP启动&mdash;&gt;执行application(oncreate方法)&mdash;&mdash;&gt;执行main
+activity(oncreate方法)&mdash;-&gt;启动成功
+25</p>
+<h3 id="25openmemory的脱壳原理">25.openMemory的脱壳原理</h3>
+<h1 id="思想此方法是根据openmemory的地址来计算出此hook-app运行时dex文件的地址dex文件的地址加上32个字节就是dex文件的大小">思想，此方法是根据openMemory的地址来计算出此hook app运行时dex文件的地址，dex文件的地址加上32个字节，就是dex文件的大小</h1>
+<h1 id="根据dex文件的大小和地址-就可以得到dex文件">根据dex文件的大小和地址 就可以得到dex文件</h1>
+<h3 id="26jadx反编译高度混淆找不到参数">26.jadx反编译高度混淆找不到参数</h3>
+<p>使用objection内存漫游</p>
+<h3 id="27gil">27：GIL</h3>
+<p>在Python 程序的工作示例。其中，Thread 1、2、3 轮流执行，每一个线程在开始执行时，都会锁住 GIL，以阻止别的线程执行；同样的，每一个线程执行完一段后，会释放 GIL，以允许别的线程开始
+GIL 的功能是：在 CPython 解释器中执行的每一个 Python 线程，都会先锁住自己，以阻止别的线程执行。</p>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="--baseUrl=/tags/python/">python</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/12/androidhook-1/" data-tooltip="android——hook 1" aria-label="NEXT: android——hook 1">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/11/golang-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/" data-tooltip="Golang 设计模式之行为型模式" aria-label="PREVIOUS: Golang 设计模式之行为型模式">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2022/12/python%E7%9F%A5%E8%AF%86%E7%82%B91/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2022/12/python%E7%9F%A5%E8%AF%86%E7%82%B91/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2022/12/python%E7%9F%A5%E8%AF%86%E7%82%B91/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '--baseUrl=\/2022\/12\/python%E7%9F%A5%E8%AF%86%E7%82%B91\/';
+        
+          this.page.identifier = '\/2022\/12\/python%E7%9F%A5%E8%AF%86%E7%82%B91\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2023 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/12/androidhook-1/" data-tooltip="android——hook 1" aria-label="NEXT: android——hook 1">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/11/golang-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/" data-tooltip="Golang 设计模式之行为型模式" aria-label="PREVIOUS: Golang 设计模式之行为型模式">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2022/12/python%E7%9F%A5%E8%AF%86%E7%82%B91/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2022/12/python%E7%9F%A5%E8%AF%86%E7%82%B91/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2022/12/python%E7%9F%A5%E8%AF%86%E7%82%B91/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl%3D%2F2022%2F12%2Fpython%25E7%259F%25A5%25E8%25AF%2586%25E7%2582%25B91%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl%3D%2F2022%2F12%2Fpython%25E7%259F%25A5%25E8%25AF%2586%25E7%2582%25B91%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl%3D%2F2022%2F12%2Fpython%25E7%259F%25A5%25E8%25AF%2586%25E7%2582%25B91%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('--baseUrl=/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="--baseUrl=/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

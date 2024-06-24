@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Golang Map 与struct",
+  
+  "datePublished": "2023-07-01T00:00:00Z",
+  "dateModified": "2023-07-01T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "\/2023\/07\/golang-map-%E4%B8%8Estruct\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.101.0 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang Map 与struct">
+<meta name="twitter:title" content="Golang Map 与struct">
+<meta property="og:url" content="/2023/07/golang-map-%E4%B8%8Estruct/">
+<meta property="twitter:url" content="/2023/07/golang-map-%E4%B8%8Estruct/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2023-07-01T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2023-07-01T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="features">
+    
+  
+  
+    
+      <meta property="article:tag" content="golang">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>Golang Map 与struct</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2023/07/golang-map-%E4%B8%8Estruct/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      Golang Map 与struct
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2023-07-01T00:00:00Z">
+        
+  July 1, 2023
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="/categories/features">features</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h3 id="golang-map-与struct">Golang Map 与struct</h3>
+<h4 id="1map-的声明方式">1:map 的声明方式</h4>
+<pre tabindex="0"><code>map和slice类似，只不过是数据结构不同，下面是map的一些声明方式。
+整体而言 跟slice 很相似 
+
+package main
+
+import (
+	&#34;fmt&#34;
+)
+
+func main() {
+	//第一种声明  相比于slice 就是在声明时加入map 关键字
+	var test1 map[string]string
+	//在使用map前，需要先make，make的作用就是给map分配数据空间
+	test1 = make(map[string]string, 10)
+	test1[&#34;one&#34;] = &#34;php&#34;
+	test1[&#34;two&#34;] = &#34;golang&#34;
+	test1[&#34;three&#34;] = &#34;java&#34;
+	fmt.Println(test1) //map[two:golang three:java one:php]
+	var test56 map[int]int
+	test56 = make(map[int]int, 5)
+	test56[3] = 10
+	test56[5] = 20
+	fmt.Println(test56)
+	// map 中括号内是 key 除了 slice,map,function不能作为key外 其他的基本都可以做key
+
+	//第二种声明
+	test2 := make(map[string]string)
+	test2[&#34;one&#34;] = &#34;php&#34;
+	test2[&#34;two&#34;] = &#34;golang&#34;
+	test2[&#34;three&#34;] = &#34;java&#34;
+	fmt.Println(test2) //map[one:php two:golang three:java]
+
+	//第三种声明
+	test3 := map[string]string{
+		&#34;one&#34;:   &#34;php&#34;,
+		&#34;two&#34;:   &#34;golang&#34;,
+		&#34;three&#34;: &#34;java&#34;,
+	}
+	fmt.Println(test3) //map[one:php two:golang three:java]
+	// 声明 map 的 value 也是一个map 类型 随后 给 value对应的map 分配数据空间
+	language := make(map[string]map[string]string)
+	language[&#34;php&#34;] = make(map[string]string, 2)
+	language[&#34;php&#34;][&#34;id&#34;] = &#34;1&#34;
+	language[&#34;php&#34;][&#34;desc&#34;] = &#34;php是世界上最美的语言&#34;
+	language[&#34;golang&#34;] = make(map[string]string, 2)
+	language[&#34;golang&#34;][&#34;id&#34;] = &#34;2&#34;
+	language[&#34;golang&#34;][&#34;desc&#34;] = &#34;golang抗并发非常good&#34;
+
+	fmt.Println(language) //map[php:map[id:1 desc:php是世界上最美的语言] golang:map[id:2 desc:golang抗并发非常good]]
+
+	//增删改查
+	// val, key := language[&#34;php&#34;]  //查找是否有php这个子元素
+	// if key {
+	//     fmt.Printf(&#34;%v&#34;, val)
+	// } else {
+	//     fmt.Printf(&#34;no&#34;);
+	// }
+
+	//language[&#34;php&#34;][&#34;id&#34;] = &#34;3&#34; //修改了php子元素的id值
+	//language[&#34;php&#34;][&#34;nickname&#34;] = &#34;啪啪啪&#34; //增加php元素里的nickname值
+	//delete(language, &#34;php&#34;)  //删除了php子元素
+	fmt.Println(language)
+}
+
+一般来说是这三种类型 
+但是就会出现一个问题 
+
+	//在 Golang 中，map 是一种关联数据类型，用于存储键值对。在 map 中，键（key）必须是可比较的类型，而且不能是函数、切片、映射等引用类型。 这一块跟 python 完全不一样 
+	//这意味着直接使用 int 和 string 作为 map 的键是不可能的，因为它们是不同的类型。
+	//然而，你可以通过将 interface{} 类型作为键类型来实现 int 和 string 作为键共存。在 Go 中，interface{} 是所有类型的顶级类型，
+	//可以保存任意类型的值。通过使用 interface{} 类型，你可以实现以 int 和 string 为键的 map，但需要在访问 map 中的值时进行类型断言。
+package main
+
+import (
+	&#34;fmt&#34;
+)
+
+func main() {
+	// 创建一个 map，键的类型为 interface{}，值为 int
+	m := make(map[interface{}]int)
+
+	// 添加 int 类型的键值对
+	m[1] = 10
+
+	// 添加 string 类型的键值对
+	m[&#34;two&#34;] = 20
+
+	// 访问 int 类型的值
+	intKey := 1
+	intValue, ok := m[intKey]
+	if ok {
+		fmt.Printf(&#34;Value for int key %d: %d\n&#34;, intKey, intValue)
+	} else {
+		fmt.Printf(&#34;Value for int key %d not found\n&#34;, intKey)
+	}
+
+	// 访问 string 类型的值
+	stringKey := &#34;two&#34;
+	stringValue, ok := m[stringKey]
+	if ok {
+		fmt.Printf(&#34;Value for string key %s: %d\n&#34;, stringKey, stringValue)
+	} else {
+		fmt.Printf(&#34;Value for string key %s not found\n&#34;, stringKey)
+	}
+
+	// 尝试使用错误类型的键
+	invalidKey := true
+	_, ok = m[invalidKey]
+	if !ok {
+		fmt.Println(&#34;Invalid key type&#34;)
+	}
+}
+
+
+如果我们遇到key 和 value 都有不同类型的时候那么就可以同时使用 interface 来创建key 和value的类型
+package main
+
+import (
+	&#34;fmt&#34;
+)
+
+func main() {
+	// 创建一个 map，键的类型为 interface{}，值的类型为 interface{}
+	m := make(map[interface{}]interface{})
+
+	// 添加 int 类型的键值对
+	m[1] = 10
+
+	// 添加 string 类型的键值对
+	m[&#34;two&#34;] = &#34;twenty&#34;
+
+	// 访问 int 类型的值
+	intKey := 1
+	intValue, ok := m[intKey]
+	if ok {
+		fmt.Printf(&#34;Value for int key %d: %v\n&#34;, intKey, intValue)
+	} else {
+		fmt.Printf(&#34;Value for int key %d not found\n&#34;, intKey)
+	}
+
+	// 访问 string 类型的值
+	stringKey := &#34;two&#34;
+	stringValue, ok := m[stringKey]
+	if ok {
+		fmt.Printf(&#34;Value for string key %s: %v\n&#34;, stringKey, stringValue)
+	} else {
+		fmt.Printf(&#34;Value for string key %s not found\n&#34;, stringKey)
+	}
+
+	// 尝试使用错误类型的键
+	invalidKey := true
+	_, ok = m[invalidKey]
+	if !ok {
+		fmt.Println(&#34;Invalid key type&#34;)
+	}
+}
+</code></pre><h4 id="2-map-的基本使用方式">2: map 的基本使用方式</h4>
+<pre tabindex="0"><code>package main
+
+import &#34;fmt&#34;
+
+func main() {
+	cityMap := make(map[string]string)
+	// 添加
+	cityMap[&#34;china&#34;] = &#34;beijing&#34;
+	cityMap[&#34;japan&#34;] = &#34;tokyo&#34;
+	cityMap[&#34;usa&#34;] = &#34;Washington&#34;
+	// 修改
+	cityMap[&#34;china&#34;] = &#34;shanghai&#34;
+
+	// 遍历
+	for key, value := range cityMap {
+		fmt.Println(&#34;key:&#34;, key, &#34;value:&#34;, value)
+	}
+	// 删除
+	delete(cityMap, &#34;china&#34;)
+	fmt.Println(cityMap)
+
+}
+
+注意的是当map 作为参数传递时 传递是这个map的指针 也就是地址 
+</code></pre><h4 id="3go-struct">3:Go struct</h4>
+<pre tabindex="0"><code>Golang 是一种面向对象的编程语言，尽管它的面向对象特性相对于一些其他语言可能更为简洁和不那么显眼，但仍然支持面向对象编程。
+
+在 Go 中，面向对象的特性是通过结构体（struct）和方法（method）来实现的。虽然 Go 没有传统的类（class）概念，但你可以通过定义结构体来创建自定义的数据类型，然后在该结构体上定义方法，以实现面向对象的功能。
+
+在Go中 slice 和map 都是引用传递 而 struct 则是值传递 如果想要改变值传递就需要 加入* 变成引用传递 也就是指针
+
+
+package main
+
+import &#34;fmt&#34;
+
+// 声明一种新的 数据类型 myInt 是 int 的别名
+
+type Myint int
+
+// 定义一个结构体
+type Book struct {
+	title string
+	auth  string
+}
+
+func printbook(book Book) {
+	fmt.Printf(&#34;%v\n&#34;, book)
+
+}
+
+func changebook1(book1 Book) {
+	book1.title = &#34;C++&#34;
+}
+
+func changebook2(book1 *Book) {
+	book1.title = &#34;Go&#34;
+}
+
+func main() {
+	var a Myint = 10
+	fmt.Println(&#34;a:&#34;, a)
+	fmt.Printf(&#34;type of %T\n&#34;, a)
+
+	var book1 Book
+	book1.title = &#34;GOlang&#34;
+	book1.auth = &#34;zhangsan&#34;
+	printbook(book1)
+	changebook1(book1)
+	printbook(book1)
+	changebook2(&amp;book1)
+	printbook(book1)
+
+}
+</code></pre><h4 id="3-结构体变成类">3: 结构体变成类</h4>
+<pre tabindex="0"><code>Go 是没有类的，但是结构体可以完成类的一些操作
+例如下面的代码  
+
+package main
+
+import &#34;fmt&#34;
+
+type Hero struct {
+	name  string
+	ad    int
+	level int
+}
+
+func (this Hero) GetName() string {
+	//fmt.Println(this)
+	return this.name
+}
+
+func (this Hero) SetName(newName string) {
+	this.name = newName
+}
+
+func main() {
+	var hero1 Hero
+	hero1.name = &#34;zhangsan&#34;
+	hero1.ad = 10
+	hero1.level = 20
+	//fmt.Println(hero1)
+	name1 := hero1.GetName()
+	fmt.Println(&#34;name -- &#34;, name1)
+	hero1.SetName(&#34;lisi&#34;)
+	name2 := hero1.GetName()
+	fmt.Println(&#34;name -- &#34;, name2)
+}
+
+从代码的静态分析上看是没有问题的，但是执行过后我们就会发现 Setname 并没有改变属性
+这是因为 this 是调用该方法的对象的一个副本
+
+所以想要让set 对当前对象生效的话我们需要更改 方法加入* 变成指针即可
+
+package main
+
+import &#34;fmt&#34;
+
+type Hero struct {
+	name  string
+	ad    int
+	level int
+}
+
+func (this *Hero) GetName() string {
+	//fmt.Println(this)
+	return this.name
+}
+
+func (this *Hero) SetName(newName string) {
+	this.name = newName
+}
+
+func main() {
+	var hero1 Hero
+	hero1.name = &#34;zhangsan&#34;
+	hero1.ad = 10
+	hero1.level = 20
+	//fmt.Println(hero1)
+	name1 := hero1.GetName()
+	fmt.Println(&#34;name -- &#34;, name1)
+	hero1.SetName(&#34;lisi&#34;)
+	name2 := hero1.GetName()
+	fmt.Println(&#34;name -- &#34;, name2)
+}
+</code></pre>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/golang/">golang</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2023/07/aigc%E5%88%9D%E4%BD%93%E9%AA%8C/" data-tooltip="AIGC初体验" aria-label="NEXT: AIGC初体验">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2023/06/go-defer-%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%88%87%E7%89%87/" data-tooltip="Go defer 数组以及切片" aria-label="PREVIOUS: Go defer 数组以及切片">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2023/07/golang-map-%E4%B8%8Estruct/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2023/07/golang-map-%E4%B8%8Estruct/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=/2023/07/golang-map-%E4%B8%8Estruct/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '\/2023\/07\/golang-map-%E4%B8%8Estruct\/';
+        
+          this.page.identifier = '\/2023\/07\/golang-map-%E4%B8%8Estruct\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2023 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2023/07/aigc%E5%88%9D%E4%BD%93%E9%AA%8C/" data-tooltip="AIGC初体验" aria-label="NEXT: AIGC初体验">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2023/06/go-defer-%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%88%87%E7%89%87/" data-tooltip="Go defer 数组以及切片" aria-label="PREVIOUS: Go defer 数组以及切片">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2023/07/golang-map-%E4%B8%8Estruct/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2023/07/golang-map-%E4%B8%8Estruct/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=/2023/07/golang-map-%E4%B8%8Estruct/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2023%2F07%2Fgolang-map-%25E4%25B8%258Estruct%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2023%2F07%2Fgolang-map-%25E4%25B8%258Estruct%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=%2F2023%2F07%2Fgolang-map-%25E4%25B8%258Estruct%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

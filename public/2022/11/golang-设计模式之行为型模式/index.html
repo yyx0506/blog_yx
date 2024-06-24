@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Golang 设计模式之行为型模式",
+  
+  "datePublished": "2022-11-30T00:00:00Z",
+  "dateModified": "2022-11-30T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "--baseUrl=\/2022\/11\/golang-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.114.1 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang 设计模式之行为型模式">
+<meta name="twitter:title" content="Golang 设计模式之行为型模式">
+<meta property="og:url" content="--baseUrl=/2022/11/golang-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/">
+<meta property="twitter:url" content="--baseUrl=/2022/11/golang-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2022-11-30T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2022-11-30T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="features">
+    
+  
+  
+    
+      <meta property="article:tag" content="golang">
+    
+      <meta property="article:tag" content="设计模式">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>Golang 设计模式之行为型模式</title>
+
+    <link rel="icon" href="--baseUrl=/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="--baseUrl=/2022/11/golang-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="--baseUrl=/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="--baseUrl=/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="--baseUrl=/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="--baseUrl=/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" target="_blank" rel="noopener" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      Golang 设计模式之行为型模式
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2022-11-30T00:00:00Z">
+        
+  November 30, 2022
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="--baseUrl=/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="--baseUrl=/categories/features">features</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h3 id="golang设计模式之行为型模式">Golang设计模式之行为型模式</h3>
+<table>
+<thead>
+<tr>
+<th><strong>模式名称</strong></th>
+<th><strong>模式名称</strong></th>
+<th><strong>作用</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>行为型模式</strong> <strong>Behavioral Pattern</strong> <strong>（11）</strong></td>
+<td>职责链模式 ★★☆☆☆</td>
+<td>在该模式里，很多对象由每一个对象对其下家的引用而连接起来形成一条链。请求在这个链上传递，直到链上的某一个对象决定处理此请求，这使得系统可以在不影响客户端的情况下动态地重新组织链和分配责任。</td>
+</tr>
+<tr>
+<td></td>
+<td>命令模式 ★★★★☆</td>
+<td>将一个请求封装为一个对象，从而使你可用不同的请求对客户端进行参数化；对请求排队或记录请求日志，以及支持可撤销的操作。</td>
+</tr>
+<tr>
+<td></td>
+<td>解释器模式 ★☆☆☆☆</td>
+<td>如何为简单的语言定义一个语法，如何在该语言中表示一个句子，以及如何解释这些句子。</td>
+</tr>
+<tr>
+<td></td>
+<td>迭代器模式 ★☆☆☆☆</td>
+<td>提供了一种方法顺序来访问一个聚合对象中的各个元素，而又不需要暴露该对象的内部表示。</td>
+</tr>
+<tr>
+<td></td>
+<td>中介者模式 ★★☆☆☆</td>
+<td>定义一个中介对象来封装系列对象之间的交互。终结者使各个对象不需要显示的相互调用，从而使其耦合性松散，而且可以独立的改变他们之间的交互。</td>
+</tr>
+<tr>
+<td></td>
+<td>备忘录模式 ★★☆☆☆</td>
+<td>是在不破坏封装的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态。</td>
+</tr>
+<tr>
+<td></td>
+<td>观察者模式 ★★★★★</td>
+<td>定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并被自动更新。</td>
+</tr>
+<tr>
+<td></td>
+<td>状态模式 ★★☆☆☆</td>
+<td>对象的行为，依赖于它所处的状态。</td>
+</tr>
+<tr>
+<td></td>
+<td>策略模式 ★★★★☆</td>
+<td>准备一组算法，并将每一个算法封装起来，使得它们可以互换。</td>
+</tr>
+<tr>
+<td></td>
+<td>模板方法模式 ★★★☆☆</td>
+<td>得子类可以不改变一个算法的结构即可重定义该算法的某些特定步骤。</td>
+</tr>
+<tr>
+<td></td>
+<td>访问者模式 ★☆☆☆☆</td>
+<td>表示一个作用于某对象结构中的各元素的操作，它使你可以在不改变各元素的类的前提下定义作用于这些元素的新操作。</td>
+</tr>
+</tbody>
+</table>
+<p>行为型模式是用来对类或对象怎样交互和怎样分配职责进行描述，本章主要介绍“命令模式”、“观察者模式”、“策略模式”、“模板方法模式”等。</p>
+<p>我们只介绍其中四种模式。1 模板方法模式 2 命令模式 3 策略模式 4 观察者模式</p>
+<h4 id="1-模板方法模式">1: 模板方法模式</h4>
+<p>模板方法模式中的角色和职责</p>
+<p>**AbstractClass（抽象类）：**在抽象类中定义了一系列基本操作(PrimitiveOperations)，这些基本操作可以是具体的，也可以是抽象的，每一个基本操作对应算法的一个步骤，在其子类中可以重定义或实现这些步骤。同时，在抽象类中实现了一个模板方法(Template Method)，用于定义一个算法的框架，模板方法不仅可以调用在抽象类中实现的基本方法，也可以调用在抽象类的子类中实现的基本方法，还可以调用其他对象中的方法。</p>
+<p>**ConcreteClass（具体子类）：**它是抽象类的子类，用于实现在父类中声明的抽象基本操作以完成子类特定算法的步骤，也可以覆盖在父类中已经实现的具体基本操作。</p>
+<p>如图所示：</p>
+<p><img src="--baseUrl=/img/design17.png" alt=""></p>
+<p>模版方法案例 如图所示：</p>
+<p><img src="--baseUrl=/img/design18.png" alt=""></p>
+<p>代码如下所示：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//抽象类，制作饮料,包裹一个模板的全部实现步骤
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Beverage</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">BoilWater</span>() <span style="color:#75715e">//煮开水
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Brew</span>()      <span style="color:#75715e">//冲泡
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">PourInCup</span>() <span style="color:#75715e">//倒入杯中
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">AddThings</span>() <span style="color:#75715e">//添加酌料
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">WantAddThings</span>() <span style="color:#66d9ef">bool</span> <span style="color:#75715e">//是否加入酌料Hook
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//封装一套流程模板，让具体的制作流程继承且实现
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">template</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">b</span> <span style="color:#a6e22e">Beverage</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//封装的固定模板
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">t</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">template</span>) <span style="color:#a6e22e">MakeBeverage</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">t</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">BoilWater</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">Brew</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">PourInCup</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//子类可以重写该方法来决定是否执行下面动作
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">WantAddThings</span>() <span style="color:#f92672">==</span> <span style="color:#66d9ef">true</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">AddThings</span>()
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//具体的模板子类 制作咖啡
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MakeCaffee</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">template</span>  <span style="color:#75715e">//继承模板
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewMakeCaffee</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">MakeCaffee</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">makeCaffe</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">MakeCaffee</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//b 为Beverage，是MakeCaffee的接口，这里需要给接口赋值，指向具体的子类对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//来触发b全部接口方法的多态特性。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">makeCaffe</span>.<span style="color:#a6e22e">b</span> = <span style="color:#a6e22e">makeCaffe</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">makeCaffe</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">mc</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">MakeCaffee</span>) <span style="color:#a6e22e">BoilWater</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;将水煮到100摄氏度&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">mc</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">MakeCaffee</span>) <span style="color:#a6e22e">Brew</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;用水冲咖啡豆&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">mc</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">MakeCaffee</span>) <span style="color:#a6e22e">PourInCup</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;将充好的咖啡倒入陶瓷杯中&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">mc</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">MakeCaffee</span>) <span style="color:#a6e22e">AddThings</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;添加牛奶和糖&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">mc</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">MakeCaffee</span>) <span style="color:#a6e22e">WantAddThings</span>() <span style="color:#66d9ef">bool</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span> <span style="color:#75715e">//启动Hook条件
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//具体的模板子类 制作茶
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">MakeTea</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">template</span>  <span style="color:#75715e">//继承模板
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewMakeTea</span>() <span style="color:#f92672">*</span><span style="color:#a6e22e">MakeTea</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">makeTea</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">MakeTea</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//b 为Beverage，是MakeTea，这里需要给接口赋值，指向具体的子类对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//来触发b全部接口方法的多态特性。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">makeTea</span>.<span style="color:#a6e22e">b</span> = <span style="color:#a6e22e">makeTea</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">makeTea</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">mt</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">MakeTea</span>) <span style="color:#a6e22e">BoilWater</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;将水煮到80摄氏度&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">mt</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">MakeTea</span>) <span style="color:#a6e22e">Brew</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;用水冲茶叶&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">mt</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">MakeTea</span>) <span style="color:#a6e22e">PourInCup</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;将充好的咖啡倒入茶壶中&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">mt</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">MakeTea</span>) <span style="color:#a6e22e">AddThings</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;添加柠檬&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">mt</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">MakeTea</span>) <span style="color:#a6e22e">WantAddThings</span>() <span style="color:#66d9ef">bool</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span> <span style="color:#75715e">//关闭Hook条件
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//1. 制作一杯咖啡
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">makeCoffee</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewMakeCaffee</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">makeCoffee</span>.<span style="color:#a6e22e">MakeBeverage</span>() <span style="color:#75715e">//调用固定模板方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;------------&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//2. 制作茶
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">makeTea</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewMakeTea</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">makeTea</span>.<span style="color:#a6e22e">MakeBeverage</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>运行结果如下：</p>
+<pre tabindex="0"><code>将水煮到100摄氏度
+用水冲咖啡豆
+将充好的咖啡倒入陶瓷杯中
+添加牛奶和糖
+------------
+将水煮到80摄氏度
+用水冲茶叶
+将充好的咖啡倒入茶壶中
+</code></pre><pre tabindex="0"><code>模板方法的优缺点
+优点：
+    (1) 在父类中形式化地定义一个算法，而由它的子类来实现细节的处理，在子类实现详细的处理算法时并不会改变算法中步骤的执行次序。
+    (2) 模板方法模式是一种代码复用技术，它在类库设计中尤为重要，它提取了类库中的公共行为，将公共行为放在父类中，而通过其子类来实现不同的行为，它鼓励我们恰当使用继承来实现代码复用。
+    (3) 可实现一种反向控制结构，通过子类覆盖父类的钩子方法来决定某一特定步骤是否需要执行。
+    (4) 在模板方法模式中可以通过子类来覆盖父类的基本方法，不同的子类可以提供基本方法的不同实现，更换和增加新的子类很方便，符合单一职责原则和开闭原则。
+
+缺点：
+			需要为每一个基本方法的不同实现提供一个子类，如果父类中可变的基本方法太多，将会导致类的个数增加，系统更加庞大，设计也更加抽象。
+			
+适用场景
+    (1)具有统一的操作步骤或操作过程;
+    (2) 具有不同的操作细节;
+    (3) 存在多个具有同样操作步骤的应用场景，但某些具体的操作细节却各不相同;
+    在抽象类中统一操作步骤，并规定好接口；让子类实现接口。这样可以把各个具体的子类和操作步骤解耦合。
+</code></pre><h4 id="2-命令模式">2 命令模式</h4>
+<p>将一个请求封装为一个对象，从而让我们可用不同的请求对客户进行参数化；对请求排队或者记录请求日志，以及支持可撤销的操作。命令模式是一种对象行为型模式，其别名为动作(Action)模式或事务(Transaction)模式。</p>
+<p>​	命令模式可以将请求发送者和接收者完全解耦，发送者与接收者之间没有直接引用关系，发送请求的对象只需要知道如何发送请求，而不必知道如何完成请求。</p>
+<p>下面来看一种场景，如果去医院看病，病人作为业务方用户，直接找医生看病，这样的场景如下：</p>
+<p>​		病人。 &mdash;&mdash; （亲自找医生看病）&mdash;&mdash;&ndash;   医生</p>
+<p>那么实现这个模块依赖流程的代码如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Doctor</span> <span style="color:#66d9ef">struct</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">d</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Doctor</span>) <span style="color:#a6e22e">treatEye</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;医生治疗眼睛&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">d</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Doctor</span>) <span style="color:#a6e22e">treatNose</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;医生治疗鼻子&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//病人
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">doctor</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">Doctor</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">doctor</span>.<span style="color:#a6e22e">treatEye</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">doctor</span>.<span style="color:#a6e22e">treatNose</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>这样Doctor作为核心的消息接受者和计算模块，将和业务模块高耦合，每个业务方都需要直接面向Doctor依赖和编程。</p>
+<p>那么可以通过下述方式，新增一个订单模块，将业务方和核心医生模块进行解耦和隔离。</p>
+<p>病人填写病单 （ 病情情况） 医生根据病单进行相应的操作</p>
+<p>病人可以先填写病单，并不会直接和医生进行交互和耦合，医生只对接订单的接口，实现的代码方式如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Doctor</span> <span style="color:#66d9ef">struct</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">d</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Doctor</span>) <span style="color:#a6e22e">treatEye</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;医生治疗眼睛&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">d</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Doctor</span>) <span style="color:#a6e22e">treatNose</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;医生治疗鼻子&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//治疗眼睛的病单
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">CommandTreatEye</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">doctor</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Doctor</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">cmd</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">CommandTreatEye</span>) <span style="color:#a6e22e">Treat</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">doctor</span>.<span style="color:#a6e22e">treatEye</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//治疗鼻子的病单
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">CommandTreatNose</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">doctor</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Doctor</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">cmd</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">CommandTreatNose</span>) <span style="color:#a6e22e">Treat</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">doctor</span>.<span style="color:#a6e22e">treatNose</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//病人
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//依赖病单，通过填写病单，让医生看病
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#75715e">//治疗眼睛的病单
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">doctor</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">Doctor</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cmdEye</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">CommandTreatEye</span>{<span style="color:#a6e22e">doctor</span>}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cmdEye</span>.<span style="color:#a6e22e">Treat</span>() <span style="color:#75715e">//通过病单来让医生看病
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cmdNose</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">CommandTreatNose</span>{<span style="color:#a6e22e">doctor</span>}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cmdNose</span>.<span style="color:#a6e22e">Treat</span>() <span style="color:#75715e">//通过病单来让医生看病
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>这样就通过病单将医生（核心计算）和病人（业务）解耦，但是随着病单种类的繁多，病人（业务）依然需要了解各个订单的业务，所以应该将病单抽象出来变成一个interface，然后再新增一个管理病单集合的模块，以这个按理来讲就是一名医护人员。</p>
+<p>例如 病人 将 病情告知护士 护士统计好所有的病人 病单 批量发给医生</p>
+<p>命令模式中的角色和职责  如下图所示</p>
+<p><img src="--baseUrl=/img/design19.png" alt=""></p>
+<p>**Command（抽象命令类）：**抽象命令类一般是一个抽象类或接口，在其中声明了用于执行请求的execute()等方法，通过这些方法可以调用请求接收者的相关操作。</p>
+<p>**ConcreteCommand（具体命令类）：**具体命令类是抽象命令类的子类，实现了在抽象命令类中声明的方法，它对应具体的接收者对象，将接收者对象的动作绑定其中。在实现execute()方法时，将调用接收者对象的相关操作(Action)。</p>
+<p>**Invoker（调用者）：**调用者即请求发送者，它通过命令对象来执行请求。一个调用者并不需要在设计时确定其接收者，因此它只与抽象命令类之间存在关联关系。在程序运行时可以将一个具体命令对象注入其中，再调用具体命令对象的execute()方法，从而实现间接调用请求接收者的相关操作。</p>
+<p>**Receiver（接收者）：**接收者执行与请求相关的操作，它具体实现对请求的业务处理。</p>
+<h3 id="结合本章的例子可以得到类图如下">结合本章的例子，可以得到类图如下：</h3>
+<p><img src="--baseUrl=/img/design20.png" alt=""></p>
+<p>代码实现如下</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//医生-命令接收者
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Doctor</span> <span style="color:#66d9ef">struct</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">d</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Doctor</span>) <span style="color:#a6e22e">treatEye</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;医生治疗眼睛&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">d</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Doctor</span>) <span style="color:#a6e22e">treatNose</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;医生治疗鼻子&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//抽象的命令
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Command</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Treat</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//治疗眼睛的病单
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">CommandTreatEye</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">doctor</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Doctor</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">cmd</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">CommandTreatEye</span>) <span style="color:#a6e22e">Treat</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">doctor</span>.<span style="color:#a6e22e">treatEye</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//治疗鼻子的病单
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">CommandTreatNose</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">doctor</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Doctor</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">cmd</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">CommandTreatNose</span>) <span style="color:#a6e22e">Treat</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">doctor</span>.<span style="color:#a6e22e">treatNose</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//护士-调用命令者
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Nurse</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">CmdList</span> []<span style="color:#a6e22e">Command</span> <span style="color:#75715e">//收集的命令集合
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//发送病单，发送命令的方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">n</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Nurse</span>) <span style="color:#a6e22e">Notify</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">n</span>.<span style="color:#a6e22e">CmdList</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">cmd</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">n</span>.<span style="color:#a6e22e">CmdList</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Treat</span>()	<span style="color:#75715e">//执行病单绑定的命令(这里会调用病单已经绑定的医生的诊断方法)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//病人
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//依赖病单，通过填写病单，让医生看病
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">doctor</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">Doctor</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//治疗眼睛的病单
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">cmdEye</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">CommandTreatEye</span>{<span style="color:#a6e22e">doctor</span>}
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//治疗鼻子的病单
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">cmdNose</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">CommandTreatNose</span>{<span style="color:#a6e22e">doctor</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//护士
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">nurse</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">Nurse</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//收集管理病单
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">nurse</span>.<span style="color:#a6e22e">CmdList</span> = append(<span style="color:#a6e22e">nurse</span>.<span style="color:#a6e22e">CmdList</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">cmdEye</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">nurse</span>.<span style="color:#a6e22e">CmdList</span> = append(<span style="color:#a6e22e">nurse</span>.<span style="color:#a6e22e">CmdList</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">cmdNose</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//执行病单指令
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">nurse</span>.<span style="color:#a6e22e">Notify</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>练习：</p>
+<p>​	联想路边撸串烧烤场景， 有烤羊肉，烧鸡翅命令，有烤串师傅，和服务员MM。根据命令模式，设计烤串场景。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Cooker</span> <span style="color:#66d9ef">struct</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Cooker</span>) <span style="color:#a6e22e">MakeChicken</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;烤串师傅烤了鸡肉串儿&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">c</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Cooker</span>) <span style="color:#a6e22e">MakeChuaner</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;烤串师傅烤了羊肉串儿&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//抽象的命令
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Command</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Make</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">CommandCookChicken</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cooker</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Cooker</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">cmd</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">CommandCookChicken</span>) <span style="color:#a6e22e">Make</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">cooker</span>.<span style="color:#a6e22e">MakeChicken</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">CommandCookChuaner</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cooker</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Cooker</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">cmd</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">CommandCookChuaner</span>) <span style="color:#a6e22e">Make</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">cooker</span>.<span style="color:#a6e22e">MakeChuaner</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">WaiterMM</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">CmdList</span> []<span style="color:#a6e22e">Command</span> <span style="color:#75715e">//收集的命令集合
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">w</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">WaiterMM</span>) <span style="color:#a6e22e">Notify</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">CmdList</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">cmd</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">w</span>.<span style="color:#a6e22e">CmdList</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">cmd</span>.<span style="color:#a6e22e">Make</span>()
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cooker</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">Cooker</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cmdChicken</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">CommandCookChicken</span>{<span style="color:#a6e22e">cooker</span>}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cmdChuaner</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">CommandCookChuaner</span>{<span style="color:#a6e22e">cooker</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">mm</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">WaiterMM</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">mm</span>.<span style="color:#a6e22e">CmdList</span> = append(<span style="color:#a6e22e">mm</span>.<span style="color:#a6e22e">CmdList</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">cmdChicken</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">mm</span>.<span style="color:#a6e22e">CmdList</span> = append(<span style="color:#a6e22e">mm</span>.<span style="color:#a6e22e">CmdList</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">cmdChuaner</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">mm</span>.<span style="color:#a6e22e">Notify</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><pre tabindex="0"><code>命令模式的优缺点
+优点：
+    (1) 降低系统的耦合度。由于请求者与接收者之间不存在直接引用，因此请求者与接收者之间实现完全解耦，相同的请求者可以对应不同的接收者，同样，相同的接收者也可以供不同的请求者使用，两者之间具有良好的独立性。
+    (2) 新的命令可以很容易地加入到系统中。由于增加新的具体命令类不会影响到其他类，因此增加新的具体命令类很容易，无须修改原有系统源代码，甚至客户类代码，满足“开闭原则”的要求。
+    (3) 可以比较容易地设计一个命令队列或宏命令（组合命令）。
+缺点：
+    使用命令模式可能会导致某些系统有过多的具体命令类。因为针对每一个对请求接收者的调用操作都需要设计一个具体命令类，因此在某些系统中可能需要提供大量的具体命令类，这将影响命令模式的使用。
+
+5.2.4 适用场景
+    (1) 系统需要将请求调用者和请求接收者解耦，使得调用者和接收者不直接交互。请求调用者无须知道接收者的存在，也无须知道接收者是谁，接收者也无须关心何时被调用。
+    (2) 系统需要在不同的时间指定请求、将请求排队和执行请求。一个命令对象和请求的初始调用者可以有不同的生命期，换言之，最初的请求发出者可能已经不在了，而命令对象本身仍然是活动的，可以通过该命令对象去调用请求接收者，而无须关心请求调用者的存在性，可以通过请求日志文件等机制来具体实现。
+    (3) 系统需要将一组操作组合在一起形成宏命令。
+</code></pre><h4 id="3-策略模式">3 策略模式</h4>
+<p>策略模式的标准类图如下：</p>
+<p><img src="--baseUrl=/img/design21.png" alt=""></p>
+<p><strong>Context（环境类）</strong>：环境类是使用算法的角色，它在解决某个问题（即实现某个方法）时可以采用多种策略。在环境类中维持一个对抽象策略类的引用实例，用于定义所采用的策略。</p>
+<p><strong>Strategy（抽象策略类）</strong>：它为所支持的算法声明了抽象方法，是所有策略类的父类，它可以是抽象类或具体类，也可以是接口。环境类通过抽象策略类中声明的方法在运行时调用具体策略类中实现的算法。</p>
+<p><strong>ConcreteStrategy（具体策略类）</strong>：它实现了在抽象策略类中声明的算法，在运行时，具体策略类将覆盖在环境类中定义的抽象策略类对象，使用一种具体的算法实现某个业务处理。</p>
+<p>策略模式 如下图所示：</p>
+<p><img src="--baseUrl=/img/design22.png" alt=""></p>
+<p>代码实现如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//武器策略(抽象的策略)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">WeaponStrategy</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">UseWeapon</span>()  <span style="color:#75715e">//使用武器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//具体的策略
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Ak47</span> <span style="color:#66d9ef">struct</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">ak</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Ak47</span>) <span style="color:#a6e22e">UseWeapon</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;使用Ak47 去战斗&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//具体的策略
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Knife</span> <span style="color:#66d9ef">struct</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">k</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Knife</span>) <span style="color:#a6e22e">UseWeapon</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;使用匕首 去战斗&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//环境类
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Hero</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">strategy</span> <span style="color:#a6e22e">WeaponStrategy</span> <span style="color:#75715e">//拥有一个抽象的策略
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//设置一个策略
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">h</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Hero</span>) <span style="color:#a6e22e">SetWeaponStrategy</span>(<span style="color:#a6e22e">s</span> <span style="color:#a6e22e">WeaponStrategy</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">strategy</span> = <span style="color:#a6e22e">s</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">h</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Hero</span>) <span style="color:#a6e22e">Fight</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">h</span>.<span style="color:#a6e22e">strategy</span>.<span style="color:#a6e22e">UseWeapon</span>() <span style="color:#75715e">//调用策略
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">hero</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Hero</span>{}
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//更换策略1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">hero</span>.<span style="color:#a6e22e">SetWeaponStrategy</span>(new(<span style="color:#a6e22e">Ak47</span>))
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">hero</span>.<span style="color:#a6e22e">Fight</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">hero</span>.<span style="color:#a6e22e">SetWeaponStrategy</span>(new(<span style="color:#a6e22e">Knife</span>))
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">hero</span>.<span style="color:#a6e22e">Fight</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>练习：
+商场促销有策略A（0.8折）策略B（消费满200，返现100），用策略模式模拟场景</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	练习：
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	商场促销有策略A（0.8折）策略B（消费满200，返现100），用策略模式模拟场景
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"> */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//销售策略
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">SellStrategy</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//根据原价得到售卖价
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">GetPrice</span>(<span style="color:#a6e22e">price</span> <span style="color:#66d9ef">float64</span>)	 <span style="color:#66d9ef">float64</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">StrategyA</span> <span style="color:#66d9ef">struct</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">sa</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">StrategyA</span>) <span style="color:#a6e22e">GetPrice</span>(<span style="color:#a6e22e">price</span> <span style="color:#66d9ef">float64</span>) <span style="color:#66d9ef">float64</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;执行策略A, 所有商品打八折&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">price</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.8</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">StrategyB</span> <span style="color:#66d9ef">struct</span> {}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">sb</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">StrategyB</span>) <span style="color:#a6e22e">GetPrice</span>(<span style="color:#a6e22e">price</span> <span style="color:#66d9ef">float64</span>) <span style="color:#66d9ef">float64</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;执行策略B, 所有商品满200 减100&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">price</span> <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">200</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">price</span> <span style="color:#f92672">-=</span> <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">price</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//环境类
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Goods</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Price</span> <span style="color:#66d9ef">float64</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Strategy</span> <span style="color:#a6e22e">SellStrategy</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">g</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Goods</span>) <span style="color:#a6e22e">SetStrategy</span>(<span style="color:#a6e22e">s</span> <span style="color:#a6e22e">SellStrategy</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">g</span>.<span style="color:#a6e22e">Strategy</span> = <span style="color:#a6e22e">s</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">g</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Goods</span>) <span style="color:#a6e22e">SellPrice</span>() <span style="color:#66d9ef">float64</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;原价值 &#34;</span>, <span style="color:#a6e22e">g</span>.<span style="color:#a6e22e">Price</span> , <span style="color:#e6db74">&#34; .&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">g</span>.<span style="color:#a6e22e">Strategy</span>.<span style="color:#a6e22e">GetPrice</span>(<span style="color:#a6e22e">g</span>.<span style="color:#a6e22e">Price</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">nike</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Goods</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Price</span>: <span style="color:#ae81ff">200.0</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//上午 ，商场执行策略A
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">nike</span>.<span style="color:#a6e22e">SetStrategy</span>(new(<span style="color:#a6e22e">StrategyA</span>))
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;上午nike鞋卖&#34;</span>, <span style="color:#a6e22e">nike</span>.<span style="color:#a6e22e">SellPrice</span>())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//下午， 商场执行策略B
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">nike</span>.<span style="color:#a6e22e">SetStrategy</span>(new(<span style="color:#a6e22e">StrategyB</span>))
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;下午nike鞋卖&#34;</span>, <span style="color:#a6e22e">nike</span>.<span style="color:#a6e22e">SellPrice</span>())
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><pre tabindex="0"><code>策略模式的优缺点
+优点：
+    (1) 策略模式提供了对“开闭原则”的完美支持，用户可以在不修改原有系统的基础上选择算法或行为，也可以灵活地增加新的算法或行为。
+    (2) 使用策略模式可以避免多重条件选择语句。多重条件选择语句不易维护，它把采取哪一种算法或行为的逻辑与算法或行为本身的实现逻辑混合在一起，将它们全部硬编码(Hard Coding)在一个庞大的多重条件选择语句中，比直接继承环境类的办法还要原始和落后。
+    (3) 策略模式提供了一种算法的复用机制。由于将算法单独提取出来封装在策略类中，因此不同的环境类可以方便地复用这些策略类。
+
+缺点：
+    (1) 客户端必须知道所有的策略类，并自行决定使用哪一个策略类。这就意味着客户端必须理解这些算法的区别，以便适时选择恰当的算法。换言之，策略模式只适用于客户端知道所有的算法或行为的情况。
+    (2) 策略模式将造成系统产生很多具体策略类，任何细小的变化都将导致系统要增加一个新的具体策略类。
+
+适用场景
+	准备一组算法，并将每一个算法封装起来，使得它们可以互换。
+</code></pre><h4 id="4-观察者模式">4 观察者模式</h4>
+<p><img src="--baseUrl=/img/design23.png" alt=""></p>
+<p>如上图，随着交通信号灯的变化，汽车的行为也将随之而变化，一盏交通信号灯可以指挥多辆汽车。</p>
+<p>观察者模式是用于建立一种对象与对象之间的依赖关系，一个对象发生改变时将自动通知其他对象，其他对象将相应作出反应。在观察者模式中，发生改变的对象称为观察目标，而被通知的对象称为观察者，一个观察目标可以对应多个观察者，而且这些观察者之间可以没有任何相互联系，可以根据需要增加和删除观察者，使得系统更易于扩展。</p>
+<p>观察者模式中的角色和职责 如图所示</p>
+<p><img src="--baseUrl=/img/design24.png" alt=""></p>
+<p>**Subject（被观察者或目标，抽象主题）：**被观察的对象。当需要被观察的状态发生变化时，需要通知队列中所有观察者对象。Subject需要维持（添加，删除，通知）一个观察者对象的队列列表。</p>
+<p>**ConcreteSubject（具体被观察者或目标，具体主题）：**被观察者的具体实现。包含一些基本的属性状态及其他操作。</p>
+<p>**Observer（观察者）：**接口或抽象类。当Subject的状态发生变化时，Observer对象将通过一个callback函数得到通知。</p>
+<p>**ConcreteObserver（具体观察者）：**观察者的具体实现。得到通知后将完成一些具体的业务逻辑处理。</p>
+<p>观察者模式案例 如下图所示</p>
+<p><img src="--baseUrl=/img/design25.png" alt=""></p>
+<p>代码如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//--------- 抽象层 --------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//抽象的观察者
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Listener</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">OnTeacherComming</span>()	 <span style="color:#75715e">//观察者得到通知后要触发的动作
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Notifier</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">AddListener</span>(<span style="color:#a6e22e">listener</span> <span style="color:#a6e22e">Listener</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">RemoveListener</span>(<span style="color:#a6e22e">listener</span> <span style="color:#a6e22e">Listener</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Notify</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//--------- 实现层 --------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//观察者学生
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">StuZhang3</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Badthing</span> <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">StuZhang3</span>) <span style="color:#a6e22e">OnTeacherComming</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;张3 停止 &#34;</span>, <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Badthing</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">StuZhang3</span>) <span style="color:#a6e22e">DoBadthing</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;张3 正在&#34;</span>, <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Badthing</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">StuZhao4</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Badthing</span> <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">StuZhao4</span>) <span style="color:#a6e22e">OnTeacherComming</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;赵4 停止 &#34;</span>, <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Badthing</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">StuZhao4</span>) <span style="color:#a6e22e">DoBadthing</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;赵4 正在&#34;</span>, <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Badthing</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">StuWang5</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Badthing</span> <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">StuWang5</span>) <span style="color:#a6e22e">OnTeacherComming</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;王5 停止 &#34;</span>, <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Badthing</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">s</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">StuWang5</span>) <span style="color:#a6e22e">DoBadthing</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;王5 正在&#34;</span>, <span style="color:#a6e22e">s</span>.<span style="color:#a6e22e">Badthing</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//通知者班长
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">ClassMonitor</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">listenerList</span> []<span style="color:#a6e22e">Listener</span> <span style="color:#75715e">//需要通知的全部观察者集合
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">m</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ClassMonitor</span>) <span style="color:#a6e22e">AddListener</span>(<span style="color:#a6e22e">listener</span> <span style="color:#a6e22e">Listener</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">listenerList</span> = append(<span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">listenerList</span>, <span style="color:#a6e22e">listener</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">m</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">ClassMonitor</span>) <span style="color:#a6e22e">RemoveListener</span>(<span style="color:#a6e22e">listener</span> <span style="color:#a6e22e">Listener</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">l</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">listenerList</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">//找到要删除的元素位置
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">listener</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">l</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">//将删除的点前后的元素链接起来
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">listenerList</span> = append(<span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">listenerList</span>[:<span style="color:#a6e22e">index</span>], <span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">listenerList</span>[<span style="color:#a6e22e">index</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>:]<span style="color:#f92672">...</span>)
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">m</span><span style="color:#f92672">*</span> <span style="color:#a6e22e">ClassMonitor</span>) <span style="color:#a6e22e">Notify</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">listener</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">m</span>.<span style="color:#a6e22e">listenerList</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">//依次调用全部观察的具体动作
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#a6e22e">listener</span>.<span style="color:#a6e22e">OnTeacherComming</span>()
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">s1</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">StuZhang3</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Badthing</span>: <span style="color:#e6db74">&#34;抄作业&#34;</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">s2</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">StuZhao4</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Badthing</span>: <span style="color:#e6db74">&#34;玩王者荣耀&#34;</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">s3</span> <span style="color:#f92672">:=</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">StuWang5</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Badthing</span>: <span style="color:#e6db74">&#34;看赵四玩王者荣耀&#34;</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">classMonitor</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">ClassMonitor</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;上课了，但是老师没有来，学生们都在忙自己的事...&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">s1</span>.<span style="color:#a6e22e">DoBadthing</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">s2</span>.<span style="color:#a6e22e">DoBadthing</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">s3</span>.<span style="color:#a6e22e">DoBadthing</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">classMonitor</span>.<span style="color:#a6e22e">AddListener</span>(<span style="color:#a6e22e">s1</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">classMonitor</span>.<span style="color:#a6e22e">AddListener</span>(<span style="color:#a6e22e">s2</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">classMonitor</span>.<span style="color:#a6e22e">AddListener</span>(<span style="color:#a6e22e">s3</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;这时候老师来了，班长给学什么使了一个眼神...&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">classMonitor</span>.<span style="color:#a6e22e">Notify</span>()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>观察者模式武林群侠版</p>
+<p>假设江湖有一名无事不知，无话不说的大嘴巴，“江湖百晓生”，任何江湖中发生的事件都会被百晓生知晓，且进行广播。</p>
+<p>先江湖中有两个帮派，分别为：</p>
+<p>丐帮：黄蓉、洪七公、乔峰。</p>
+<p>明教：张无忌、灭绝师太、金毛狮王。</p>
+<p>现在需要用观察者模式模拟如下场景：</p>
+<p>（1）事件一：丐帮的黄蓉把明教的张无忌揍了，这次武林事件被百晓生知晓，并且进行广播。</p>
+<p>​         主动打人方的帮派收到消息要拍手叫好。</p>
+<p>​         被打的帮派收到消息应该报酬，如：灭绝师太得知消息进行报仇，将丐帮黄蓉揍了。触发事件二。</p>
+<p>（2）事件二：明教的灭绝师太把丐帮的黄蓉揍了，这次武林事件被百姓生知晓，并且进行广播。</p>
+<p>&hellip;&hellip;</p>
+<p>&hellip;&hellip;</p>
+<p>如下图所示：</p>
+<p><img src="--baseUrl=/img/design26.png" alt=""></p>
+<p>代码实现</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">               百晓生
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	[丐帮]               [明教]
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    洪七公               张无忌
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    黄蓉					韦一笑
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    乔峰				    金毛狮王
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">PGaiBang</span> <span style="color:#66d9ef">string</span> = <span style="color:#e6db74">&#34;丐帮&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">PMingJiao</span> <span style="color:#66d9ef">string</span> = <span style="color:#e6db74">&#34;明教&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//-------- 抽象层 -------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Listener</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//当同伴被揍了该怎么办
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">OnFriendBeFight</span>(<span style="color:#a6e22e">event</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Event</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">GetName</span>() <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">GetParty</span>() <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Title</span>() <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Notifier</span> <span style="color:#66d9ef">interface</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//添加观察者
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">AddListener</span>(<span style="color:#a6e22e">listener</span> <span style="color:#a6e22e">Listener</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//删除观察者
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">RemoveListener</span>(<span style="color:#a6e22e">listener</span> <span style="color:#a6e22e">Listener</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//通知广播
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Notify</span>(<span style="color:#a6e22e">event</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Event</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Event</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Noti</span> <span style="color:#a6e22e">Notifier</span> <span style="color:#75715e">//被知晓的通知者
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">One</span> <span style="color:#a6e22e">Listener</span>  <span style="color:#75715e">//事件主动发出者
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Another</span> <span style="color:#a6e22e">Listener</span> <span style="color:#75715e">//时间被动接收者
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Msg</span> <span style="color:#66d9ef">string</span>		<span style="color:#75715e">//具体消息
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//-------- 实现层 -------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//英雄(Listener)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Hero</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Party</span> <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">hero</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Hero</span>) <span style="color:#a6e22e">Fight</span>(<span style="color:#a6e22e">another</span> <span style="color:#a6e22e">Listener</span>, <span style="color:#a6e22e">baixiao</span> <span style="color:#a6e22e">Notifier</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">msg</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%s 将 %s 揍了...&#34;</span>, <span style="color:#a6e22e">hero</span>.<span style="color:#a6e22e">Title</span>(), <span style="color:#a6e22e">another</span>.<span style="color:#a6e22e">Title</span>(),)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//生成事件
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">event</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">Event</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">Noti</span> = <span style="color:#a6e22e">baixiao</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">One</span> = <span style="color:#a6e22e">hero</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">Another</span> = <span style="color:#a6e22e">another</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">Msg</span> = <span style="color:#a6e22e">msg</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">baixiao</span>.<span style="color:#a6e22e">Notify</span>(<span style="color:#a6e22e">event</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">hero</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Hero</span>) <span style="color:#a6e22e">Title</span>() <span style="color:#66d9ef">string</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;[%s]:%s&#34;</span>, <span style="color:#a6e22e">hero</span>.<span style="color:#a6e22e">Party</span>, <span style="color:#a6e22e">hero</span>.<span style="color:#a6e22e">Name</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">hero</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Hero</span>) <span style="color:#a6e22e">OnFriendBeFight</span>(<span style="color:#a6e22e">event</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Event</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//判断是否为当事人
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">hero</span>.<span style="color:#a6e22e">Name</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">One</span>.<span style="color:#a6e22e">GetName</span>() <span style="color:#f92672">||</span> <span style="color:#a6e22e">hero</span>.<span style="color:#a6e22e">Name</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">Another</span>.<span style="color:#a6e22e">GetName</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//本帮派同伴将其他门派揍了，要拍手叫好!
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">hero</span>.<span style="color:#a6e22e">Party</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">One</span>.<span style="color:#a6e22e">GetParty</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">hero</span>.<span style="color:#a6e22e">Title</span>(), <span style="color:#e6db74">&#34;得知消息，拍手叫好！！！&#34;</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//本帮派同伴被其他门派揍了，要主动报仇反击!
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">hero</span>.<span style="color:#a6e22e">Party</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">Another</span>.<span style="color:#a6e22e">GetParty</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">hero</span>.<span style="color:#a6e22e">Title</span>(), <span style="color:#e6db74">&#34;得知消息，发起报仇反击！！！&#34;</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">hero</span>.<span style="color:#a6e22e">Fight</span>(<span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">One</span>, <span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">Noti</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">hero</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Hero</span>) <span style="color:#a6e22e">GetName</span>() <span style="color:#66d9ef">string</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">hero</span>.<span style="color:#a6e22e">Name</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">hero</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Hero</span>) <span style="color:#a6e22e">GetParty</span>() <span style="color:#66d9ef">string</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">hero</span>.<span style="color:#a6e22e">Party</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//百晓生(Nofifier)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">BaiXiao</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">heroList</span> []<span style="color:#a6e22e">Listener</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//添加观察者
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">BaiXiao</span>) <span style="color:#a6e22e">AddListener</span>(<span style="color:#a6e22e">listener</span> <span style="color:#a6e22e">Listener</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">heroList</span> = append(<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">heroList</span>, <span style="color:#a6e22e">listener</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//删除观察者
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">BaiXiao</span>) <span style="color:#a6e22e">RemoveListener</span>(<span style="color:#a6e22e">listener</span> <span style="color:#a6e22e">Listener</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">index</span>, <span style="color:#a6e22e">l</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">heroList</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">//找到要删除的元素位置
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">listener</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">l</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">//将删除的点前后的元素链接起来
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">heroList</span> = append(<span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">heroList</span>[:<span style="color:#a6e22e">index</span>], <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">heroList</span>[<span style="color:#a6e22e">index</span><span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>:]<span style="color:#f92672">...</span>)
+</span></span><span style="display:flex;"><span>			<span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//通知广播
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">b</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">BaiXiao</span>) <span style="color:#a6e22e">Notify</span>(<span style="color:#a6e22e">event</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Event</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;【世界消息】 百晓生广播消息: &#34;</span>, <span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">Msg</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">listener</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">b</span>.<span style="color:#a6e22e">heroList</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">//依次调用全部观察的具体动作
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#a6e22e">listener</span>.<span style="color:#a6e22e">OnFriendBeFight</span>(<span style="color:#a6e22e">event</span>)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">hero1</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Hero</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#34;黄蓉&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">PGaiBang</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">hero2</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Hero</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#34;洪七公&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">PGaiBang</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">hero3</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Hero</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#34;乔峰&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">PGaiBang</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">hero4</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Hero</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#34;张无忌&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">PMingJiao</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">hero5</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Hero</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#34;韦一笑&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">PMingJiao</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">hero6</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Hero</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#34;金毛狮王&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">PMingJiao</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">baixiao</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">BaiXiao</span>{}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">baixiao</span>.<span style="color:#a6e22e">AddListener</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">hero1</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">baixiao</span>.<span style="color:#a6e22e">AddListener</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">hero2</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">baixiao</span>.<span style="color:#a6e22e">AddListener</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">hero3</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">baixiao</span>.<span style="color:#a6e22e">AddListener</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">hero4</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">baixiao</span>.<span style="color:#a6e22e">AddListener</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">hero5</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">baixiao</span>.<span style="color:#a6e22e">AddListener</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">hero6</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;武林一片平静.....&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">hero1</span>.<span style="color:#a6e22e">Fight</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">hero5</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">baixiao</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>当我们运行的时候，发现触发了观察者模式的无限循环。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">武林一片平静</span><span style="color:#f92672">...</span>..
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">【世界消息】</span> <span style="color:#960050;background-color:#1e0010">百晓生广播消息</span>:  [<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">黄蓉</span> <span style="color:#960050;background-color:#1e0010">将</span> [<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">韦一笑</span> <span style="color:#960050;background-color:#1e0010">揍了</span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">洪七公</span> <span style="color:#960050;background-color:#1e0010">得知消息，拍手叫好！！！</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">乔峰</span> <span style="color:#960050;background-color:#1e0010">得知消息，拍手叫好！！！</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">张无忌</span> <span style="color:#960050;background-color:#1e0010">得知消息，发起报仇反击！！！</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">【世界消息】</span> <span style="color:#960050;background-color:#1e0010">百晓生广播消息</span>:  [<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">张无忌</span> <span style="color:#960050;background-color:#1e0010">将</span> [<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">黄蓉</span> <span style="color:#960050;background-color:#1e0010">揍了</span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">洪七公</span> <span style="color:#960050;background-color:#1e0010">得知消息，发起报仇反击！！！</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">【世界消息】</span> <span style="color:#960050;background-color:#1e0010">百晓生广播消息</span>:  [<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">洪七公</span> <span style="color:#960050;background-color:#1e0010">将</span> [<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">张无忌</span> <span style="color:#960050;background-color:#1e0010">揍了</span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">黄蓉</span> <span style="color:#960050;background-color:#1e0010">得知消息，拍手叫好！！！</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">乔峰</span> <span style="color:#960050;background-color:#1e0010">得知消息，拍手叫好！！！</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">韦一笑</span> <span style="color:#960050;background-color:#1e0010">得知消息，发起报仇反击！！！</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">【世界消息】</span> <span style="color:#960050;background-color:#1e0010">百晓生广播消息</span>:  [<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">韦一笑</span> <span style="color:#960050;background-color:#1e0010">将</span> [<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">洪七公</span> <span style="color:#960050;background-color:#1e0010">揍了</span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">黄蓉</span> <span style="color:#960050;background-color:#1e0010">得知消息，发起报仇反击！！！</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">【世界消息】</span> <span style="color:#960050;background-color:#1e0010">百晓生广播消息</span>:  [<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">黄蓉</span> <span style="color:#960050;background-color:#1e0010">将</span> [<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">韦一笑</span> <span style="color:#960050;background-color:#1e0010">揍了</span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">洪七公</span> <span style="color:#960050;background-color:#1e0010">得知消息，拍手叫好！！！</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">乔峰</span> <span style="color:#960050;background-color:#1e0010">得知消息，拍手叫好！！！</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">张无忌</span> <span style="color:#960050;background-color:#1e0010">得知消息，发起报仇反击！！！</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">【世界消息】</span> <span style="color:#960050;background-color:#1e0010">百晓生广播消息</span>:  [<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">张无忌</span> <span style="color:#960050;background-color:#1e0010">将</span> [<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">黄蓉</span> <span style="color:#960050;background-color:#1e0010">揍了</span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">洪七公</span> <span style="color:#960050;background-color:#1e0010">得知消息，发起报仇反击！！！</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">【世界消息】</span> <span style="color:#960050;background-color:#1e0010">百晓生广播消息</span>:  [<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">洪七公</span> <span style="color:#960050;background-color:#1e0010">将</span> [<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">张无忌</span> <span style="color:#960050;background-color:#1e0010">揍了</span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">黄蓉</span> <span style="color:#960050;background-color:#1e0010">得知消息，拍手叫好！！！</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">乔峰</span> <span style="color:#960050;background-color:#1e0010">得知消息，拍手叫好！！！</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">韦一笑</span> <span style="color:#960050;background-color:#1e0010">得知消息，发起报仇反击！！！</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">【世界消息】</span> <span style="color:#960050;background-color:#1e0010">百晓生广播消息</span>:  [<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">韦一笑</span> <span style="color:#960050;background-color:#1e0010">将</span> [<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">洪七公</span> <span style="color:#960050;background-color:#1e0010">揍了</span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">黄蓉</span> <span style="color:#960050;background-color:#1e0010">得知消息，发起报仇反击！！！</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">【世界消息】</span> <span style="color:#960050;background-color:#1e0010">百晓生广播消息</span>:  [<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">黄蓉</span> <span style="color:#960050;background-color:#1e0010">将</span> [<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">韦一笑</span> <span style="color:#960050;background-color:#1e0010">揍了</span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">洪七公</span> <span style="color:#960050;background-color:#1e0010">得知消息，拍手叫好！！！</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">乔峰</span> <span style="color:#960050;background-color:#1e0010">得知消息，拍手叫好！！！</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">张无忌</span> <span style="color:#960050;background-color:#1e0010">得知消息，发起报仇反击！！！</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">【世界消息】</span> <span style="color:#960050;background-color:#1e0010">百晓生广播消息</span>:  [<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">张无忌</span> <span style="color:#960050;background-color:#1e0010">将</span> [<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">黄蓉</span> <span style="color:#960050;background-color:#1e0010">揍了</span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">洪七公</span> <span style="color:#960050;background-color:#1e0010">得知消息，发起报仇反击！！！</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">【世界消息】</span> <span style="color:#960050;background-color:#1e0010">百晓生广播消息</span>:  [<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">洪七公</span> <span style="color:#960050;background-color:#1e0010">将</span> [<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">张无忌</span> <span style="color:#960050;background-color:#1e0010">揍了</span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">黄蓉</span> <span style="color:#960050;background-color:#1e0010">得知消息，拍手叫好！！！</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">乔峰</span> <span style="color:#960050;background-color:#1e0010">得知消息，拍手叫好！！！</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">韦一笑</span> <span style="color:#960050;background-color:#1e0010">得知消息，发起报仇反击！！！</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">【世界消息】</span> <span style="color:#960050;background-color:#1e0010">百晓生广播消息</span>:  [<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">韦一笑</span> <span style="color:#960050;background-color:#1e0010">将</span> [<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">洪七公</span> <span style="color:#960050;background-color:#1e0010">揍了</span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>[<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">黄蓉</span> <span style="color:#960050;background-color:#1e0010">得知消息，发起报仇反击！！！</span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">【世界消息】</span> <span style="color:#960050;background-color:#1e0010">百晓生广播消息</span>:  [<span style="color:#960050;background-color:#1e0010">丐帮</span>]:<span style="color:#960050;background-color:#1e0010">黄蓉</span> <span style="color:#960050;background-color:#1e0010">将</span> [<span style="color:#960050;background-color:#1e0010">明教</span>]:<span style="color:#960050;background-color:#1e0010">韦一笑</span> <span style="color:#960050;background-color:#1e0010">揍了</span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">...</span>
+</span></span></code></pre></div><pre tabindex="0"><code>观察者模式的优缺点
+优点：
+    (1) 观察者模式可以实现表示层和数据逻辑层的分离，定义了稳定的消息更新传递机制，并抽象了更新接口，使得可以有各种各样不同的表示层充当具体观察者角色。
+    (2) 观察者模式在观察目标和观察者之间建立一个抽象的耦合。观察目标只需要维持一个抽象观察者的集合，无须了解其具体观察者。由于观察目标和观察者没有紧密地耦合在一起，因此它们可以属于不同的抽象化层次。
+    (3) 观察者模式支持广播通信，观察目标会向所有已注册的观察者对象发送通知，简化了一对多系统设计的难度。
+    (4) 观察者模式满足“开闭原则”的要求，增加新的具体观察者无须修改原有系统代码，在具体观察者与观察目标之间不存在关联关系的情况下，增加新的观察目标也很方便。
+
+
+缺点：
+    (1) 如果一个观察目标对象有很多直接和间接观察者，将所有的观察者都通知到会花费很多时间。
+    (2) 如果在观察者和观察目标之间存在循环依赖，观察目标会触发它们之间进行循环调用，可能导致系统崩溃。
+    (3) 观察者模式没有相应的机制让观察者知道所观察的目标对象是怎么发生变化的，而仅仅只是知道观察目标发生了变化。
+
+适用场景
+      (1) 一个抽象模型有两个方面，其中一个方面依赖于另一个方面，将这两个方面封装在独立的对象中使它们可以各自独立地改变和复用。
+      (2) 一个对象的改变将导致一个或多个其他对象也发生改变，而并不知道具体有多少对象将发生改变，也不知道这些对象是谁。
+      (3) 需要在系统中创建一个触发链，A对象的行为将影响B对象，B对象的行为将影响C对象……，可以使用观察者模式创建一种链式触发机制。
+</code></pre>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="--baseUrl=/tags/golang/">golang</a>
+
+  <a class="tag tag--primary tag--small" href="--baseUrl=/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/12/python%E7%9F%A5%E8%AF%86%E7%82%B91/" data-tooltip="Python知识点1" aria-label="NEXT: Python知识点1">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/11/golang-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/" data-tooltip="Golang 设计模式之创建型模式" aria-label="PREVIOUS: Golang 设计模式之创建型模式">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2022/11/golang-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2022/11/golang-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2022/11/golang-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '--baseUrl=\/2022\/11\/golang-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F\/';
+        
+          this.page.identifier = '\/2022\/11\/golang-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2023 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/12/python%E7%9F%A5%E8%AF%86%E7%82%B91/" data-tooltip="Python知识点1" aria-label="NEXT: Python知识点1">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/11/golang-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/" data-tooltip="Golang 设计模式之创建型模式" aria-label="PREVIOUS: Golang 设计模式之创建型模式">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2022/11/golang-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2022/11/golang-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2022/11/golang-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E4%B9%8B%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl%3D%2F2022%2F11%2Fgolang-%25E8%25AE%25BE%25E8%25AE%25A1%25E6%25A8%25A1%25E5%25BC%258F%25E4%25B9%258B%25E8%25A1%258C%25E4%25B8%25BA%25E5%259E%258B%25E6%25A8%25A1%25E5%25BC%258F%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl%3D%2F2022%2F11%2Fgolang-%25E8%25AE%25BE%25E8%25AE%25A1%25E6%25A8%25A1%25E5%25BC%258F%25E4%25B9%258B%25E8%25A1%258C%25E4%25B8%25BA%25E5%259E%258B%25E6%25A8%25A1%25E5%25BC%258F%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl%3D%2F2022%2F11%2Fgolang-%25E8%25AE%25BE%25E8%25AE%25A1%25E6%25A8%25A1%25E5%25BC%258F%25E4%25B9%258B%25E8%25A1%258C%25E4%25B8%25BA%25E5%259E%258B%25E6%25A8%25A1%25E5%25BC%258F%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('--baseUrl=/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="--baseUrl=/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

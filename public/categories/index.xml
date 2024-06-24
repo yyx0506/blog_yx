@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Hugo tranquilpeak theme</title>
+    <link>--baseUrl=/categories/</link>
+    <description>Recent content in Categories on Hugo tranquilpeak theme</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 21 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="--baseUrl=/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>features</title>
+      <link>--baseUrl=/categories/features/</link>
+      <pubDate>Fri, 21 Jul 2023 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/categories/features/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tranquilpeak</title>
+      <link>--baseUrl=/categories/tranquilpeak/</link>
+      <pubDate>Fri, 21 Jul 2023 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/categories/tranquilpeak/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>featureshu</title>
+      <link>--baseUrl=/categories/featureshu/</link>
+      <pubDate>Sun, 01 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/categories/featureshu/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python</title>
+      <link>--baseUrl=/categories/python/</link>
+      <pubDate>Sun, 30 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/categories/python/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

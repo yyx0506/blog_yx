@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Golang 4",
+  
+  "datePublished": "2022-08-28T00:00:00Z",
+  "dateModified": "2022-08-28T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "\/2022\/08\/golang-4\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.101.0 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang 4">
+<meta name="twitter:title" content="Golang 4">
+<meta property="og:url" content="/2022/08/golang-4/">
+<meta property="twitter:url" content="/2022/08/golang-4/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2022-08-28T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2022-08-28T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="features">
+    
+  
+  
+    
+      <meta property="article:tag" content="golang">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>Golang 4</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2022/08/golang-4/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      Golang 4
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2022-08-28T00:00:00Z">
+        
+  August 28, 2022
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="/categories/features">features</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h3 id="golang-4">Golang 4</h3>
+<h4 id="1-golang-数组">1: Golang 数组</h4>
+<p>数组是指一系列同一类型数据的集合。数组中包含的每个数据被称为数组元素（element），这种类型可以是意的原始类型，比如int、string等，也可以是用户自定义的类型。一个数组包含的元素个数被称为数组的长度。在Golang中数组是一个长度固定的数据类型，数组的长度是类型的一部分，也就是说[5]string和[20]string是两个不同的类型。Golang中数组的另一个特点是占用内存的连续性，也就是说数组中的元素是被分配到连续的内存地址中的，因而索引数组元素的速度非常快。</p>
+<p>和数组对应的类型是Slice（切片），Slice是可以增长和收缩的动态序列，功能也更灵活，但是想要理解slice工作原理的话需要先理解数组，所以本篇博客主要为大家讲解数组的使用。</p>
+<pre tabindex="0"><code>数组定义
+var 数组变量名 [元素数量] T
+
+// 数组的长度是类型的一部分
+var arr1 [3]int
+var arr2 [4]string
+fmt.Printf(&#34;%T, %T \n&#34;, arr1, arr2)
+
+----------------初始化--------------------
+// 数组的初始化 第一种方法
+var arr3 [3]int
+arr3[0] = 1
+arr3[1] = 2
+arr3[2] = 3
+fmt.Println(arr3)
+
+
+// 第二种初始化数组的方法
+var arr4 = [4]int {10, 20, 30, 40}
+fmt.Println(arr4)
+
+
+// 第三种数组初始化方法，自动推断数组长度
+var arr5 = [...]int{1, 2}
+fmt.Println(arr5)
+
+// 第四种初始化数组的方法，指定下标  第一位是1 第三位是5 其余为都为0
+a := [...]int{1:1, 3:5}
+fmt.Println(a)
+
+----------------遍历数组--------------------
+方法1
+// 第四种初始化数组的方法，指定下标 从低0位开始遍历 
+a := [...]int{1:1, 3:5}
+for i := 0; i &lt; len(a); i++ {
+	fmt.Print(a[i], &#34; &#34;)
+}
+方法2  其中 _ 代表的是数组的索引下标 用 _ 表示忽略这个值
+a := [...]int{1:1, 3:5}
+for _, value := range a {
+    fmt.Print(value, &#34; &#34;)
+}
+
+----------------数组的值类型--------------------
+数组是值类型，赋值和传参会赋值整个数组，因此改变副本的值，不会改变本身的值
+var array1 = [...]int {1, 2, 3}
+array2 := array1
+array2[0] = 3
+fmt.Println(array1, array2)
+array2 的值已经改变了 而array1 的值没有改变 相当于两个地址 的数组 
+这就说明了，golang中的数组是值类型，而不是和java一样属于引用数据类型 python 当中如果不用copy 的话回合java一样的效果
+
+----------------切片定义(引用类型)--------------------
+在golang中，切片的定义和数组定义是相似的，但是需要注意的是，切片是引用数据类型，如下
+var array3 = []int{1,2,3}
+array4 := array3
+array4[0] = 3
+fmt.Println(array3, array4)
+我们发现 两个切片的值一样 说明 切片引用的书数据类型
+切片（Slice）是一个拥有相同类型元素的可变长度的序列。它是基于数组类型做的一层封装。它非常灵活，支持自动扩容。
+切片是一个引用类型，它的内部结构包含地址、长度和容量。切片一般用于快速地操作一块数据集合。
+创建切片跟创建数组唯一的区别在于 Type 前的“ [] ”中是否有数字，为空，则代表切片，否则则代表数组。因为切片是长度可变的
+所以 如果 [] 内部什么都没有就是 切片 反之则是数组  大部分情况下可以理解 切片是数组的一部分
+
+----------------二维数组--------------------
+Go语言支持多维数组，我们这里以二维数组为例（数组中又嵌套数组）：
+var 数组变量名 [元素数量][元素数量] T
+// 二维数组
+var array5 = [2][2]int{{1,2},{2,3}}
+fmt.Println(array5)
+结果 ： [[1 2] [2 3]] 
+有点类似于 python 的列表嵌套
+二维数据组的遍历
+var array5 = [2][2]int{{1,2},{2,3}}
+for i := 0; i &lt; len(array5); i++ {
+    for j := 0; j &lt; len(array5[0]); j++ {
+        fmt.Println(array5[i][j])
+    }
+}
+或者 直接忽略下标
+for _, item := range array5 {
+    for _, item2 := range item {
+        fmt.Println(item2)
+    }
+}
+
+----------------类型推导--------------------
+另外我们在进行数组的创建的时候，还可以使用类型推导，但是只能使用一个 ...
+// 二维数组（正确写法）
+var array5 = [...][2]int{{1,2},{2,3}}
+
+// 二维数组 （错误写法）
+var array5 = [2][...]int{{1,2},{2,3}}
+</code></pre><h4 id="2-golang-切片">2: Golang 切片</h4>
+<p>上面讲数组时 简单的提到了切片 那么为什么要是有切片呢
+切片（Slice）是一个拥有相同类型元素的可变长度的序列。它是基于数组类型做的一层封装。
+它非常灵活，支持自动扩容。
+切片是一个引用类型，它的内部结构包含地址、长度和容量。
+声明切片类型的基本语法如下：</p>
+<pre tabindex="0"><code>var name [] T
+</code></pre><p>其中：</p>
+<ul>
+<li>name：表示变量名</li>
+<li>T：表示切片中的元素类型</li>
+</ul>
+<p>举例</p>
+<pre tabindex="0"><code>// 声明切片，把长度去除就是切片
+var slice = []int{1,2,3}
+fmt.Println(slice)
+</code></pre><p>关于nil的认识</p>
+<p>当你声明了一个变量，但却还并没有赋值时，golang中会自动给你的变量赋值一个默认的零值。这是每种类型对应的零值。</p>
+<ul>
+<li>bool：false</li>
+<li>numbers：0</li>
+<li>string：&quot;&quot;</li>
+<li>pointers：nil</li>
+<li>slices：nil</li>
+<li>maps：nil</li>
+<li>channels：nil</li>
+<li>functions：nil</li>
+</ul>
+<p>nil表示空，也就是数组初始化的默认值就是nil</p>
+<pre tabindex="0"><code>var slice2 [] int
+fmt.Println(slice2 == nil)
+
+结果 为 true
+
+切片的遍历和数组是一样的
+var slice = []int{1,2,3}
+for i := 0; i &lt; len(slice); i++ {
+    fmt.Print(slice[i], &#34; &#34;)
+}
+
+由于切片的底层就是一个数组，所以我们可以基于数组来定义切片
+// 基于数组定义切片
+a := [5]int {55,56,57,58,59}
+// 获取数组所有值，返回的是一个切片
+b := a[:]
+// 从数组获取指定的切片
+c := a[1:4]
+// 获取 下标3之前的数据（不包括3）
+d := a[:3]
+// 获取下标3以后的数据（包括3）
+e := a[3:]
+结果 ----
+[55 56 57 58 59]
+[55 56 57 58 59]
+[56 57 58]
+[55 56 57]
+[58 59]
+同理，我们不仅可以对数组进行切片，还可以切片在切片
+
+切片拥有自己的长度和容量，我们可以通过使用内置的len）函数求长度，使用内置的cap（）
+函数求切片的容量。
+切片的长度就是它所包含的元素个数。
+切片的容量是从它的第一个元素开始数，到其底层数组元素末尾的个数。切片s的长度和容量可通过表达式len（s）和cap（s）来获取。
+
+// 长度和容量
+s := []int {2,3,5,7,11,13}
+fmt.Printf(&#34;长度%d 容量%d\n&#34;, len(s), cap(s))
+
+ss := s[2:]
+fmt.Printf(&#34;长度%d 容量%d\n&#34;, len(ss), cap(ss))
+
+sss := s[2:4]
+fmt.Printf(&#34;长度%d 容量%d\n&#34;, len(sss), cap(sss))
+
+结果 -----
+长度6 容量6
+长度4 容量4
+长度2 容量4
+
+为什么最后一个容量不一样呢，因为我们知道，经过切片后sss = [5, 7] 所以切片的长度为2，但是一因为容量是从2的位置一直到末尾，所以为4
+</code></pre><p>切片的本质</p>
+<p>切片的本质就是对底层数组的封装，它包含了三个信息</p>
+<ul>
+<li>底层数组的指针</li>
+<li>切片的长度(len)</li>
+<li>切片的容量(cap)</li>
+</ul>
+<p>举个例子，现在有一个数组 a := [8]int {0,1,2,3,4,5,6,7}，切片 s1 := a[:5]，相应示意图如下</p>
+<p><img src="/img/go4infos1.png" alt=""></p>
+<p>切片 s2 := a[3:6]，相应示意图如下：</p>
+<p><img src="/img/go4infos2.png" alt=""></p>
+<pre tabindex="0"><code>使用make函数构造切片
+我们上面都是基于数组来创建切片的，如果需要动态的创建一个切片，我们就需要使用内置的make函数，格式如下：
+make ([]T, size, cap)
+</code></pre><p>其中：</p>
+<ul>
+<li>T：切片的元素类型</li>
+<li>size：切片中元素的数量</li>
+<li>cap：切片的容量</li>
+</ul>
+<p>举例：</p>
+<pre tabindex="0"><code>// make()函数创建切片
+fmt.Println()
+var slices = make([]int, 4, 8)
+//[0 0 0 0]
+fmt.Println(slices)
+// 长度：4, 容量8
+fmt.Printf(&#34;长度：%d, 容量%d&#34;, len(slices), cap(slices))
+</code></pre><p>需要注意的是，golang中没办法通过下标来给切片扩容，如果需要扩容，需要用到append( 跟python 一样)</p>
+<pre tabindex="0"><code>slices2 := []int{1,2,3,4}
+slices2 = append(slices2, 5)
+fmt.Println(slices2)
+// 输出结果 [1 2 3 4 5]
+</code></pre><p>同时切片还可以将两个切片进行合并</p>
+<pre tabindex="0"><code>// 合并切片
+slices3 := []int{6,7,8}
+slices2 = append(slices2, slices3...)
+fmt.Println(slices2)
+// 输出结果  [1 2 3 4 5 6 7 8]
+</code></pre><p>需要注意的是，切片会有一个扩容操作，当元素存放不下的时候，会将原来的容量扩大两倍</p>
+<p>使用copy()函数复制切片</p>
+<p>前面我们知道，切片就是引用数据类型</p>
+<ul>
+<li>值类型：改变变量副本的时候，不会改变变量本身</li>
+<li>引用类型：改变变量副本值的时候，会改变变量本身的值</li>
+</ul>
+<p>如果我们需要改变切片的值，同时又不想影响到原来的切片，那么就需要用到copy函数</p>
+<pre tabindex="0"><code>// 需要复制的切片
+var slices4 = []int{1,2,3,4}
+// 使用make函数创建一个切片
+var slices5 = make([]int, len(slices4), len(slices4))
+// 拷贝切片的值
+copy(slices5, slices4)
+// 修改切片
+slices5[0] = 4
+fmt.Println(slices4)
+fmt.Println(slices5)
+</code></pre><p>运行结果为</p>
+<pre tabindex="0"><code>[1 2 3 4]
+[4 2 3 4]
+</code></pre><p>Go语言中并没有删除切片元素的专用方法，我们可以利用切片本身的特性来删除元素。代码如下</p>
+<pre tabindex="0"><code>// 删除切片中的值
+var slices6 = []int {0,1,2,3,4,5,6,7,8,9}
+// 删除下标为1的值
+slices6 = append(slices6[:1], slices6[2:]...)
+fmt.Println(slices6)
+</code></pre><p>运行结果</p>
+<pre tabindex="0"><code>[0 2 3 4 5 6 7 8 9]
+</code></pre><p>切片的排序算法以及sort包</p>
+<pre tabindex="0"><code>编写一个简单的冒泡排序算法
+func main() {
+	var numSlice = []int{9,8,7,6,5,4}
+	for i := 0; i &lt; len(numSlice); i++ {
+		flag := false
+		for j := 0; j &lt; len(numSlice) - i - 1; j++ {
+			if numSlice[j] &gt; numSlice[j+1] {
+				var temp = numSlice[j+1]
+				numSlice[j+1] = numSlice[j]
+				numSlice[j] = temp
+				flag = true
+			}
+		}
+		if !flag {
+			break
+		}
+	}
+	fmt.Println(numSlice)
+}
+</code></pre><p>在来一个选择排序</p>
+<pre tabindex="0"><code>// 编写选择排序
+var numSlice2 = []int{9,8,7,6,5,4}
+for i := 0; i &lt; len(numSlice2); i++ {
+    for j := i + 1; j &lt; len(numSlice2); j++ {
+        if numSlice2[i] &gt; numSlice2[j] {
+            var temp = numSlice2[i]
+            numSlice2[i] = numSlice2[j]
+            numSlice2[j] = temp
+        }
+    }
+}
+fmt.Println(numSlice2)
+</code></pre><p>对于int、float64 和 string数组或是切片的排序，go分别提供了sort.Ints()、sort.Float64s() 和 sort.Strings()函数，默认都是从小到大进行排序</p>
+<pre tabindex="0"><code>var numSlice2 = []int{9,8,7,6,5,4}
+sort.Ints(numSlice2)
+fmt.Println(numSlice2)
+</code></pre><p>Golang的sort包可以使用 sort.Reverse(slic e) 来调换slice.Interface.Less，也就是比较函数，所以int、float64 和 string的逆序排序函数可以这样写 非常的像python</p>
+<pre tabindex="0"><code>// 逆序排列
+var numSlice4 = []int{9,8,4,5,1,7}
+sort.Sort(sort.Reverse(sort.IntSlice(numSlice4)))
+fmt.Println(numSlice4)
+</code></pre>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/golang/">golang</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2022/08/golang-5/" data-tooltip="Golang 5" aria-label="NEXT: Golang 5">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2022/08/golang-3/" data-tooltip="Golang 3" aria-label="PREVIOUS: Golang 3">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2022/08/golang-4/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2022/08/golang-4/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=/2022/08/golang-4/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '\/2022\/08\/golang-4\/';
+        
+          this.page.identifier = '\/2022\/08\/golang-4\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2022 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2022/08/golang-5/" data-tooltip="Golang 5" aria-label="NEXT: Golang 5">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2022/08/golang-3/" data-tooltip="Golang 3" aria-label="PREVIOUS: Golang 3">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2022/08/golang-4/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2022/08/golang-4/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=/2022/08/golang-4/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2022%2F08%2Fgolang-4%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2022%2F08%2Fgolang-4%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=%2F2022%2F08%2Fgolang-4%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

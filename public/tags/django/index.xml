@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Django on Hugo tranquilpeak theme</title>
+    <link>--baseUrl=/tags/django/</link>
+    <description>Recent content in Django on Hugo tranquilpeak theme</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 28 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="--baseUrl=/tags/django/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Django&#43;Rest_framework&#43;JWT详解使用方法</title>
+      <link>--baseUrl=/2019/05/django-rest_framework-jwt%E8%AF%A6%E8%A7%A3%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2019/05/django-rest_framework-jwt%E8%AF%A6%E8%A7%A3%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "关于安卓手机抓包问题",
+  
+  "datePublished": "2023-02-28T00:00:00Z",
+  "dateModified": "2023-02-28T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "\/2023\/02\/%E5%85%B3%E4%BA%8E%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E6%8A%93%E5%8C%85%E9%97%AE%E9%A2%98\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.101.0 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于安卓手机抓包问题">
+<meta name="twitter:title" content="关于安卓手机抓包问题">
+<meta property="og:url" content="/2023/02/%E5%85%B3%E4%BA%8E%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E6%8A%93%E5%8C%85%E9%97%AE%E9%A2%98/">
+<meta property="twitter:url" content="/2023/02/%E5%85%B3%E4%BA%8E%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E6%8A%93%E5%8C%85%E9%97%AE%E9%A2%98/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2023-02-28T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2023-02-28T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="features">
+    
+  
+  
+    
+      <meta property="article:tag" content="ANDROID">
+    
+      <meta property="article:tag" content="app逆向">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>关于安卓手机抓包问题</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2023/02/%E5%85%B3%E4%BA%8E%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E6%8A%93%E5%8C%85%E9%97%AE%E9%A2%98/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      关于安卓手机抓包问题
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2023-02-28T00:00:00Z">
+        
+  February 28, 2023
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="/categories/features">features</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h3 id="关于安卓手机抓包问题">关于安卓手机抓包问题</h3>
+<h4 id="1-手机准备">1 手机准备</h4>
+<pre tabindex="0"><code>建议谷歌手机或者小米手机 
+首先就是要ROOT 
+然后 安装MAGISK 参考 https://magiskcn.com/
+
+然后下一步 将 riru 和 RIRUlspxposed 导入到 手机内 通过MAGISK 模块安装
+
+在一下步装 chrales 插件 或者 安装 httpcarry 插件
+
+最后需要吧用户证书导入到系统证书内部 
+
+https://blog.csdn.net/l1159015838/article/details/106092476  adb将证书改到根目录
+https://blog.csdn.net/kongxinqq/article/details/125892894 安卓7.0 把证书移到系统目录下
+
+如果是安卓10以上甚至更高的版本 采用插件安装的方式解决
+在面具中找到Move Certificates模块下载，
+如果 magisk 地安装一直报unzip error 无法安装的话 
+使用其他模块代替magisk 去安装这个 模块
+该解决方法采用了Magisk模块，我安装的Magisk版本为v25.1，这个版本已经不支持在线安装模块了，因此我使用了FoxMagiskModuleManager进行了替代，链接：https://github.com/Fox2Code/FoxMagiskModuleManager
+
+移动证书的模块是movecert，链接：https://github.com/Magisk-Modules-Repo/movecert，下载zip包后移动到/sdcard/Download路径下，使用FoxMagiskModuleManager从本地进行安装，这个模块不能直接通过Magisk进行安装，我已经试过了，安装之后重启，用户证书就全部移动到系统证书里了
+</code></pre><h4 id="2-开始测试">2 开始测试</h4>
+<pre tabindex="0"><code>首先安全能装我们需要抓的包 我们以百搜视频为例 首先是下载安装 然后查看包的路径
+adb shell pm path  com.baidu.video
+然后将包导出
+adb pull 包路径 需要导入的路径
+直接JADX 分析  搜索 关键词code2  找不到关键词时 想到的是 是否是在java层去请求或许是在so 层
+去请求的   然后  使用r0capture  包  去 进行安卓java 层所有请求的测试 --
+python3  r0capture.py -U -f com.baidu.video -v &gt;&gt; soul1.txt
+
+得到 （将hashmap 生成加密后的string）生成路径的方法
+知道了此dex 是动态加载的 如下图
+</code></pre><p><img src="/img/android1.png" alt=""></p>
+<p>点击 m2879a 跳转到 实现方法 传入string(路径参数拼接)  返回string(加密过后的数据)</p>
+<p><img src="/img/android2.png" alt=""></p>
+<p>点击 m2815a 查找调用方法</p>
+<p><img src="/img/android3.png" alt=""></p>
+<p>传入路径 和 hashmap</p>
+<p>第一个hashmap  是调取的值可以</p>
+<p>第二个 hashmap 是从 下面的这个方法里面调用出来的</p>
+<p><img src="/img/android4.png" alt=""></p>
+<p>a 里面有两个 hashmap   一个是通过 m2920a 生成的 另一个是从方法内部生成的</p>
+<p><img src="/img/android5.png" alt=""></p>
+<p>第一个hashmap 传入的jsonobject 没有出处怀疑没有解开</p>
+<p>遍历 jsonobject  生成 &ndash;  hashmap</p>
+<p>目前主要影响 广告参数的值 一个是时间戳 一个是req_id</p>
+<h4 id="3-frida-测试代码">3: frida 测试代码</h4>
+<pre tabindex="0"><code>//     com.baidu.video
+
+function hook_dex() {
+    console.log(&#39;-------  &gt;&gt;&gt;&gt;&gt;&gt;&#39;)
+    Java.perform(function () {
+        // var hook_class_name = &#34;com.baidu.mobads.container.adrequest.d&#34;;
+        // Java.enumerateClassLoaders({
+        //     onMatch: function (loader) {
+        //         try {
+        //             if (loader.findClass(hook_class_name)) {
+        //                 console.log(loader);
+        //                 Java.classFactory.loader = loader;
+        //             }
+        //         } catch (error) {
+        //         }
+        //     },
+        //     onComplete: function () {
+        //
+        //     }
+        // });
+        // //
+        // var Meterpreter = Java.classFactory.use(hook_class_name);
+        // console.log(&#34;get class success -&gt; &#34;, Meterpreter);
+        // // Meterpreter.fixedParameters2HashMap.implementation = function () {
+        // //     var res = this.fixedParameters2HashMap();
+        // //     console.log(&#39;hashmap 11111----&gt;&#39;,res);
+        // //     return res
+        // // };
+        // Meterpreter.toFullURL.implementation = function () {
+        //     var res = this.toFullURL();
+        //     console.log(&#39;string_url ------&gt;&#39;, res);
+        //     return res
+        // };
+        // Meterpreter.additionalParameters2HashMap.implementation = function () {
+        //     var res = this.additionalParameters2HashMap();
+        //     console.log(&#39;hashmap222222 ------&gt;&#39;, res);
+        //     return res
+        // };
+        //
+        // //u.h u.m u.z   baiduvideo 有这个方法  wifikey 没有
+        // var hook_class_name1 = &#34;com.baidu.mobads.container.u.h&#34;;
+        // Java.enumerateClassLoaders({
+        //     onMatch: function (loader) {
+        //         try {
+        //             if (loader.findClass(hook_class_name1)) {
+        //                 console.log(loader);
+        //                 Java.classFactory.loader = loader;
+        //             }
+        //         } catch (error) {
+        //         }
+        //     },
+        //     onComplete: function () {
+        //
+        //     }
+        // });
+        // var Meterpreter1 = Java.classFactory.use(hook_class_name1);
+        // console.log(&#34;get class success 11111111------&gt; &#34;, Meterpreter1);
+        // Meterpreter1.a.overload(&#39;java.lang.String&#39;, &#39;java.util.HashMap&#39;).implementation = function (a, b) {
+        //     console.log(&#39;a ---- &gt;&#39;, a);
+        //     console.log(&#39;b ---- &gt;&#39;, b);
+        //     var res = this.a(a, b);
+        //     console.log(&#39;alllhashmap ----&gt;&#39;, res);
+        //     return res
+        // };
+        //
+        //
+        // var hook_class_name2 = &#34;com.baidu.mobads.container.u.m&#34;;
+        // Java.enumerateClassLoaders({
+        //     onMatch: function (loader) {
+        //         try {
+        //             if (loader.findClass(hook_class_name2)) {
+        //                 console.log(loader);
+        //                 Java.classFactory.loader = loader;
+        //             }
+        //         } catch (error) {
+        //         }
+        //     },
+        //     onComplete: function () {
+        //
+        //     }
+        // });
+        // var Meterpreter2 = Java.classFactory.use(hook_class_name2);
+        // console.log(&#34;get class success  222222 ------&gt; &#34;, Meterpreter2);
+        // Meterpreter2.a.overload(&#39;java.lang.String&#39;).implementation = function (a) {
+        //     console.log(&#39;a ---- &gt;&#39;, a);
+        //     var res = this.a(a);
+        //     console.log(&#39;params string   ----&gt;&#39;, res);
+        //     return res
+        // };
+        // var hook_class_name3 = &#34;com.baidu.mobads.container.u.z&#34;;
+        // Java.enumerateClassLoaders({
+        //     onMatch: function (loader) {
+        //         try {
+        //             if (loader.findClass(hook_class_name3)) {
+        //                 console.log(loader);
+        //                 Java.classFactory.loader = loader;
+        //             }
+        //         } catch (error) {
+        //         }
+        //     },
+        //     onComplete: function () {
+        //
+        //     }
+        // });
+        // var Meterpreter3 = Java.classFactory.use(hook_class_name3);
+        // console.log(&#34;get class success  33333333 ------&gt; &#34;, Meterpreter3);
+        // Meterpreter3.a.overload(&#39;java.lang.String&#39;).implementation = function (a) {
+        //
+        //     var res = this.a(a);
+        //     console.log(&#39;params string sssssssss  ----&gt;&#39;, res);
+        //     return res
+        // };
+        //
+        //
+        // var hook_class_name4 = &#34;com.baidu.mobads.container.u.t&#34;;
+        // Java.enumerateClassLoaders({
+        //     onMatch: function (loader) {
+        //         try {
+        //             if (loader.findClass(hook_class_name4)) {
+        //                 console.log(loader);
+        //                 Java.classFactory.loader = loader;
+        //             }
+        //         } catch (error) {
+        //         }
+        //     },
+        //     onComplete: function () {
+        //
+        //     }
+        // });
+        // var Meterpreter4 = Java.classFactory.use(hook_class_name4);
+        // console.log(&#34;get class success  444444444 ------&gt; &#34;, Meterpreter4);
+        // Meterpreter4.a.overload(&#39;android.content.Context&#39;, &#39;java.lang.String&#39;).implementation = function (a, b) {
+        //     console.log(&#39;a 4444444---- &gt;&#39;, a);
+        //     console.log(&#39;b 44444444---- &gt;&#39;, b);
+        //     var res = this.a(a, b);
+        //     console.log(&#39;params string sssssssss  ----&gt;&#39;, res);
+        //     return res
+        // };
+        //
+        // Meterpreter4.b.overload(&#39;android.content.Context&#39;).implementation = function (a) {
+        //     console.log(&#39;a   content11111111  ---- &gt;&#39;, a);
+        //     var res = this.b(a);
+        //     console.log(&#39;string 111111111111  ----&gt;&#39;, res);
+        //     return res
+        // };
+        //
+        // Meterpreter4.p.overload(&#39;android.content.Context&#39;).implementation = function (a) {
+        //     console.log(&#39;a   content222222  ---- &gt;&#39;, a);
+        //     var res = this.p(a);
+        //     console.log(&#39;string 2222222222  ----&gt;&#39;, res);
+        //     return res
+        // };
+        //
+        // var hook_class_name5 = &#34;com.baidu.mobads.container.adrequest.ProdAdRequestInfo&#34;;
+        // Java.enumerateClassLoaders({
+        //     onMatch: function (loader) {
+        //         try {
+        //             if (loader.findClass(hook_class_name5)) {
+        //                 console.log(loader);
+        //                 Java.classFactory.loader = loader;
+        //             }
+        //         } catch (error) {
+        //         }
+        //     },
+        //     onComplete: function () {
+        //
+        //     }
+        // });
+        // var Meterpreter5 = Java.classFactory.use(hook_class_name5);
+        // console.log(&#34;get class success  555555555555 ------&gt; &#34;, Meterpreter5);
+        // Meterpreter5.loadAd.implementation = function (a, b) {
+        //     console.log(&#39;a 55555555---- &gt;&#39;, a);
+        //     console.log(&#39;b 55555555---- &gt;&#39;, b);
+        //     var res = this.loadAd(a, b);
+        //     console.log(&#39;params string 55555555555  ----&gt;&#39;, res);
+        //     return res
+        // };
+        //
+        // Meterpreter5.createProdHandler.implementation = function (a) {
+        //     console.log(&#39;a 666666666---- &gt;&#39;, a);
+        //     var res = this.createProdHandler(a);
+        //     console.log(&#39;params string 666666666  ----&gt;&#39;, res);
+        //     return res
+        // };
+
+
+    });
+}
+
+// 测试类
+
+
+// {p_ver=9.12, swi=1, ncuid=t_E4DBB16BC6080A308B6A822B52E90A21|VDFNVLHYM, iadex=1450722296288576585,276832259, den=2.75, mac=, nop=, imei2=, wi=, act=NA,LP,DL,APO, osv=9, tab=0, sh=2248, brd=Xiaomi, sn=, net=100, oaid=61b19c241456da49, ses=1635839880696, cuid=E4DBB16BC6080A308B6A822B52E90A21|VDFNVLHYM, im=, sw=1080, os=android, g=, ipp=0, chid=null, q=ef5bf04d_cpr, bdr=28, sdc=15875,53676,15875,53676, v=android_9.12_adserv_0, appid=ef5bf04d, cssid=, rpt=1, imei=, msa=1, pk=com.baidu.video, apinfo=null, android_id=, tp=MI 8, trftp=sdk_9.12, snfrom=, cid=}
+
+
+function main() {
+    console.log(&#34;Enter the Script  --- - -- - -- !&#34;);
+
+    Java.perform(function () {
+
+
+        // var dexclassLoader = Java.use(&#34;dalvik.system.DexClassLoader&#34;);
+        // dexclassLoader.$init.implementation = function (dexPath, optimizedDirectory, librarySearchPath, parent) {
+        //     console.log(&#34;dexPath:&#34; + dexPath);
+        //     // console.log(&#34;optimizedDirectory:&#34; + optimizedDirectory);
+        //     // console.log(&#34;librarySearchPath:&#34; + librarySearchPath);
+        //     // console.log(&#34;parent:&#34; + parent);
+        //     this.$init(dexPath, optimizedDirectory, librarySearchPath, parent);
+        // };
+
+        // dexclassLoader.loadClass.overload(&#34;java.lang.String&#34;).implementation = function (name) {
+        //     // console.log(name)
+        //     var hookClassName = &#39;com.baidu.mobads.container.adrequest.ProdAdRequestInfo&#39;
+        //     if (name === hookClassName) {
+        //         console.log(name)
+        //         hookClass = this.loadClass(name)
+        //         var methods = hookClass.getMethods()
+        //         console.log(methods)
+        //     }
+        //     return this.loadClass(name)
+        // }
+
+        var dexclassLoader = Java.use(&#34;dalvik.system.DexClassLoader&#34;);
+
+        dexclassLoader.loadClass.overload(&#39;java.lang.String&#39;).implementation = function (name) {
+            var hook_class_name = &#34;com.baidu.mobads.container.adrequest.ProdAdRequestInfo&#34;;
+            var result = this.loadClass(name);
+            //一旦发现load的class是&#34;dalvik.system.DexClassLoader&#34;，我们就调用hook_dex()方法去hook
+            if (name === hook_class_name) {
+                console.log(&#34;找到啦&#34;);
+                hook_dex();
+                return result;
+            }
+            return result;
+        }
+    })
+}
+
+
+setImmediate(main);
+</code></pre>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/android/">ANDROID</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/app%E9%80%86%E5%90%91/">app逆向</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2023/02/%E5%85%B3%E4%BA%8Eiview/" data-tooltip="关于iview" aria-label="NEXT: 关于iview">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2023/02/idea-%E9%85%8D%E7%BD%AEgo-%E8%AF%AD%E8%A8%80/" data-tooltip="idea 配置go 语言" aria-label="PREVIOUS: idea 配置go 语言">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2023/02/%E5%85%B3%E4%BA%8E%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E6%8A%93%E5%8C%85%E9%97%AE%E9%A2%98/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2023/02/%E5%85%B3%E4%BA%8E%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E6%8A%93%E5%8C%85%E9%97%AE%E9%A2%98/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=/2023/02/%E5%85%B3%E4%BA%8E%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E6%8A%93%E5%8C%85%E9%97%AE%E9%A2%98/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '\/2023\/02\/%E5%85%B3%E4%BA%8E%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E6%8A%93%E5%8C%85%E9%97%AE%E9%A2%98\/';
+        
+          this.page.identifier = '\/2023\/02\/%E5%85%B3%E4%BA%8E%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E6%8A%93%E5%8C%85%E9%97%AE%E9%A2%98\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2023 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2023/02/%E5%85%B3%E4%BA%8Eiview/" data-tooltip="关于iview" aria-label="NEXT: 关于iview">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2023/02/idea-%E9%85%8D%E7%BD%AEgo-%E8%AF%AD%E8%A8%80/" data-tooltip="idea 配置go 语言" aria-label="PREVIOUS: idea 配置go 语言">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2023/02/%E5%85%B3%E4%BA%8E%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E6%8A%93%E5%8C%85%E9%97%AE%E9%A2%98/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2023/02/%E5%85%B3%E4%BA%8E%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E6%8A%93%E5%8C%85%E9%97%AE%E9%A2%98/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=/2023/02/%E5%85%B3%E4%BA%8E%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E6%8A%93%E5%8C%85%E9%97%AE%E9%A2%98/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2023%2F02%2F%25E5%2585%25B3%25E4%25BA%258E%25E5%25AE%2589%25E5%258D%2593%25E6%2589%258B%25E6%259C%25BA%25E6%258A%2593%25E5%258C%2585%25E9%2597%25AE%25E9%25A2%2598%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2023%2F02%2F%25E5%2585%25B3%25E4%25BA%258E%25E5%25AE%2589%25E5%258D%2593%25E6%2589%258B%25E6%259C%25BA%25E6%258A%2593%25E5%258C%2585%25E9%2597%25AE%25E9%25A2%2598%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=%2F2023%2F02%2F%25E5%2585%25B3%25E4%25BA%258E%25E5%25AE%2589%25E5%258D%2593%25E6%2589%258B%25E6%259C%25BA%25E6%258A%2593%25E5%258C%2585%25E9%2597%25AE%25E9%25A2%2598%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

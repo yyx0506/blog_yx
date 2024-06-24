@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Elasticsearch 索引 以及 mapping",
+  
+  "datePublished": "2022-05-17T00:00:00Z",
+  "dateModified": "2022-05-17T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "--baseUrl=\/2022\/05\/elasticsearch-%E7%B4%A2%E5%BC%95-%E4%BB%A5%E5%8F%8A-mapping\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.114.1 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elasticsearch 索引 以及 mapping">
+<meta name="twitter:title" content="Elasticsearch 索引 以及 mapping">
+<meta property="og:url" content="--baseUrl=/2022/05/elasticsearch-%E7%B4%A2%E5%BC%95-%E4%BB%A5%E5%8F%8A-mapping/">
+<meta property="twitter:url" content="--baseUrl=/2022/05/elasticsearch-%E7%B4%A2%E5%BC%95-%E4%BB%A5%E5%8F%8A-mapping/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2022-05-17T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2022-05-17T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="features">
+    
+  
+  
+    
+      <meta property="article:tag" content="Elasticsearch">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>Elasticsearch 索引 以及 mapping</title>
+
+    <link rel="icon" href="--baseUrl=/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="--baseUrl=/2022/05/elasticsearch-%E7%B4%A2%E5%BC%95-%E4%BB%A5%E5%8F%8A-mapping/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="--baseUrl=/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="--baseUrl=/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="--baseUrl=/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="--baseUrl=/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" target="_blank" rel="noopener" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      Elasticsearch 索引 以及 mapping
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2022-05-17T00:00:00Z">
+        
+  May 17, 2022
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="--baseUrl=/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="--baseUrl=/categories/features">features</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h3 id="elasticsearch-使用3">Elasticsearch 使用3</h3>
+<p>以下操作都基于kibana 操作</p>
+<h4 id="1-es倒排索引">1: ES倒排索引</h4>
+<pre tabindex="0"><code>概述：倒排索引是全文检索的根基，理解了倒排索引之后才能算是入门了全文检索领域。倒排索引的的概念很简单，也很好
+理解。Elasticsearch/Lucene是如何实现这个结构的呢？
+在7.0以前使用的是TF-IDF算法 7.0 以后是BM25算法
+倒排索引由两部分组成，所有独立的词列表称为索引，词对应的一系列表统称为倒排表。
+索引表，叫 Terms Dictionary ，是由于一系列的Term组成的。
+倒排表，称 Postings List ，即是由所有的Term对应的Postings组成的。
+所有的索引都是以数据结构为载体，以文件形式落地
+</code></pre><h4 id="2索引的curd">2:索引的CURD</h4>
+<pre tabindex="0"><code>1 创建索引 ：PUT /索引名?pretty
+2 查询索引 ：GET /索引名/_search
+3 删除索引 ：DELETE /index?pretty
+4 插入数据 ：PUT /索引名/_doc/id {Json 数据} 
+其中 put 和 post 都可以用作 更新操作 二者的区别就是 put是全量替换 而 post 可以 指定字段更新
+如图所示
+</code></pre><h4 id="3-mapping--映射">3: Mapping- 映射</h4>
+<pre tabindex="0"><code>概念：映射是定义了文档及包含的字段的存储和索引方式的过程。
+分为两种映射方式 dynamic mapping (动态映射或自动映射)  expllcit mapping(静态映射或手工映射或显示映射)
+mapping是处理数据的方式和规则方面做一些限制，如某个字段的数据类型、默认值、分析器、是否被索引等等，这
+些都是映射里面可以设置的，其它就是处理es里面数据的一些使用规则设置也叫做映射，按着最优规则处理数据对性
+能提高很大，因此才需要建立映射，并且需要思考如何建立映射才能对性能更好。
+当不指定是就是动态映射 而 我们第二篇使用时 用了 data 就是使用的 静态映射
+</code></pre><h5 id="如何查看mapping">如何查看mapping</h5>
+<pre tabindex="0"><code>GET /nana_index/_mapping 
+</code></pre><h5 id="两种映射">两种映射</h5>
+<p>Dynamic field mapping :</p>
+<p>整数 （long） 浮点数（float） true|false (boolean) 日期（date）数组（取决于数组中第一个有效值）对象(object)</p>
+<p>字符串（如果不是数字和日期类型，那会被映射成text 和 keyword 两个类型 ）</p>
+<p>Tips : 除了上述字段类型之外，其他类型都必须显示映射，也就是必须手工指定，因为其他类型es无法自动识别</p>
+<p>Explicit field mapping :手动映射 在使用二内就已经用过了 这个手工映射索引 创建以后类型是无法修改的</p>
+<pre tabindex="0"><code>PUT index_test
+{
+  &#34;mappings&#34;: {
+    &#34;properties&#34;: {
+      &#34;field1&#34;: {
+        &#34;type&#34;: &#34;text&#34;
+      }
+    }
+  }
+}
+</code></pre><h5 id="映射参数">映射参数</h5>
+<pre tabindex="0"><code>1  index :是否对创建当前字段创建倒排索引，默认是true 如果不创建索引，该字段不会通过索引被搜索到，但是仍然会在source元数据中展示
+2  analyzer :指定分词器
+3  boost: 对当前字段相关度的评分权重，默认1
+4  coerce: 是否允许强制类型转换 true&#34;1&#34;=&gt;1 false&#34;1&#34;=&lt;1
+5  copy_to : 该参数允许将多个字段的值复制到组字段中，然后可以将其作为单个字段进行查询
+6  doc_values: 为了提升排序和聚合效率，默认true ，如果确定不需要对字段进行排序或聚合，也不需要通过脚本访问字段值，则可以禁用doc值以节省磁盘空间（不支持text 和 annotated_text）
+7  dynamic :控制是否可以动态添加新字段 默认是true 
+8  eager_global_ordinals :用于聚合的字段上，优化聚合性能
+9  enable : 是否创建倒排索引，也可以对字段操作
+10 format : 格式化
+还有其他的参数就不一一赘述了
+</code></pre><h4 id="4-文档的curd">4: 文档的CURD</h4>
+<pre tabindex="0"><code>1）新增
+
+    # 新增单条数据，并指定es的id 为 1
+    PUT nana_index/_doc/1
+    {
+    &#34;name&#34;: &#34;Te Hero&#34;
+    }
+    # 新增单条数据，使用ES自动生成id
+    POST nana_index/_doc
+    {
+    &#34;name&#34;: &#34;Te Hero2&#34;
+    }
+
+    # 使用 op_type 属性，强制执行某种操作
+    PUT nana_index/_doc/1?op_type=create
+    {
+        &#34;name&#34;: &#34;Te Hero3&#34;
+    }
+    注意：op_type=create强制执行时，若id已存在，ES会报“version_conflict_engine_exception”。
+    op_type 属性在实践中同步数据时是有用的，后面讲解数据库与ES的数据同步问题时，nana再为大家详细讲解。
+    我们查询数据，看下效果：GET nana_index/_search
+
+    {
+    &#34;took&#34;: 1,
+    &#34;timed_out&#34;: false,
+    &#34;_shards&#34;: {
+        &#34;total&#34;: 1,
+        &#34;successful&#34;: 1,
+        &#34;skipped&#34;: 0,
+        &#34;failed&#34;: 0
+    },
+    &#34;hits&#34;: {
+        &#34;total&#34;: 2,
+        &#34;max_score&#34;: 1,
+        &#34;hits&#34;: [
+        {
+            &#34;_index&#34;: &#34;nana_index&#34;,
+            &#34;_type&#34;: &#34;_doc&#34;,
+            &#34;_id&#34;: &#34;1&#34;,
+            &#34;_score&#34;: 1,
+            &#34;_source&#34;: {
+            &#34;name&#34;: &#34;Te Hero&#34;
+            }
+        },
+        {
+            &#34;_index&#34;: &#34;nana_index&#34;,
+            &#34;_type&#34;: &#34;_doc&#34;,
+            &#34;_id&#34;: &#34;P7-FCHIBJxE1TMY0WNGN&#34;,
+            &#34;_score&#34;: 1,
+            &#34;_source&#34;: {
+            &#34;name&#34;: &#34;Te Hero2&#34;
+            }
+        }
+        ]
+    }
+    }
+2）修改
+
+    # 根据id，修改单条数据
+    （ps：修改语句和新增语句相同，可以理解为根据ID，存在则更新；不存在则新增）
+    PUT nana_index/_doc/1
+    {
+    &#34;name&#34;: &#34;Te Hero-update&#34;
+    }
+
+    # 根据查询条件id=10，修改name=&#34;更新后的name&#34;（版本冲突而不会导致_update_by_query 中止）
+    POST nana_index/_update_by_query
+    {
+    &#34;script&#34;: {
+        &#34;source&#34;: &#34;ctx._source.name = params.name&#34;,
+        &#34;lang&#34;: &#34;painless&#34;,
+        &#34;params&#34;:{
+        &#34;name&#34;:&#34;更新后的name&#34;
+        }
+    },
+    &#34;query&#34;: {
+        &#34;term&#34;: {
+        &#34;id&#34;: &#34;10&#34;
+        }
+    }
+    }
+
+    关于文档的更新，Update By Query API，对于该API的使用，将其归类为进阶知识，后续章节将为大家更深入的讲解。
+
+3）查询
+
+    # 1、根据id，获取单个数据
+    GET nana_index/_doc/1
+    结果：
+    {
+    &#34;_index&#34;: &#34;nana_index&#34;,
+    &#34;_type&#34;: &#34;_doc&#34;,
+    &#34;_id&#34;: &#34;1&#34;,
+    &#34;_version&#34;: 5,
+    &#34;found&#34;: true,
+    &#34;_source&#34;: {
+        &#34;name&#34;: &#34;Te Hero-update&#34;,
+        &#34;age&#34;: 18
+    }
+    }
+
+    # 2、获取索引下的所有数据
+    GET nana_index/_doc/_search
+    结果：
+    {
+    &#34;took&#34;: 1,
+    &#34;timed_out&#34;: false,
+    &#34;_shards&#34;: {
+        &#34;total&#34;: 1,
+        &#34;successful&#34;: 1,
+        &#34;skipped&#34;: 0,
+        &#34;failed&#34;: 0
+    },
+    &#34;hits&#34;: {
+        &#34;total&#34;: 3,
+        &#34;max_score&#34;: 1,
+        &#34;hits&#34;: [
+        {
+            &#34;_index&#34;: &#34;nana_index&#34;,
+            &#34;_type&#34;: &#34;_doc&#34;,
+            &#34;_id&#34;: &#34;P7-FCHIBJxE1TMY0WNGN&#34;,
+            &#34;_score&#34;: 1,
+            &#34;_source&#34;: {
+            &#34;name&#34;: &#34;Te Hero2&#34;
+            }
+        },
+        {
+            &#34;_index&#34;: &#34;nana_index&#34;,
+            &#34;_type&#34;: &#34;_doc&#34;,
+            &#34;_id&#34;: &#34;_update&#34;,
+            &#34;_score&#34;: 1,
+            &#34;_source&#34;: {
+            &#34;name&#34;: &#34;Te Hero3&#34;
+            }
+        },
+        {
+            &#34;_index&#34;: &#34;nana_index&#34;,
+            &#34;_type&#34;: &#34;_doc&#34;,
+            &#34;_id&#34;: &#34;1&#34;,
+            &#34;_score&#34;: 1,
+            &#34;_source&#34;: {
+            &#34;name&#34;: &#34;Te Hero-update&#34;,
+            &#34;age&#34;: 18
+            }
+        }
+        ]
+    }
+    }
+
+    # 3、条件查询（下一节详细介绍）
+    GET nana_index/_doc/_search
+    {
+    &#34;query&#34;: {
+        &#34;match&#34;: {
+        &#34;name&#34;: &#34;2&#34;
+        }
+    }
+    }
+    结果：
+    {
+    &#34;took&#34;: 1,
+    &#34;timed_out&#34;: false,
+    &#34;_shards&#34;: {
+        &#34;total&#34;: 1,
+        &#34;successful&#34;: 1,
+        &#34;skipped&#34;: 0,
+        &#34;failed&#34;: 0
+    },
+    &#34;hits&#34;: {
+        &#34;total&#34;: 1,
+        &#34;max_score&#34;: 0.9808292,
+        &#34;hits&#34;: [
+        {
+            &#34;_index&#34;: &#34;nana_index&#34;,
+            &#34;_type&#34;: &#34;_doc&#34;,
+            &#34;_id&#34;: &#34;P7-FCHIBJxE1TMY0WNGN&#34;,
+            &#34;_score&#34;: 0.9808292,
+            &#34;_source&#34;: {
+            &#34;name&#34;: &#34;Te Hero2&#34;
+            }
+        }
+        ]
+    }
+    }
+
+4）删除
+
+    # 1、根据id，删除单个数据
+    DELETE nana_index/_doc/1
+
+    # 2、delete by query
+    POST nana_index/_delete_by_query
+    {
+    &#34;query&#34;: {
+        &#34;match&#34;: {
+        &#34;name&#34;: &#34;2&#34;
+        }
+    }
+    }
+</code></pre><h4 id="5-批量操作-bulk-api">5: 批量操作 bulk API</h4>
+<pre tabindex="0"><code># 批量操作
+
+        POST _bulk
+        { &#34;index&#34; : { &#34;_index&#34; : &#34;nana_test1&#34;, &#34;_type&#34; : &#34;_doc&#34;, &#34;_id&#34; : &#34;1&#34; } }
+        { &#34;this_is_field1&#34; : &#34;this_is_index_value&#34; }
+        { &#34;delete&#34; : { &#34;_index&#34; : &#34;nana_test1&#34;, &#34;_type&#34; : &#34;_doc&#34;, &#34;_id&#34; : &#34;2&#34; } }
+        { &#34;create&#34; : { &#34;_index&#34; : &#34;nana_test1&#34;, &#34;_type&#34; : &#34;_doc&#34;, &#34;_id&#34; : &#34;3&#34; } }
+        { &#34;this_is_field3&#34; : &#34;this_is_create_value&#34; }
+        { &#34;update&#34; : {&#34;_id&#34; : &#34;1&#34;, &#34;_type&#34; : &#34;_doc&#34;, &#34;_index&#34; : &#34;nana_test1&#34;} }
+        { &#34;doc&#34; : {&#34;this_is_field2&#34; : &#34;this_is_update_value&#34;} }
+
+# 查询所有数据
+        GET nana_test1/_doc/_search
+        结果：
+        {
+        &#34;took&#34;: 33,
+        &#34;timed_out&#34;: false,
+        &#34;_shards&#34;: {
+            &#34;total&#34;: 5,
+            &#34;successful&#34;: 5,
+            &#34;skipped&#34;: 0,
+            &#34;failed&#34;: 0
+        },
+        &#34;hits&#34;: {
+            &#34;total&#34;: 2,
+            &#34;max_score&#34;: 1,
+            &#34;hits&#34;: [
+            {
+                &#34;_index&#34;: &#34;nana_test1&#34;,
+                &#34;_type&#34;: &#34;_doc&#34;,
+                &#34;_id&#34;: &#34;1&#34;,
+                &#34;_score&#34;: 1,
+                &#34;_source&#34;: {
+                &#34;this_is_field1&#34;: &#34;this_is_index_value&#34;,
+                &#34;this_is_field2&#34;: &#34;this_is_update_value&#34;
+                }
+            },
+            {
+                &#34;_index&#34;: &#34;nana_test1&#34;,
+                &#34;_type&#34;: &#34;_doc&#34;,
+                &#34;_id&#34;: &#34;3&#34;,
+                &#34;_score&#34;: 1,
+                &#34;_source&#34;: {
+                &#34;this_is_field3&#34;: &#34;this_is_create_value&#34;
+                }
+            }
+            ]
+        }
+        }
+</code></pre>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="--baseUrl=/tags/elasticsearch/">Elasticsearch</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/05/elasticsearch-ik-%E5%88%86%E8%AF%8D%E5%99%A8%E7%9A%84%E5%AE%89%E8%A3%85/" data-tooltip="Elasticsearch ik 分词器的安装 " aria-label="NEXT: Elasticsearch ik 分词器的安装 ">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/05/elasticsearch-python-aioelasticsearch-%E6%93%8D%E4%BD%9C/" data-tooltip="Elasticsearch python  aioelasticsearch 操作" aria-label="PREVIOUS: Elasticsearch python  aioelasticsearch 操作">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2022/05/elasticsearch-%E7%B4%A2%E5%BC%95-%E4%BB%A5%E5%8F%8A-mapping/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2022/05/elasticsearch-%E7%B4%A2%E5%BC%95-%E4%BB%A5%E5%8F%8A-mapping/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2022/05/elasticsearch-%E7%B4%A2%E5%BC%95-%E4%BB%A5%E5%8F%8A-mapping/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '--baseUrl=\/2022\/05\/elasticsearch-%E7%B4%A2%E5%BC%95-%E4%BB%A5%E5%8F%8A-mapping\/';
+        
+          this.page.identifier = '\/2022\/05\/elasticsearch-%E7%B4%A2%E5%BC%95-%E4%BB%A5%E5%8F%8A-mapping\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2023 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/05/elasticsearch-ik-%E5%88%86%E8%AF%8D%E5%99%A8%E7%9A%84%E5%AE%89%E8%A3%85/" data-tooltip="Elasticsearch ik 分词器的安装 " aria-label="NEXT: Elasticsearch ik 分词器的安装 ">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/05/elasticsearch-python-aioelasticsearch-%E6%93%8D%E4%BD%9C/" data-tooltip="Elasticsearch python  aioelasticsearch 操作" aria-label="PREVIOUS: Elasticsearch python  aioelasticsearch 操作">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2022/05/elasticsearch-%E7%B4%A2%E5%BC%95-%E4%BB%A5%E5%8F%8A-mapping/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2022/05/elasticsearch-%E7%B4%A2%E5%BC%95-%E4%BB%A5%E5%8F%8A-mapping/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2022/05/elasticsearch-%E7%B4%A2%E5%BC%95-%E4%BB%A5%E5%8F%8A-mapping/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl%3D%2F2022%2F05%2Felasticsearch-%25E7%25B4%25A2%25E5%25BC%2595-%25E4%25BB%25A5%25E5%258F%258A-mapping%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl%3D%2F2022%2F05%2Felasticsearch-%25E7%25B4%25A2%25E5%25BC%2595-%25E4%25BB%25A5%25E5%258F%258A-mapping%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl%3D%2F2022%2F05%2Felasticsearch-%25E7%25B4%25A2%25E5%25BC%2595-%25E4%25BB%25A5%25E5%258F%258A-mapping%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('--baseUrl=/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="--baseUrl=/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

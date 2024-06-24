@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "",
+  
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "\/1\/01\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "初识 gin 1:gin 是什么 Gin是一个golang的微框架，封装比较优雅，API友好, 源代码比较明确。 具有快速灵活，容错方便等特点。其实对于golang而言，web框架的依赖远比Python，Java之类的要小。自身的net/http足够简单，性能也非常不错。框架更像是一个常用函数或者工具的集合。借助框架开发，不仅可以省去很多常用的封装带来的时间，也有助于团队的编码风格和形成规范。 gin 官方网址 ： https://gin-gonic.com/ github 地址： https://github.com/gin-gonic/gin Gin特点和特性 速度： Gin之所以被很多企业和团队使用，第一个原因是因为速度快，性能表现出众 中间件: 和iris类似, gin在处理请求时,支持中间件操作, 方便编码处理 路由: gin中可以非常简单的实现路由解析功能，并包含路由组解析功能 内置渲染: Gin支持JSON、XML和HTML等多种数据格式的渲染， 并提供了方便的操作API 官方文档很好用: https://gin-gonic.com/docs/ 2:直接上手使用gin框架 环境配置 ： mac 环境 ida: idea 2021.3 （选择这个是因为多种语言都可以兼顾） go version : go version go1.19.6 第一步我们新建一个项目 gin_demo 然后在此文件下新建一个go mod 文件 (类似于java中的maven) 下一步安装gin 所有go 的安装包使用的都是 go get 命令 go get -u github.com/gin-gonic/gin 在下一步 GoModules 中的 enable 一定要勾选中 1、Preferences -\u0026gt; Plugins 搜索 Go、File Watchers 两个扩展进行安装 2、Preferences -\u0026gt; Languages \u0026amp; Frameworks -\u0026gt; Go 配置GoROOT、GoPATH、GoModules 下面我们直接写一个最基本 demo package main import ( \u0026quot;github.",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.88.1 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="初识 gin 1:gin 是什么 Gin是一个golang的微框架，封装比较优雅，API友好, 源代码比较明确。 具有快速灵活，容错方便等特点。其实对于golang而言，web框架的依赖远比Python，Java之类的要小。自身的net/http足够简单，性能也非常不错。框架更像是一个常用函数或者工具的集合。借助框架开发，不仅可以省去很多常用的封装带来的时间，也有助于团队的编码风格和形成规范。 gin 官方网址 ： https://gin-gonic.com/ github 地址： https://github.com/gin-gonic/gin Gin特点和特性 速度： Gin之所以被很多企业和团队使用，第一个原因是因为速度快，性能表现出众 中间件: 和iris类似, gin在处理请求时,支持中间件操作, 方便编码处理 路由: gin中可以非常简单的实现路由解析功能，并包含路由组解析功能 内置渲染: Gin支持JSON、XML和HTML等多种数据格式的渲染， 并提供了方便的操作API 官方文档很好用: https://gin-gonic.com/docs/ 2:直接上手使用gin框架 环境配置 ： mac 环境 ida: idea 2021.3 （选择这个是因为多种语言都可以兼顾） go version : go version go1.19.6 第一步我们新建一个项目 gin_demo 然后在此文件下新建一个go mod 文件 (类似于java中的maven) 下一步安装gin 所有go 的安装包使用的都是 go get 命令 go get -u github.com/gin-gonic/gin 在下一步 GoModules 中的 enable 一定要勾选中 1、Preferences -&gt; Plugins 搜索 Go、File Watchers 两个扩展进行安装 2、Preferences -&gt; Languages &amp; Frameworks -&gt; Go 配置GoROOT、GoPATH、GoModules 下面我们直接写一个最基本 demo package main import ( &quot;github.">
+
+
+<meta property="og:description" content="初识 gin 1:gin 是什么 Gin是一个golang的微框架，封装比较优雅，API友好, 源代码比较明确。 具有快速灵活，容错方便等特点。其实对于golang而言，web框架的依赖远比Python，Java之类的要小。自身的net/http足够简单，性能也非常不错。框架更像是一个常用函数或者工具的集合。借助框架开发，不仅可以省去很多常用的封装带来的时间，也有助于团队的编码风格和形成规范。 gin 官方网址 ： https://gin-gonic.com/ github 地址： https://github.com/gin-gonic/gin Gin特点和特性 速度： Gin之所以被很多企业和团队使用，第一个原因是因为速度快，性能表现出众 中间件: 和iris类似, gin在处理请求时,支持中间件操作, 方便编码处理 路由: gin中可以非常简单的实现路由解析功能，并包含路由组解析功能 内置渲染: Gin支持JSON、XML和HTML等多种数据格式的渲染， 并提供了方便的操作API 官方文档很好用: https://gin-gonic.com/docs/ 2:直接上手使用gin框架 环境配置 ： mac 环境 ida: idea 2021.3 （选择这个是因为多种语言都可以兼顾） go version : go version go1.19.6 第一步我们新建一个项目 gin_demo 然后在此文件下新建一个go mod 文件 (类似于java中的maven) 下一步安装gin 所有go 的安装包使用的都是 go get 命令 go get -u github.com/gin-gonic/gin 在下一步 GoModules 中的 enable 一定要勾选中 1、Preferences -&gt; Plugins 搜索 Go、File Watchers 两个扩展进行安装 2、Preferences -&gt; Languages &amp; Frameworks -&gt; Go 配置GoROOT、GoPATH、GoModules 下面我们直接写一个最基本 demo package main import ( &quot;github.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hugo tranquilpeak theme">
+<meta name="twitter:title" content="Hugo tranquilpeak theme">
+<meta property="og:url" content="/1/01/">
+<meta property="twitter:url" content="/1/01/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="初识 gin 1:gin 是什么 Gin是一个golang的微框架，封装比较优雅，API友好, 源代码比较明确。 具有快速灵活，容错方便等特点。其实对于golang而言，web框架的依赖远比Python，Java之类的要小。自身的net/http足够简单，性能也非常不错。框架更像是一个常用函数或者工具的集合。借助框架开发，不仅可以省去很多常用的封装带来的时间，也有助于团队的编码风格和形成规范。 gin 官方网址 ： https://gin-gonic.com/ github 地址： https://github.com/gin-gonic/gin Gin特点和特性 速度： Gin之所以被很多企业和团队使用，第一个原因是因为速度快，性能表现出众 中间件: 和iris类似, gin在处理请求时,支持中间件操作, 方便编码处理 路由: gin中可以非常简单的实现路由解析功能，并包含路由组解析功能 内置渲染: Gin支持JSON、XML和HTML等多种数据格式的渲染， 并提供了方便的操作API 官方文档很好用: https://gin-gonic.com/docs/ 2:直接上手使用gin框架 环境配置 ： mac 环境 ida: idea 2021.3 （选择这个是因为多种语言都可以兼顾） go version : go version go1.19.6 第一步我们新建一个项目 gin_demo 然后在此文件下新建一个go mod 文件 (类似于java中的maven) 下一步安装gin 所有go 的安装包使用的都是 go get 命令 go get -u github.com/gin-gonic/gin 在下一步 GoModules 中的 enable 一定要勾选中 1、Preferences -&gt; Plugins 搜索 Go、File Watchers 两个扩展进行安装 2、Preferences -&gt; Languages &amp; Frameworks -&gt; Go 配置GoROOT、GoPATH、GoModules 下面我们直接写一个最基本 demo package main import ( &quot;github.">
+<meta name="twitter:description" content="初识 gin 1:gin 是什么 Gin是一个golang的微框架，封装比较优雅，API友好, 源代码比较明确。 具有快速灵活，容错方便等特点。其实对于golang而言，web框架的依赖远比Python，Java之类的要小。自身的net/http足够简单，性能也非常不错。框架更像是一个常用函数或者工具的集合。借助框架开发，不仅可以省去很多常用的封装带来的时间，也有助于团队的编码风格和形成规范。 gin 官方网址 ： https://gin-gonic.com/ github 地址： https://github.com/gin-gonic/gin Gin特点和特性 速度： Gin之所以被很多企业和团队使用，第一个原因是因为速度快，性能表现出众 中间件: 和iris类似, gin在处理请求时,支持中间件操作, 方便编码处理 路由: gin中可以非常简单的实现路由解析功能，并包含路由组解析功能 内置渲染: Gin支持JSON、XML和HTML等多种数据格式的渲染， 并提供了方便的操作API 官方文档很好用: https://gin-gonic.com/docs/ 2:直接上手使用gin框架 环境配置 ： mac 环境 ida: idea 2021.3 （选择这个是因为多种语言都可以兼顾） go version : go version go1.19.6 第一步我们新建一个项目 gin_demo 然后在此文件下新建一个go mod 文件 (类似于java中的maven) 下一步安装gin 所有go 的安装包使用的都是 go get 命令 go get -u github.com/gin-gonic/gin 在下一步 GoModules 中的 enable 一定要勾选中 1、Preferences -&gt; Plugins 搜索 Go、File Watchers 两个扩展进行安装 2、Preferences -&gt; Languages &amp; Frameworks -&gt; Go 配置GoROOT、GoPATH、GoModules 下面我们直接写一个最基本 demo package main import ( &quot;github.">
+<meta property="og:locale" content="en-us">
+
+  
+  
+  
+  
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>Hugo tranquilpeak theme</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/1/01/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="0001-01-01T00:00:00Z">
+        
+  January 1, 1
+
+      </time>
+    
+    
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h3 id="初识-gin">初识 gin</h3>
+<h4 id="1gin-是什么">1:gin 是什么</h4>
+<pre tabindex="0"><code>Gin是一个golang的微框架，封装比较优雅，API友好, 源代码比较明确。 具有快速灵活，容错方便等特点。其实对于golang而言，web框架的依赖远比Python，Java之类的要小。自身的net/http足够简单，性能也非常不错。框架更像是一个常用函数或者工具的集合。借助框架开发，不仅可以省去很多常用的封装带来的时间，也有助于团队的编码风格和形成规范。
+
+gin 官方网址 ： https://gin-gonic.com/
+github 地址：   https://github.com/gin-gonic/gin
+
+Gin特点和特性
+
+速度： Gin之所以被很多企业和团队使用，第一个原因是因为速度快，性能表现出众
+中间件: 和iris类似, gin在处理请求时,支持中间件操作, 方便编码处理
+路由: gin中可以非常简单的实现路由解析功能，并包含路由组解析功能
+内置渲染: Gin支持JSON、XML和HTML等多种数据格式的渲染， 并提供了方便的操作API
+
+
+官方文档很好用: https://gin-gonic.com/docs/
+
+
+</code></pre><h4 id="2直接上手使用gin框架">2:直接上手使用gin框架</h4>
+<pre tabindex="0"><code>环境配置 ： mac 环境
+ida: idea 2021.3 （选择这个是因为多种语言都可以兼顾）
+go version : go version go1.19.6 
+
+第一步我们新建一个项目 gin_demo 然后在此文件下新建一个go mod 文件 (类似于java中的maven)
+
+下一步安装gin  所有go 的安装包使用的都是 go get 命令
+go get -u github.com/gin-gonic/gin
+
+在下一步 GoModules 中的 enable 一定要勾选中
+1、Preferences -&gt; Plugins 搜索 Go、File Watchers 两个扩展进行安装
+2、Preferences -&gt; Languages &amp; Frameworks -&gt; Go 配置GoROOT、GoPATH、GoModules
+
+
+
+下面我们直接写一个最基本 demo
+
+
+package main
+
+import (
+	&quot;github.com/gin-gonic/gin&quot;
+	&quot;github.com/thinkerou/favicon&quot;
+)
+
+func main() {
+	// 创建一个服务
+	ginServer := gin.Default()
+
+	ginServer.Use(favicon.New(&quot;./favicon.ico&quot;))
+	// 访问地址 ，处理请求
+	ginServer.GET(&quot;/hello&quot;, func(context *gin.Context) {
+		context.JSON(200, gin.H{&quot;msg&quot;: &quot;hello,world&quot;})
+	})
+	// RESTFUL 风格
+	ginServer.GET(&quot;/world&quot;, World)
+
+	// 服务器端口
+	ginServer.Run(&quot;:8009&quot;)
+}
+
+func World(context *gin.Context) {
+
+	context.JSON(200, gin.H{&quot;msg&quot;: &quot;hello111,world&quot;})
+
+}
+
+
+
+通过浏览器打开 http://127.0.0.1:8009/hello
+
+即可获得数据，这就说明我们的 gin基础访问 已经成功了
+</code></pre><h4 id="3restful-api">3:Restful API</h4>
+<pre tabindex="0"><code>只要是一个web框架就一定是带有restful 的风格 ，gin也不例外
+
+get post put delete 
+
+在此内部也可以使用post 请求
+
+
+	ginServer.POST(&quot;/user&quot;, func(c *gin.Context) {
+		c.JSON(200, gin.H{&quot;msg&quot;: &quot;hello111,world&quot;})
+	})
+
+我们也可以去加载一个静态页面
+
+我们先写一个css 的样式
+body{
+    background: darkturquoise;
+}
+在写一个js 的基础模版
+alert(&quot;加载成功&quot;)
+
+
+我们在先写一个静态页面的html
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;这个是一个测试页面&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;这里是一段测试的文字&lt;/h1&gt;
+    {{.msg}}
+&lt;/body&gt;
+&lt;/html&gt;
+
+
+
+
+接下来我们看怎么去加载 只需要一个 ginServer.LoadHTMLGlob 加载静态目录  给出的响应c.HTML即可
+然后
+
+package main
+
+import (
+	&quot;github.com/gin-gonic/gin&quot;
+	&quot;github.com/thinkerou/favicon&quot;
+	&quot;net/http&quot;
+)
+
+func main() {
+	// 创建一个服务
+	ginServer := gin.Default()
+
+	ginServer.Use(favicon.New(&quot;./favicon.ico&quot;))
+	// 访问地址 ，处理请求
+	ginServer.GET(&quot;/hello&quot;, func(context *gin.Context) {
+		context.JSON(200, gin.H{&quot;msg&quot;: &quot;hello,world&quot;})
+	})
+	// RESTFUL 风格
+	ginServer.GET(&quot;/world&quot;, World)
+
+	ginServer.POST(&quot;/user&quot;, func(c *gin.Context) {
+		c.JSON(200, gin.H{&quot;msg&quot;: &quot;hello111,world&quot;})
+	})
+
+	// 加载静态页面
+	ginServer.LoadHTMLGlob(&quot;templates/*&quot;)
+	// 加载资源文件
+	ginServer.Static(&quot;/static&quot;, &quot;static&quot;)
+
+	// 响应一个页面给前端
+	ginServer.GET(&quot;/index&quot;, func(c *gin.Context) {
+		c.HTML(http.StatusOK, &quot;test.html&quot;, gin.H{&quot;msg&quot;: &quot;这是go传过来的测试数据&quot;})
+	})
+
+	// 服务器端口
+	ginServer.Run(&quot;:8009&quot;)
+}
+
+func World(context *gin.Context) {
+
+	context.JSON(200, gin.H{&quot;msg&quot;: &quot;hello111,world&quot;})
+
+}
+
+所以 静态页面也是可以通过gin 去 执行的 
+
+
+</code></pre><h4 id="4-传参">4: 传参</h4>
+<pre tabindex="0"><code>gin 的 传参方式也是相对简单的 下面看一个例子
+比如 get post restful 或者重定向 表单都可以
+
+	// url?userid=xxx&amp;username=xxx
+	ginServer.GET(&quot;/user/info&quot;, func(context *gin.Context) {
+		userid := context.Query(&quot;userid&quot;)
+		context.JSON(http.StatusOK, gin.H{
+			&quot;userid&quot;:   userid,
+			&quot;username&quot;: &quot;张三&quot;,
+		})
+	})
+
+	// restful 风格传参
+	ginServer.GET(&quot;user/info2/:userid/&quot;, func(context *gin.Context) {
+		userid := context.Param(&quot;userid&quot;)
+		context.JSON(http.StatusOK, gin.H{
+			&quot;userid&quot;:   userid,
+			&quot;username&quot;: &quot;张三&quot;,
+		})
+	})
+
+	// 前端给后端传递 json
+	ginServer.POST(&quot;/json&quot;, func(context *gin.Context) {
+		// request.body  【】byte 获取到的是切片数据
+		data, _ := context.GetRawData()
+		var m map[string]interface{}
+		// 包装为json 数据 []byte
+		_ = json.Unmarshal(data, &amp;m)
+		context.JSON(http.StatusOK, m)
+
+	})
+
+	// 支持函数式编程
+	ginServer.POST(&quot;/user/add&quot;, func(context *gin.Context) {
+
+		username := context.PostForm(&quot;username&quot;)
+		password := context.PostForm(&quot;password&quot;)
+
+		context.JSON(http.StatusOK, gin.H{
+			&quot;msg&quot;:      &quot;ok&quot;,
+			&quot;username&quot;: username,
+			&quot;password&quot;: password,
+		})
+
+	})
+	
+	// 404
+	
+	
+	
+	// 路由  重定向
+	ginServer.GET(&quot;/test&quot;, func(context *gin.Context) {
+		context.Redirect(http.StatusMovedPermanently, &quot;https://wwww.baidu.com&quot;)
+
+	})
+
+
+
+	// 404 NoRoute
+	ginServer.NoRoute(func(context *gin.Context) {
+		context.HTML(http.StatusNotFound, &quot;404.html&quot;, nil)
+	})
+
+	// 路由组
+	userGroup := ginServer.Group(&quot;/user&quot;)
+	{
+		userGroup.GET(&quot;/add&quot;)
+		userGroup.GET(&quot;/login&quot;)
+		userGroup.GET(&quot;/logout&quot;)
+	}
+	orderGroup := ginServer.Group(&quot;/order&quot;)
+	{
+		orderGroup.GET(&quot;/order&quot;)
+		orderGroup.GET(&quot;/delete&quot;)
+	}
+</code></pre><h4 id="5-自定义中间件-拦截器">5 自定义中间件 拦截器</h4>
+<pre tabindex="0"><code>中间件 也是gin 会自带的一个处理方式 
+
+// 自定义 GO 中间件 拦截器
+// 预处理 登陆授权 验证 分页 耗时统计  具体逻辑可以自定义
+func myHandler() gin.HandlerFunc {
+
+	return func(context *gin.Context) {
+		// 通过自定义 的中间件，设置的值 ，在后续处理只要调用了中间件的都可以拿到这里的参数
+		context.Set(&quot;usersion&quot;, &quot;userid-1&quot;)
+		context.Next()  // 放行
+		context.Abort() // 组织
+
+	}
+
+}
+
+
+gin 注册使用 一下
+	// 注册中间件服务 如果指定就是全局使用
+	ginServer.Use(myHandler())
+	
+// 指定使用 就是直接在 GET 内加参数即可 在路由后面加参数即可 
+	ginServer.GET(&quot;/test&quot;, myHandler(), func(context *gin.Context) {
+
+		usersession := context.MustGet(&quot;userSession&quot;).(string)
+		log.Panicln(&quot;=======&gt;&gt;&gt;&quot;, usersession)
+		context.Redirect(http.StatusMovedPermanently, &quot;https://wwww.baidu.com&quot;)
+
+	})
+
+</code></pre><h4 id="6-多线程">6: 多线程</h4>
+<pre tabindex="0"><code>func main() {
+
+	// go 携程
+	go test()
+
+	for i := 0; i &lt; 1000; i++ {
+		fmt.Println(&quot;main=&gt;&quot;, i)
+	}
+	time.Sleep(time.Second * 3)
+}
+
+func test() {
+	for i := 0; i &lt; 1000; i++ {
+		fmt.Println(&quot;test----&gt;&quot;)
+	}
+}
+
+可以看到 两个循环是有交替执行 的这就是携程 并不会存在一个执行完上一个在执行下一个的等待操作
+test----&gt;
+test----&gt;
+main=&gt; 389
+main=&gt; 390
+main=&gt; 391
+
+</code></pre>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2018/04/go-lang-hugo%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B9%B6%E4%BD%BF%E7%94%A8gitpages%E8%BF%9B%E8%A1%8C%E9%83%A8%E7%BD%B2/" data-tooltip="GO Lang &#43; Hugo建立一个简单的博客并使用gitpages进行部署" aria-label="NEXT: GO Lang &#43; Hugo建立一个简单的博客并使用gitpages进行部署">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/1/01/playwright-%E4%BB%8B%E7%BB%8D%E5%92%8C%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" data-tooltip="playwright 介绍和简单使用" aria-label="PREVIOUS: playwright 介绍和简单使用">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/1/01/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/1/01/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=/1/01/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '\/1\/01\/';
+        
+          this.page.identifier = '\/1\/01\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2023 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2018/04/go-lang-hugo%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B9%B6%E4%BD%BF%E7%94%A8gitpages%E8%BF%9B%E8%A1%8C%E9%83%A8%E7%BD%B2/" data-tooltip="GO Lang &#43; Hugo建立一个简单的博客并使用gitpages进行部署" aria-label="NEXT: GO Lang &#43; Hugo建立一个简单的博客并使用gitpages进行部署">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/1/01/playwright-%E4%BB%8B%E7%BB%8D%E5%92%8C%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" data-tooltip="playwright 介绍和简单使用" aria-label="PREVIOUS: playwright 介绍和简单使用">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/1/01/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/1/01/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=/1/01/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F1%2F01%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F1%2F01%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=%2F1%2F01%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

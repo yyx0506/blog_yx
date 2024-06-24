@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>短链 on Hugo tranquilpeak theme</title>
+    <link>--baseUrl=/tags/%E7%9F%AD%E9%93%BE/</link>
+    <description>Recent content in 短链 on Hugo tranquilpeak theme</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 03 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="--baseUrl=/tags/%E7%9F%AD%E9%93%BE/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>python 短链</title>
+      <link>--baseUrl=/2022/07/python-%E7%9F%AD%E9%93%BE/</link>
+      <pubDate>Sun, 03 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/07/python-%E7%9F%AD%E9%93%BE/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

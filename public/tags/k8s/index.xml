@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>k8s on Hugo tranquilpeak theme</title>
+    <link>--baseUrl=/tags/k8s/</link>
+    <description>Recent content in k8s on Hugo tranquilpeak theme</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 13 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="--baseUrl=/tags/k8s/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>K8s 和docker 的关系</title>
+      <link>--baseUrl=/2022/11/k8s-%E5%92%8Cdocker-%E7%9A%84%E5%85%B3%E7%B3%BB/</link>
+      <pubDate>Sun, 13 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/11/k8s-%E5%92%8Cdocker-%E7%9A%84%E5%85%B3%E7%B3%BB/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>k8s 配置文件</title>
+      <link>--baseUrl=/2022/11/k8s-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/</link>
+      <pubDate>Fri, 11 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/11/k8s-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>K8s 部署各种服务</title>
+      <link>--baseUrl=/2022/11/k8s-%E9%83%A8%E7%BD%B2%E5%90%84%E7%A7%8D%E6%9C%8D%E5%8A%A1/</link>
+      <pubDate>Thu, 10 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/11/k8s-%E9%83%A8%E7%BD%B2%E5%90%84%E7%A7%8D%E6%9C%8D%E5%8A%A1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kubesphere 搭建k8s 集群 以及新增Node 节点</title>
+      <link>--baseUrl=/2022/11/kubesphere-%E6%90%AD%E5%BB%BAk8s-%E9%9B%86%E7%BE%A4-%E4%BB%A5%E5%8F%8A%E6%96%B0%E5%A2%9Enode-%E8%8A%82%E7%82%B9/</link>
+      <pubDate>Wed, 09 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/11/kubesphere-%E6%90%AD%E5%BB%BAk8s-%E9%9B%86%E7%BE%A4-%E4%BB%A5%E5%8F%8A%E6%96%B0%E5%A2%9Enode-%E8%8A%82%E7%82%B9/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>k8s 使用</title>
+      <link>--baseUrl=/2022/10/k8s-%E4%BD%BF%E7%94%A8/</link>
+      <pubDate>Mon, 17 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/10/k8s-%E4%BD%BF%E7%94%A8/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>k8s 介绍</title>
+      <link>--baseUrl=/2022/07/k8s-%E4%BB%8B%E7%BB%8D/</link>
+      <pubDate>Sat, 02 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/07/k8s-%E4%BB%8B%E7%BB%8D/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

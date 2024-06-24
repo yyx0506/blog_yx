@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "go 的ORM",
+  
+  "datePublished": "2023-07-13T00:00:00Z",
+  "dateModified": "2023-07-13T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "--baseUrl=\/2023\/07\/go-%E7%9A%84orm\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.114.1 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="go 的ORM">
+<meta name="twitter:title" content="go 的ORM">
+<meta property="og:url" content="--baseUrl=/2023/07/go-%E7%9A%84orm/">
+<meta property="twitter:url" content="--baseUrl=/2023/07/go-%E7%9A%84orm/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2023-07-13T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2023-07-13T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="features">
+    
+  
+  
+    
+      <meta property="article:tag" content="golang">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>go 的ORM</title>
+
+    <link rel="icon" href="--baseUrl=/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="--baseUrl=/2023/07/go-%E7%9A%84orm/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="--baseUrl=/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="--baseUrl=/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="--baseUrl=/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="--baseUrl=/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" target="_blank" rel="noopener" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      go 的ORM
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2023-07-13T00:00:00Z">
+        
+  July 13, 2023
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="--baseUrl=/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="--baseUrl=/categories/features">features</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h4 id="go-的orm">go 的ORM</h4>
+<h4 id="1xorm和gorm的区别">1:XORM和GORM的区别</h4>
+<p>Xorm和GORM是两个流行的Go语言对象关系映射（ORM）库，用于简化数据库访问和操作。</p>
+<p>Xorm是一个轻量级的ORM库，支持多种关系型数据库，包括MySQL、PostgreSQL、SQLite、Microsoft SQL Server等。它提供了丰富的特性，如自动映射数据库表和Go结构体、事务支持、查询构建器、缓存等。Xorm具有较高的灵活性和可定制性，可以根据需求进行调整和扩展。</p>
+<p>GORM（全称为Go ORM）是另一个流行的Go语言ORM库，目标是提供简单、强大且易于使用的数据库操作接口。它支持多种数据库，包括MySQL、PostgreSQL、SQLite和Microsoft SQL Server等。GORM提供了类似于Active Record的查询语法和链式调用，使得编写和执行数据库查询变得简单和直观。它还提供了一些额外的功能，如数据库迁移、事务支持、预加载关联数据等。</p>
+<p>虽然Xorm和GORM都是用于Go语言的ORM库，它们在设计和使用方式上略有不同。Xorm更加注重灵活性和可定制性，适用于复杂的数据库操作场景，而GORM则更加注重简洁性和易用性，适用于快速开发和简单的查询操作。选择使用哪个库取决于个人喜好和项目需求，你可以根据自己的情况选择适合的库进行数据库操作。</p>
+<h4 id="2关于gorm">2:关于gorm</h4>
+<p>官方文档链接https://gorm.io/zh_CN/docs/index.html</p>
+<p>作者是一位国人，非常强大</p>
+<p>特性</p>
+<ul>
+<li>全功能 ORM</li>
+<li>关联 (Has One，Has Many，Belongs To，Many To Many，多态，单表继承)</li>
+<li>Create，Save，Update，Delete，Find 中钩子方法</li>
+<li>支持 <code>Preload</code>、<code>Joins</code> 的预加载</li>
+<li>事务，嵌套事务，Save Point，Rollback To Saved Point</li>
+<li>Context、预编译模式、DryRun 模式</li>
+<li>批量插入，FindInBatches，Find/Create with Map，使用 SQL 表达式、Context Valuer 进行 CRUD</li>
+<li>SQL 构建器，Upsert，数据库锁，Optimizer/Index/Comment Hint，命名参数，子查询</li>
+<li>复合主键，索引，约束</li>
+<li>Auto Migration</li>
+<li>自定义 Logger</li>
+<li>灵活的可扩展插件 API：Database Resolver（多数据库，读写分离）、Prometheus…</li>
+<li>每个特性都经过了测试的重重考验</li>
+<li>开发者友好</li>
+</ul>
+<p>第一步安装</p>
+<pre tabindex="0"><code>go get -u gorm.io/gorm
+go get -u gorm.io/driver/sqlite
+</code></pre><h4 id="3gorm的应用">3:gorm的应用</h4>
+<p>快速入门</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">//首先我们先写一个gorm 单例连接代码
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">gormMysql</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;gorm.io/driver/mysql&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;gorm.io/gorm&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;sync&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">dbInstances</span> <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">DB</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">once</span>        <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">Once</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">lock</span>        <span style="color:#a6e22e">sync</span>.<span style="color:#a6e22e">Mutex</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// DatabaseConfig 存储数据库连接配置信息
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">DatabaseConfig</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Domain</span>   <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Port</span>     <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Username</span> <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Password</span> <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Database</span> <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">GetDBInstance</span>(<span style="color:#a6e22e">config</span> <span style="color:#a6e22e">DatabaseConfig</span>) (<span style="color:#f92672">*</span><span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">DB</span>, <span style="color:#66d9ef">error</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">once</span>.<span style="color:#a6e22e">Do</span>(<span style="color:#66d9ef">func</span>() {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">dbInstances</span> = make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#f92672">*</span><span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">DB</span>)
+</span></span><span style="display:flex;"><span>	})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">lock</span>.<span style="color:#a6e22e">Lock</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">lock</span>.<span style="color:#a6e22e">Unlock</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">key</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%s:%s@tcp(%s:%s)/%s&#34;</span>, <span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">Username</span>, <span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">Password</span>, <span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">Domain</span>, <span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">Port</span>, <span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">Database</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">db</span>, <span style="color:#a6e22e">ok</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">dbInstances</span>[<span style="color:#a6e22e">key</span>]; <span style="color:#a6e22e">ok</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">db</span>, <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// 创建数据库连接
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">dsn</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&amp;parseTime=True&amp;loc=Local&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">Username</span>, <span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">Password</span>, <span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">Domain</span>, <span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">Port</span>, <span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">Database</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">dbInstance</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#a6e22e">mysql</span>.<span style="color:#a6e22e">Open</span>(<span style="color:#a6e22e">dsn</span>), <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">gorm</span>.<span style="color:#a6e22e">Config</span>{})
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;创建数据库连接失败:&#34;</span>, <span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">dbInstances</span>[<span style="color:#a6e22e">key</span>] = <span style="color:#a6e22e">dbInstance</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">dbInstance</span>, <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">var</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">GormMysqlConfigs</span> = <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#a6e22e">DatabaseConfig</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#e6db74">&#34;config1&#34;</span>: {
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">Domain</span>:   <span style="color:#e6db74">&#34;example1.com&#34;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">Port</span>:     <span style="color:#e6db74">&#34;3306&#34;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">Username</span>: <span style="color:#e6db74">&#34;user1&#34;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">Password</span>: <span style="color:#e6db74">&#34;password1&#34;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#a6e22e">Database</span>: <span style="color:#e6db74">&#34;database1&#34;</span>,
+</span></span><span style="display:flex;"><span>		},
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 后面可以根据情况追加各种配置
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	}
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 然后我们声明一下模型 关于模型的其他配置可以查看官网https://gorm.io/zh_CN/docs/models.html
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">models</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;time&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Users</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">ID</span>          <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Name</span>        <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Age</span>         <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Birthday</span>    <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">CreatedAt</span>   <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span> <span style="color:#75715e">// 在创建时，如果该字段值为零值，则使用当前时间填充
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">UpdatedAt</span>   <span style="color:#66d9ef">int</span>       <span style="color:#75715e">// 在创建时该字段值为零值或者在更新时，使用当前时间戳秒数填充
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">UpdatedNano</span> <span style="color:#66d9ef">int64</span>     <span style="color:#e6db74">`gorm:&#34;autoUpdateTime:nano&#34;`</span> <span style="color:#75715e">// 使用时间戳纳秒数填充更新时间
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">Created</span>     <span style="color:#66d9ef">int64</span>     <span style="color:#e6db74">`gorm:&#34;autoCreateTime&#34;`</span>      <span style="color:#75715e">// 使用时间戳秒数填充创建时间
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 关于字段的控制 gorm 也做了要求
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Users</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;&lt;-:create&#34;`</span> <span style="color:#75715e">// 允许读和创建
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;&lt;-:update&#34;`</span> <span style="color:#75715e">// 允许读和更新
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;&lt;-&#34;`</span>        <span style="color:#75715e">// 允许读和写（创建和更新）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;&lt;-:false&#34;`</span>  <span style="color:#75715e">// 允许读，禁止写
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;-&gt;&#34;`</span>        <span style="color:#75715e">// 只读（除非有自定义配置，否则禁止写）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;-&gt;;&lt;-:create&#34;`</span> <span style="color:#75715e">// 允许读和写
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;-&gt;:false;&lt;-:create&#34;`</span> <span style="color:#75715e">// 仅创建（禁止从 db 读）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;-&#34;`</span>  <span style="color:#75715e">// 通过 struct 读写会忽略该字段
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;-:all&#34;`</span>        <span style="color:#75715e">// 通过 struct 读写、迁移会忽略该字段
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">Name</span> <span style="color:#66d9ef">string</span> <span style="color:#e6db74">`gorm:&#34;-:migration&#34;`</span>  <span style="color:#75715e">// 通过 struct 迁移会忽略该字段
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 下面我们创建一个表并使用一下
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;go_preject/internal/gormMysql&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;go_preject/models&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;time&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">db</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">gormMysql</span>.<span style="color:#a6e22e">GetDBInstance</span>(<span style="color:#a6e22e">gormMysql</span>.<span style="color:#a6e22e">GormMysqlConfigs</span>[<span style="color:#e6db74">&#34;user_yx&#34;</span>])
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>		panic(<span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">AutoMigrate</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">Users</span>{})
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">Users</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;Jinzhu&#34;</span>, <span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">18</span>, <span style="color:#a6e22e">Birthday</span>: <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>()}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">result</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Create</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>) <span style="color:#75715e">// 通过数据的指针来创建
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">ID</span>)             <span style="color:#75715e">// 返回插入数据的主键
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">Error</span>)        <span style="color:#75715e">// 返回 error
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">result</span>.<span style="color:#a6e22e">RowsAffected</span>) <span style="color:#75715e">// 返回插入记录的条数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 官方文档的一些操作 GORM 提供了 First、Take、Last 方法，以便从数据库中检索单个对象。当查询数据库时它添加了 LIMIT 1 条件，且没有找到记录时，它会返回 ErrRecordNotFound 错误
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">user1</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">Users</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user1</span>, <span style="color:#ae81ff">1</span>) <span style="color:#75715e">// 根据整型主键查找
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">user1</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">user2</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">Users</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user2</span>, <span style="color:#e6db74">&#34;name = ?&#34;</span>, <span style="color:#e6db74">&#34;Jinzhu&#34;</span>) <span style="color:#75715e">// 查找 code 字段值为 D42 的记录
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">user2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Update - 将 user2 的 age 更新为 200
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Model</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user2</span>).<span style="color:#a6e22e">Update</span>(<span style="color:#e6db74">&#34;age&#34;</span>, <span style="color:#ae81ff">200</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">user2</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Update - 更新多个字段
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Model</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user2</span>).<span style="color:#a6e22e">Updates</span>(<span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">Users</span>{<span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">150</span>, <span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;F42&#34;</span>})
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">user2</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Model</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user1</span>).<span style="color:#a6e22e">Updates</span>(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{<span style="color:#e6db74">&#34;age&#34;</span>: <span style="color:#ae81ff">100</span>, <span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;F43&#34;</span>})
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">user2</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// Delete - 删除 product
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Delete</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user2</span>, <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//根据主键检索 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>, <span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE id = 10;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>, <span style="color:#e6db74">&#34;10&#34;</span>) <span style="color:#75715e">// 例如传入的是 &gt;=10 就会造成sql注入
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE id = 10;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 为了防止错误的信息进来 需要加入判断
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">userInputID</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;1=1;drop table users;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 安全的，返回 err
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">id</span>,<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">strconv</span>.<span style="color:#a6e22e">Atoi</span>(<span style="color:#a6e22e">userInputID</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">error</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>, <span style="color:#a6e22e">id</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>, []<span style="color:#66d9ef">int</span>{<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">3</span>})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE id IN (1,2,3);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 那么为了防止sql 注入 gorm 都做了哪些操作呢
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//用户的输入只能作为参数，例如：
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 如果你的主键就是key的话 建议按照下面的写法来写
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>, <span style="color:#e6db74">&#34;id = ?&#34;</span>, <span style="color:#e6db74">&#34;1b74413f-f3b8-409f-ac47-e8c062e3472a&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">userInput</span> <span style="color:#f92672">:=</span> <span style="color:#e6db74">&#34;jinzhu;drop table users;&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 安全的，会被转义
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;name = ?&#34;</span>, <span style="color:#a6e22e">userInput</span>).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SQL 注入
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;name = %v&#34;</span>, <span style="color:#a6e22e">userInput</span>)).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 为了支持某些功能，一些输入不会被转义，调用方法时要小心用户输入的参数。 例如
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Select</span>(<span style="color:#e6db74">&#34;name; drop table users;&#34;</span>).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Distinct</span>(<span style="color:#e6db74">&#34;name; drop table users;&#34;</span>).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Model</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>).<span style="color:#a6e22e">Pluck</span>(<span style="color:#e6db74">&#34;name; drop table users;&#34;</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">names</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Group</span>(<span style="color:#e6db74">&#34;name; drop table users;&#34;</span>).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Group</span>(<span style="color:#e6db74">&#34;name&#34;</span>).<span style="color:#a6e22e">Having</span>(<span style="color:#e6db74">&#34;1 = 1;drop table users;&#34;</span>).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Raw</span>(<span style="color:#e6db74">&#34;select name from users; drop table users;&#34;</span>).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Exec</span>(<span style="color:#e6db74">&#34;select name from users; drop table users;&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Order</span>(<span style="color:#e6db74">&#34;name; drop table users;&#34;</span>).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 查询所有数据是 声明一个切片即可
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">users</span> <span style="color:#f92672">:=</span> []<span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">Users</span>{}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// -------------按照条件检索的-------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Get first matched record
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;name = ?&#34;</span>, <span style="color:#e6db74">&#34;jinzhu&#34;</span>).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE name = &#39;jinzhu&#39; ORDER BY id LIMIT 1;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Get all matched records
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;name &lt;&gt; ?&#34;</span>, <span style="color:#e6db74">&#34;jinzhu&#34;</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE name &lt;&gt; &#39;jinzhu&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// IN
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;name IN ?&#34;</span>, []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;jinzhu&#34;</span>, <span style="color:#e6db74">&#34;jinzhu 2&#34;</span>}).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE name IN (&#39;jinzhu&#39;,&#39;jinzhu 2&#39;);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// LIKE
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;name LIKE ?&#34;</span>, <span style="color:#e6db74">&#34;%jin%&#34;</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE name LIKE &#39;%jin%&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// AND
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;name = ? AND age &gt;= ?&#34;</span>, <span style="color:#e6db74">&#34;jinzhu&#34;</span>, <span style="color:#e6db74">&#34;22&#34;</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE name = &#39;jinzhu&#39; AND age &gt;= 22;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Time
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;updated_at &gt; ?&#34;</span>, <span style="color:#a6e22e">lastWeek</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE updated_at &gt; &#39;2000-01-01 00:00:00&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// BETWEEN
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;created_at BETWEEN ? AND ?&#34;</span>, <span style="color:#a6e22e">lastWeek</span>, <span style="color:#a6e22e">today</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE created_at BETWEEN &#39;2000-01-01 00:00:00&#39; AND &#39;2000-01-08 00:00:00&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// -------------还可以 通过 Struct 和map 来进行检索-------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;jinzhu&#34;</span>, <span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">20</span>}).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE name = &#34;jinzhu&#34; AND age = 20 ORDER BY id LIMIT 1;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Map
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{<span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;jinzhu&#34;</span>, <span style="color:#e6db74">&#34;age&#34;</span>: <span style="color:#ae81ff">20</span>}).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE name = &#34;jinzhu&#34; AND age = 20;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Slice of primary keys
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>([]<span style="color:#66d9ef">int64</span>{<span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">21</span>, <span style="color:#ae81ff">22</span>}).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE id IN (20, 21, 22);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 当使用结构体去检索时gorm 只会查询非零值字段。这意味着 所有的“” 0 False 都不会被用于查询条件 例如
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;jinzhu&#34;</span>, <span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">0</span>}).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE name = &#34;jinzhu&#34;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//要想使用 包含0值的条件时 可以使用map 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{<span style="color:#e6db74">&#34;Name&#34;</span>: <span style="color:#e6db74">&#34;jinzhu&#34;</span>, <span style="color:#e6db74">&#34;Age&#34;</span>: <span style="color:#ae81ff">0</span>}).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE name = &#34;jinzhu&#34; AND age = 0;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// -------------指定结构体查询字段-------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;jinzhu&#34;</span>}, <span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#e6db74">&#34;Age&#34;</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE name = &#34;jinzhu&#34; AND age = 0;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;jinzhu&#34;</span>}, <span style="color:#e6db74">&#34;Age&#34;</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE age = 0;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// -------------内联条件-------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Get by primary key if it were a non-integer type
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>, <span style="color:#e6db74">&#34;id = ?&#34;</span>, <span style="color:#e6db74">&#34;string_primary_key&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE id = &#39;string_primary_key&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Plain SQL
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>, <span style="color:#e6db74">&#34;name = ?&#34;</span>, <span style="color:#e6db74">&#34;jinzhu&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE name = &#34;jinzhu&#34;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>, <span style="color:#e6db74">&#34;name &lt;&gt; ? AND age &gt; ?&#34;</span>, <span style="color:#e6db74">&#34;jinzhu&#34;</span>, <span style="color:#ae81ff">20</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE name &lt;&gt; &#34;jinzhu&#34; AND age &gt; 20;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Struct
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>, <span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">20</span>})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE age = 20;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Map
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>, <span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{<span style="color:#e6db74">&#34;age&#34;</span>: <span style="color:#ae81ff">20</span>})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE age = 20;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// -------------Not 条件-------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Not</span>(<span style="color:#e6db74">&#34;name = ?&#34;</span>, <span style="color:#e6db74">&#34;jinzhu&#34;</span>).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE NOT name = &#34;jinzhu&#34; ORDER BY id LIMIT 1;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Not In
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Not</span>(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{<span style="color:#e6db74">&#34;name&#34;</span>: []<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;jinzhu&#34;</span>, <span style="color:#e6db74">&#34;jinzhu 2&#34;</span>}}).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE name NOT IN (&#34;jinzhu&#34;, &#34;jinzhu 2&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Struct
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Not</span>(<span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;jinzhu&#34;</span>, <span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">18</span>}).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE name &lt;&gt; &#34;jinzhu&#34; AND age &lt;&gt; 18 ORDER BY id LIMIT 1;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Not In slice of primary keys
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Not</span>([]<span style="color:#66d9ef">int64</span>{<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">3</span>}).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE id NOT IN (1,2,3) ORDER BY id LIMIT 1;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// -------------Or 条件-------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;role = ?&#34;</span>, <span style="color:#e6db74">&#34;admin&#34;</span>).<span style="color:#a6e22e">Or</span>(<span style="color:#e6db74">&#34;role = ?&#34;</span>, <span style="color:#e6db74">&#34;super_admin&#34;</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE role = &#39;admin&#39; OR role = &#39;super_admin&#39;;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Struct
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;name = &#39;jinzhu&#39;&#34;</span>).<span style="color:#a6e22e">Or</span>(<span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;jinzhu 2&#34;</span>, <span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">18</span>}).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE name = &#39;jinzhu&#39; OR (name = &#39;jinzhu 2&#39; AND age = 18);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Map
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;name = &#39;jinzhu&#39;&#34;</span>).<span style="color:#a6e22e">Or</span>(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{<span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;jinzhu 2&#34;</span>, <span style="color:#e6db74">&#34;age&#34;</span>: <span style="color:#ae81ff">18</span>}).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users WHERE name = &#39;jinzhu&#39; OR (name = &#39;jinzhu 2&#39; AND age = 18);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// -------------选择特定字段-------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Select</span>(<span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#e6db74">&#34;age&#34;</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT name, age FROM users;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Select</span>([]<span style="color:#66d9ef">string</span>{<span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#e6db74">&#34;age&#34;</span>}).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT name, age FROM users;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Table</span>(<span style="color:#e6db74">&#34;users&#34;</span>).<span style="color:#a6e22e">Select</span>(<span style="color:#e6db74">&#34;COALESCE(age,?)&#34;</span>, <span style="color:#ae81ff">42</span>).<span style="color:#a6e22e">Rows</span>()
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT COALESCE(age,&#39;42&#39;) FROM users;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// -------------排序-------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Order</span>(<span style="color:#e6db74">&#34;age desc, name&#34;</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users ORDER BY age desc, name;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Multiple orders
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Order</span>(<span style="color:#e6db74">&#34;age desc&#34;</span>).<span style="color:#a6e22e">Order</span>(<span style="color:#e6db74">&#34;name&#34;</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users ORDER BY age desc, name;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Clauses</span>(<span style="color:#a6e22e">clause</span>.<span style="color:#a6e22e">OrderBy</span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Expression</span>: <span style="color:#a6e22e">clause</span>.<span style="color:#a6e22e">Expr</span>{<span style="color:#a6e22e">SQL</span>: <span style="color:#e6db74">&#34;FIELD(id,?)&#34;</span>, <span style="color:#a6e22e">Vars</span>: []<span style="color:#66d9ef">interface</span>{}{[]<span style="color:#66d9ef">int</span>{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>}}, <span style="color:#a6e22e">WithoutParentheses</span>: <span style="color:#66d9ef">true</span>},
+</span></span><span style="display:flex;"><span>}).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">User</span>{})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users ORDER BY FIELD(id,1,2,3)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// -------------Limit &amp; Offset-------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Limit</span>(<span style="color:#ae81ff">3</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users LIMIT 3;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Cancel limit condition with -1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Limit</span>(<span style="color:#ae81ff">10</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users1</span>).<span style="color:#a6e22e">Limit</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users2</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users LIMIT 10; (users1)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users; (users2)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Offset</span>(<span style="color:#ae81ff">3</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users OFFSET 3;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Limit</span>(<span style="color:#ae81ff">10</span>).<span style="color:#a6e22e">Offset</span>(<span style="color:#ae81ff">5</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users OFFSET 5 LIMIT 10;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Cancel offset condition with -1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Offset</span>(<span style="color:#ae81ff">10</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users1</span>).<span style="color:#a6e22e">Offset</span>(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users2</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users OFFSET 10; (users1)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT * FROM users; (users2)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// -------------Group By &amp; Having-------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">result</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Date</span>  <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Total</span> <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Model</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">User</span>{}).<span style="color:#a6e22e">Select</span>(<span style="color:#e6db74">&#34;name, sum(age) as total&#34;</span>).<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;name LIKE ?&#34;</span>, <span style="color:#e6db74">&#34;group%&#34;</span>).<span style="color:#a6e22e">Group</span>(<span style="color:#e6db74">&#34;name&#34;</span>).<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">result</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT name, sum(age) as total FROM `users` WHERE name LIKE &#34;group%&#34; GROUP BY `name` LIMIT 1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Model</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">User</span>{}).<span style="color:#a6e22e">Select</span>(<span style="color:#e6db74">&#34;name, sum(age) as total&#34;</span>).<span style="color:#a6e22e">Group</span>(<span style="color:#e6db74">&#34;name&#34;</span>).<span style="color:#a6e22e">Having</span>(<span style="color:#e6db74">&#34;name = ?&#34;</span>, <span style="color:#e6db74">&#34;group&#34;</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">result</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// SELECT name, sum(age) as total FROM `users` GROUP BY `name` HAVING name = &#34;group&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">rows</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Table</span>(<span style="color:#e6db74">&#34;orders&#34;</span>).<span style="color:#a6e22e">Select</span>(<span style="color:#e6db74">&#34;date(created_at) as date, sum(amount) as total&#34;</span>).<span style="color:#a6e22e">Group</span>(<span style="color:#e6db74">&#34;date(created_at)&#34;</span>).<span style="color:#a6e22e">Rows</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">rows</span>.<span style="color:#a6e22e">Close</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> <span style="color:#a6e22e">rows</span>.<span style="color:#a6e22e">Next</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">rows</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Table</span>(<span style="color:#e6db74">&#34;orders&#34;</span>).<span style="color:#a6e22e">Select</span>(<span style="color:#e6db74">&#34;date(created_at) as date, sum(amount) as total&#34;</span>).<span style="color:#a6e22e">Group</span>(<span style="color:#e6db74">&#34;date(created_at)&#34;</span>).<span style="color:#a6e22e">Having</span>(<span style="color:#e6db74">&#34;sum(amount) &gt; ?&#34;</span>, <span style="color:#ae81ff">100</span>).<span style="color:#a6e22e">Rows</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">rows</span>.<span style="color:#a6e22e">Close</span>()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> <span style="color:#a6e22e">rows</span>.<span style="color:#a6e22e">Next</span>() {
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">...</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Result</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Date</span>  <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">Total</span> <span style="color:#66d9ef">int64</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Table</span>(<span style="color:#e6db74">&#34;orders&#34;</span>).<span style="color:#a6e22e">Select</span>(<span style="color:#e6db74">&#34;date(created_at) as date, sum(amount) as total&#34;</span>).<span style="color:#a6e22e">Group</span>(<span style="color:#e6db74">&#34;date(created_at)&#34;</span>).<span style="color:#a6e22e">Having</span>(<span style="color:#e6db74">&#34;sum(amount) &gt; ?&#34;</span>, <span style="color:#ae81ff">100</span>).<span style="color:#a6e22e">Scan</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">results</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 等等其他玩法可以查看官方文档操作
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ------------------更新------------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//Save 会保存所有的字段，即使字段是零值 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">First</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">Name</span> = <span style="color:#e6db74">&#34;jinzhu 2&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">Age</span> = <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Save</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// UPDATE users SET name=&#39;jinzhu 2&#39;, age=100, birthday=&#39;2016-01-01&#39;, updated_at = &#39;2013-11-17 21:34:10&#39; WHERE id=111;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 保存是一个组合功能。如果保存值不包含主键，它将执行Create，否则将执行Update（带所有字段）。例如下面执行后就是二选一
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Save</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;jinzhu&#34;</span>, <span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">100</span>})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// INSERT INTO `users` (`name`,`age`,`birthday`,`update_at`) VALUES (&#34;jinzhu&#34;,100,&#34;0000-00-00 00:00:00&#34;,&#34;0000-00-00 00:00:00&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Save</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">ID</span>: <span style="color:#ae81ff">1</span>, <span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;jinzhu&#34;</span>, <span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">100</span>})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// UPDATE `users` SET `name`=&#34;jinzhu&#34;,`age`=100,`birthday`=&#34;0000-00-00 00:00:00&#34;,`update_at`=&#34;0000-00-00 00:00:00&#34; WHERE `id` = 1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ------------------更新单个列------------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// Update with conditions
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Model</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">User</span>{}).<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;active = ?&#34;</span>, <span style="color:#66d9ef">true</span>).<span style="color:#a6e22e">Update</span>(<span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#e6db74">&#34;hello&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// UPDATE users SET name=&#39;hello&#39;, updated_at=&#39;2013-11-17 21:34:10&#39; WHERE active=true;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// User&#39;s ID is `111`:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Model</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>).<span style="color:#a6e22e">Update</span>(<span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#e6db74">&#34;hello&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// UPDATE users SET name=&#39;hello&#39;, updated_at=&#39;2013-11-17 21:34:10&#39; WHERE id=111;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Update with conditions and model value
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Model</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>).<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;active = ?&#34;</span>, <span style="color:#66d9ef">true</span>).<span style="color:#a6e22e">Update</span>(<span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#e6db74">&#34;hello&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// UPDATE users SET name=&#39;hello&#39;, updated_at=&#39;2013-11-17 21:34:10&#39; WHERE id=111 AND active=true;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//------------------更新多列------------------ 也是一样struct不会更新非零值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// Update attributes with `struct`, will only update non-zero fields
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Model</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>).<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;id = ?&#34;</span>, <span style="color:#ae81ff">2</span>).<span style="color:#a6e22e">Updates</span>(<span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;hello&#34;</span>, <span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">18</span>, <span style="color:#a6e22e">Active</span>: <span style="color:#66d9ef">false</span>})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// UPDATE users SET name=&#39;hello&#39;, age=18, updated_at = &#39;2013-11-17 21:34:10&#39; WHERE id = 111;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Update attributes with `map`
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Model</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>).<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;id = ?&#34;</span>, <span style="color:#ae81ff">2</span>).<span style="color:#a6e22e">Updates</span>(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{<span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;hello&#34;</span>, <span style="color:#e6db74">&#34;age&#34;</span>: <span style="color:#ae81ff">18</span>, <span style="color:#e6db74">&#34;active&#34;</span>: <span style="color:#66d9ef">false</span>})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// UPDATE users SET name=&#39;hello&#39;, age=18, active=false, updated_at=&#39;2013-11-17 21:34:10&#39; WHERE id=111;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 关于删除
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Delete</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">User</span>{}, <span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// DELETE FROM users WHERE id = 10;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Delete</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">User</span>{}, <span style="color:#e6db74">&#34;10&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// DELETE FROM users WHERE id = 10;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Delete</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>, []<span style="color:#66d9ef">int</span>{<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">2</span>,<span style="color:#ae81ff">3</span>})
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// DELETE FROM users WHERE id IN (1,2,3);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 具体可以查看文档
+</span></span></span></code></pre></div><p>Gorm 模型和默认值</p>
+<p>嵌入结构体</p>
+<p>对于匿名字段，GORM 会将其字段包含在父结构体中，例如：</p>
+<pre tabindex="0"><code>type User struct {
+  gorm.Model
+  Name string
+}
+// 等效于
+type User struct {
+  ID        uint           `gorm:&#34;primaryKey&#34;`
+  CreatedAt time.Time
+  UpdatedAt time.Time
+  DeletedAt gorm.DeletedAt `gorm:&#34;index&#34;`
+  Name string
+}
+</code></pre><p>对于正常的结构体字段，你也可以通过标签 <code>embedded</code> 将其嵌入，例如：</p>
+<pre tabindex="0"><code>type Author struct {
+    Name  string
+    Email string
+}
+
+type Blog struct {
+  ID      int
+  Author  Author `gorm:&#34;embedded&#34;`
+  Upvotes int32
+}
+// 等效于
+type Blog struct {
+  ID    int64
+  Name  string
+  Email string
+  Upvotes  int32
+}
+</code></pre><p>并且，您可以使用标签 <code>embeddedPrefix</code> 来为 db 中的字段名添加前缀，例如：</p>
+<pre tabindex="0"><code>type Blog struct {
+  ID      int
+  Author  Author `gorm:&#34;embedded;embeddedPrefix:author_&#34;`
+  Upvotes int32
+}
+// 等效于
+type Blog struct {
+  ID          int64
+  AuthorName string
+  AuthorEmail string
+  Upvotes     int32
+}
+</code></pre><h3 id="字段标签">字段标签</h3>
+<p>声明 model 时，tag 是可选的，GORM 支持以下 tag： tag 名大小写不敏感，但建议使用 <code>camelCase</code> 风格</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">标签名</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">column</td>
+<td style="text-align:left">指定 db 列名</td>
+</tr>
+<tr>
+<td style="text-align:left">type</td>
+<td style="text-align:left">列数据类型，推荐使用兼容性好的通用类型，例如：所有数据库都支持 bool、int、uint、float、string、time、bytes 并且可以和其他标签一起使用，例如：<code>not null</code>、<code>size</code>, <code>autoIncrement</code>… 像 <code>varbinary(8)</code> 这样指定数据库数据类型也是支持的。在使用指定数据库数据类型时，它需要是完整的数据库数据类型，如：<code>MEDIUMINT UNSIGNED not NULL AUTO_INCREMENT</code></td>
+</tr>
+<tr>
+<td style="text-align:left">serializer</td>
+<td style="text-align:left">指定将数据序列化或反序列化到数据库中的序列化器, 例如: <code>serializer:json/gob/unixtime</code></td>
+</tr>
+<tr>
+<td style="text-align:left">size</td>
+<td style="text-align:left">定义列数据类型的大小或长度，例如 <code>size: 256</code></td>
+</tr>
+<tr>
+<td style="text-align:left">primaryKey</td>
+<td style="text-align:left">将列定义为主键</td>
+</tr>
+<tr>
+<td style="text-align:left">unique</td>
+<td style="text-align:left">将列定义为唯一键</td>
+</tr>
+<tr>
+<td style="text-align:left">default</td>
+<td style="text-align:left">定义列的默认值</td>
+</tr>
+<tr>
+<td style="text-align:left">precision</td>
+<td style="text-align:left">指定列的精度</td>
+</tr>
+<tr>
+<td style="text-align:left">scale</td>
+<td style="text-align:left">指定列大小</td>
+</tr>
+<tr>
+<td style="text-align:left">not null</td>
+<td style="text-align:left">指定列为 NOT NULL</td>
+</tr>
+<tr>
+<td style="text-align:left">autoIncrement</td>
+<td style="text-align:left">指定列为自动增长</td>
+</tr>
+<tr>
+<td style="text-align:left">autoIncrementIncrement</td>
+<td style="text-align:left">自动步长，控制连续记录之间的间隔</td>
+</tr>
+<tr>
+<td style="text-align:left">embedded</td>
+<td style="text-align:left">嵌套字段</td>
+</tr>
+<tr>
+<td style="text-align:left">embeddedPrefix</td>
+<td style="text-align:left">嵌入字段的列名前缀</td>
+</tr>
+<tr>
+<td style="text-align:left">autoCreateTime</td>
+<td style="text-align:left">创建时追踪当前时间，对于 <code>int</code> 字段，它会追踪时间戳秒数，您可以使用 <code>nano</code>/<code>milli</code> 来追踪纳秒、毫秒时间戳，例如：<code>autoCreateTime:nano</code></td>
+</tr>
+<tr>
+<td style="text-align:left">autoUpdateTime</td>
+<td style="text-align:left">创建/更新时追踪当前时间，对于 <code>int</code> 字段，它会追踪时间戳秒数，您可以使用 <code>nano</code>/<code>milli</code> 来追踪纳秒、毫秒时间戳，例如：<code>autoUpdateTime:milli</code></td>
+</tr>
+<tr>
+<td style="text-align:left">index</td>
+<td style="text-align:left">根据参数创建索引，多个字段使用相同的名称则创建复合索引，查看 <a href="https://gorm.io/zh_CN/docs/indexes.html">索引</a> 获取详情</td>
+</tr>
+<tr>
+<td style="text-align:left">uniqueIndex</td>
+<td style="text-align:left">与 <code>index</code> 相同，但创建的是唯一索引</td>
+</tr>
+<tr>
+<td style="text-align:left">check</td>
+<td style="text-align:left">创建检查约束，例如 <code>check:age &gt; 13</code>，查看 <a href="https://gorm.io/zh_CN/docs/constraints.html">约束</a> 获取详情</td>
+</tr>
+<tr>
+<td style="text-align:left">&lt;-</td>
+<td style="text-align:left">设置字段写入的权限， <code>&lt;-:create</code> 只创建、<code>&lt;-:update</code> 只更新、<code>&lt;-:false</code> 无写入权限、<code>&lt;-</code> 创建和更新权限</td>
+</tr>
+<tr>
+<td style="text-align:left">-&gt;</td>
+<td style="text-align:left">设置字段读的权限，<code>-&gt;:false</code> 无读权限</td>
+</tr>
+<tr>
+<td style="text-align:left">-</td>
+<td style="text-align:left">忽略该字段，<code>-</code> 表示无读写，<code>-:migration</code> 表示无迁移权限，<code>-:all</code> 表示无读写迁移权限</td>
+</tr>
+<tr>
+<td style="text-align:left">comment</td>
+<td style="text-align:left">迁移时为字段添加注释</td>
+</tr>
+</tbody>
+</table>
+<p>默认值</p>
+<pre tabindex="0"><code>type User struct {  ID   int64  Name string `gorm:&#34;default:galeone&#34;`  Age  int64  `gorm:&#34;default:18&#34;`}
+</code></pre><p>增删改查</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">// 创建记录并为指定的字段分配值：
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Select</span>(<span style="color:#e6db74">&#34;Name&#34;</span>, <span style="color:#e6db74">&#34;Age&#34;</span>, <span style="color:#e6db74">&#34;CreatedAt&#34;</span>).<span style="color:#a6e22e">Create</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// INSERT INTO `users` (`name`,`age`,`created_at`) VALUES (&#34;jinzhu&#34;, 18, &#34;2020-07-04 11:05:21.775&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//创建记录并忽略要省略的传递字段的值： 二者正好相反
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Omit</span>(<span style="color:#e6db74">&#34;Name&#34;</span>, <span style="color:#e6db74">&#34;Age&#34;</span>, <span style="color:#e6db74">&#34;CreatedAt&#34;</span>).<span style="color:#a6e22e">Create</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// INSERT INTO `users` (`birthday`,`updated_at`) VALUES (&#34;2020-01-01 00:00:00.000&#34;, &#34;2020-07-04 11:05:21.775&#34;)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 批量插入
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">users</span> <span style="color:#f92672">:=</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">Users</span>{
+</span></span><span style="display:flex;"><span>		{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;Jinzhu&#34;</span>, <span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">18</span>, <span style="color:#a6e22e">Birthday</span>: <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>()},
+</span></span><span style="display:flex;"><span>		{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;Jackson&#34;</span>, <span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">19</span>, <span style="color:#a6e22e">Birthday</span>: <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>()},
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">Create</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>) <span style="color:#75715e">// pass a slice to insert multiple row
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">users</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">ID</span>)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 如果有大批量的数据的话。可以指定一次插入多少量的数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> <span style="color:#a6e22e">users</span> = []<span style="color:#a6e22e">User</span>{{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;jinzhu_1&#34;</span>}, <span style="color:#f92672">...</span>., {<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;jinzhu_10000&#34;</span>}}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// batch size 100
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#a6e22e">db</span>.<span style="color:#a6e22e">CreateInBatches</span>(<span style="color:#a6e22e">users</span>, <span style="color:#ae81ff">100</span>)
+</span></span></code></pre></div><h3 id="heading"></h3>
+<h4 id="4关于xorm">4:关于xorm</h4>
+<p>官方文档链接https://xorm.io/</p>
+<p>作者也是一位国人，非常强大</p>
+<p>第一步安装</p>
+<pre tabindex="0"><code>go get xorm.io/xorm
+</code></pre><p>特性：</p>
+<ul>
+<li>支持 Struct 和数据库表之间的灵活映射，并支持自动同步</li>
+<li>事务支持</li>
+<li>同时支持原始SQL语句和ORM操作的混合执行</li>
+<li>使用连写来简化调用</li>
+<li>支持使用ID, In, Where, Limit, Join, Having, Table, SQL, Cols等函数和结构体等方式作为条件</li>
+<li>支持级联加载Struct</li>
+<li>Schema支持（仅Postgres）</li>
+<li>支持缓存</li>
+<li>通过 <a href="https://xorm.io/reverse">xorm.io/reverse</a> 支持根据数据库自动生成 xorm 结构体</li>
+<li>支持记录版本（即乐观锁）</li>
+<li>通过 <a href="https://xorm.io/builder">xorm.io/builder</a> 内置 SQL Builder 支持</li>
+<li>上下文缓存支持</li>
+<li>支持日志上下文</li>
+</ul>
+<p>第二步查看操作文档直接开始（https://gitea.com/xorm/xorm/src/branch/master/README_CN.md）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">// 先找个地方 放 models 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">package</span> <span style="color:#a6e22e">models</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#e6db74">&#34;time&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">User</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Id</span>      <span style="color:#66d9ef">int64</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Name</span>    <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Salt</span>    <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Age</span>     <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Passwd</span>  <span style="color:#66d9ef">string</span>    <span style="color:#e6db74">`xorm:&#34;varchar(200)&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Created</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span> <span style="color:#e6db74">`xorm:&#34;created&#34;`</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">Updated</span> <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Time</span> <span style="color:#e6db74">`xorm:&#34;updated&#34;`</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 一定要导入mysql 的引擎
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#a6e22e">main</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">_</span> <span style="color:#e6db74">&#34;github.com/go-sql-driver/mysql&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;go_preject/models&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#e6db74">&#34;xorm.io/xorm&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 设置自己的连接库
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">var</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">username</span>  <span style="color:#66d9ef">string</span> = <span style="color:#e6db74">&#34;XXXX&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">password</span>  <span style="color:#66d9ef">string</span> = <span style="color:#e6db74">&#34;xxxxx&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">ipAddress</span> <span style="color:#66d9ef">string</span> = <span style="color:#e6db74">&#34;xxxxxxx&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">port</span>      <span style="color:#66d9ef">int</span>    = <span style="color:#ae81ff">3306</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">dbName</span>    <span style="color:#66d9ef">string</span> = <span style="color:#e6db74">&#34;xxxxxxx&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">charset</span>   <span style="color:#66d9ef">string</span> = <span style="color:#e6db74">&#34;utf8mb4&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">dataSourceName</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%s:%s@tcp(%s:%d)/%s?charset=%s&#34;</span>, <span style="color:#a6e22e">username</span>, <span style="color:#a6e22e">password</span>, <span style="color:#a6e22e">ipAddress</span>, <span style="color:#a6e22e">port</span>, <span style="color:#a6e22e">dbName</span>, <span style="color:#a6e22e">charset</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// 必须导入mysql 的驱动
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">engine</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">xorm</span>.<span style="color:#a6e22e">NewEngine</span>(<span style="color:#e6db74">&#34;mysql&#34;</span>, <span style="color:#a6e22e">dataSourceName</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">engine</span>, <span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Sync</span>(new(<span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>))
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 这样我们的一个表就完成了
+</span></span></span></code></pre></div><p>下一步老生常谈增删改 ,查单独说明</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">// 增加一条或者多条数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">dataSourceName</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%s:%s@tcp(%s:%d)/%s?charset=%s&#34;</span>, <span style="color:#a6e22e">username</span>, <span style="color:#a6e22e">password</span>, <span style="color:#a6e22e">ipAddress</span>, <span style="color:#a6e22e">port</span>, <span style="color:#a6e22e">dbName</span>, <span style="color:#a6e22e">charset</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// 必须导入mysql 的驱动
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">engine</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">xorm</span>.<span style="color:#a6e22e">NewEngine</span>(<span style="color:#e6db74">&#34;mysql&#34;</span>, <span style="color:#a6e22e">dataSourceName</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">engine</span>, <span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Sync</span>(new(<span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>))
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">// 声明一条数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Id</span>:     <span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Name</span>:   <span style="color:#e6db74">&#34;sz&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Salt</span>:   <span style="color:#e6db74">&#34;ssss&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Age</span>:    <span style="color:#ae81ff">21</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Passwd</span>: <span style="color:#e6db74">&#34;sssssssaqqq&#34;</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 新增一条数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">affected</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Insert</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">affected</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 声明一个空的列表 Insert 里面是一个空接口类型 他接受所有的参数类型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">users</span> []<span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">user1</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Id</span>:     <span style="color:#ae81ff">3</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Name</span>:   <span style="color:#e6db74">&#34;sz&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Salt</span>:   <span style="color:#e6db74">&#34;ssss&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Age</span>:    <span style="color:#ae81ff">66</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Passwd</span>: <span style="color:#e6db74">&#34;sssssssaqqq&#34;</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">user2</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Id</span>:     <span style="color:#ae81ff">4</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Name</span>:   <span style="color:#e6db74">&#34;sz&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Salt</span>:   <span style="color:#e6db74">&#34;ssss&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Age</span>:    <span style="color:#ae81ff">77</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Passwd</span>: <span style="color:#e6db74">&#34;sssssssaqqq&#34;</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">user3</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Id</span>:     <span style="color:#ae81ff">5</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Name</span>:   <span style="color:#e6db74">&#34;sz&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Salt</span>:   <span style="color:#e6db74">&#34;ssss&#34;</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Age</span>:    <span style="color:#ae81ff">88</span>,
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Passwd</span>: <span style="color:#e6db74">&#34;sssssssaqqq&#34;</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">users</span> = append(<span style="color:#a6e22e">users</span>, <span style="color:#a6e22e">user1</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">users</span> = append(<span style="color:#a6e22e">users</span>, <span style="color:#a6e22e">user2</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">users</span> = append(<span style="color:#a6e22e">users</span>, <span style="color:#a6e22e">user3</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">affectedd</span>, <span style="color:#a6e22e">errs</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Insert</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">affectedd</span>, <span style="color:#a6e22e">errs</span>)
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 或者 还可以指定表去 新增 id 会自增
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">affected</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Table</span>(<span style="color:#e6db74">&#34;user&#34;</span>).<span style="color:#a6e22e">Insert</span>([]<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">interface</span>{}{
+</span></span><span style="display:flex;"><span>		{
+</span></span><span style="display:flex;"><span>			<span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;lunny&#34;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#e6db74">&#34;age&#34;</span>:  <span style="color:#ae81ff">18</span>,
+</span></span><span style="display:flex;"><span>		},
+</span></span><span style="display:flex;"><span>		{
+</span></span><span style="display:flex;"><span>			<span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;lunny2&#34;</span>,
+</span></span><span style="display:flex;"><span>			<span style="color:#e6db74">&#34;age&#34;</span>:  <span style="color:#ae81ff">19</span>,
+</span></span><span style="display:flex;"><span>		},
+</span></span><span style="display:flex;"><span>	})
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">affected</span>, <span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//。关于更新数据 的方法介绍
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 更新数据，除非使用Cols,AllCols函数指明，默认只更新非空和非0的字段
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">124</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">affected</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">ID</span>(<span style="color:#ae81ff">1</span>).<span style="color:#a6e22e">Update</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">affected</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 等价于 UPDATE user SET ... Where id = ?
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">26</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">affected</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Update</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;lunny&#34;</span>})
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">affected</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 等价于 UPDATE user SET ... Where name = ?
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">ids</span> = []<span style="color:#66d9ef">int64</span>{<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">26</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">affected</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">In</span>(<span style="color:#e6db74">&#34;id&#34;</span>, <span style="color:#a6e22e">ids</span>).<span style="color:#a6e22e">Update</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">affected</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 等价于 UPDATE user SET ... Where id IN (?, ?, ?)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">affected</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">ID</span>(<span style="color:#ae81ff">1</span>).<span style="color:#a6e22e">Cols</span>(<span style="color:#e6db74">&#34;age&#34;</span>).<span style="color:#a6e22e">Update</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;sf&#34;</span>, <span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">12</span>})
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">affected</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//等价于  UPDATE user SET age = ?, updated=? Where id = ?  注意的是即使后面的结构体重新改了名字也不会被更改只会更改cols
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//里面 受影响的字段
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">affected</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">ID</span>(<span style="color:#ae81ff">1</span>).<span style="color:#a6e22e">Omit</span>(<span style="color:#e6db74">&#34;name&#34;</span>).<span style="color:#a6e22e">Update</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;56&#34;</span>, <span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">36</span>})
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">affected</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//等价于   UPDATE user SET age = ?, updated=? Where id = ? 修改出了name 以外的其他字段
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Salt</span>: <span style="color:#e6db74">&#34;qqqq&#34;</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">affected</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">ID</span>(<span style="color:#ae81ff">1</span>).<span style="color:#a6e22e">AllCols</span>().<span style="color:#a6e22e">Update</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">affected</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//等价于  UPDATE user SET name=?,age=?,salt=?,passwd=?,updated=? Where id = ?
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 需要注意的是 如果 给的一些字段没有的话 就会设置成默认值 为空或者为0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//  -------------------删除数据 --------------------------
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">affected</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">ID</span>(<span style="color:#ae81ff">1</span>).<span style="color:#a6e22e">Delete</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">affected</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//等价于   DELETE FROM user Where id = ?
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">affected</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Table</span>(<span style="color:#e6db74">&#34;user&#34;</span>).<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;name = ?&#34;</span>, <span style="color:#e6db74">&#34;lunny&#34;</span>).<span style="color:#a6e22e">Delete</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">affected</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 等价于 DELETE FROM user WHERE name = lunny 需要注意的是where 后起码有一个条件才可以
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">affected</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;name = ?&#34;</span>, <span style="color:#e6db74">&#34;sz&#34;</span>).<span style="color:#a6e22e">Delete</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">affected</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 等价于 DELETE FROM user WHERE name = sz 需要注意的是where 后起码有一个条件才可以
+</span></span></span></code></pre></div><p>查询数据</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#75715e">//Query 最原始的也支持SQL语句查询，返回的结果类型为 []map[string][]byte。QueryString 返回 []map[string]string, //QueryInterface 返回 []map[string]interface{}.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">results1</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Query</span>(<span style="color:#e6db74">&#34;select * from user&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;results1&#34;</span>, <span style="color:#a6e22e">results1</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">results3</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">QueryString</span>(<span style="color:#e6db74">&#34;select * from user&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;results3&#34;</span>, <span style="color:#a6e22e">results3</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">results5</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">QueryInterface</span>(<span style="color:#e6db74">&#34;select * from user&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#e6db74">&#34;results5&#34;</span>, <span style="color:#a6e22e">results5</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">一般来说后面两个用的多一些</span> 
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">has</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Get</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">has</span>, <span style="color:#a6e22e">user</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 获取第一条数据 has 是一个bool类型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">users</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">has</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;name = ?&#34;</span>, <span style="color:#e6db74">&#34;sz&#34;</span>).<span style="color:#a6e22e">Desc</span>(<span style="color:#e6db74">&#34;id&#34;</span>).<span style="color:#a6e22e">Get</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">has</span>, <span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 需要注意的是get 只能得到单条数据 所以会取最后一条数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">name</span> <span style="color:#66d9ef">string</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">has</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Table</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>).<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;id = ?&#34;</span>, <span style="color:#ae81ff">7</span>).<span style="color:#a6e22e">Cols</span>(<span style="color:#e6db74">&#34;name&#34;</span>).<span style="color:#a6e22e">Get</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">name</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">has</span>, <span style="color:#a6e22e">name</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//等价于 SELECT name FROM user WHERE id = ? 查询单项的数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">valuesMap</span> = make(<span style="color:#66d9ef">map</span>[<span style="color:#66d9ef">string</span>]<span style="color:#66d9ef">string</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">has</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Table</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>).<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;id = ?&#34;</span>, <span style="color:#ae81ff">9</span>).<span style="color:#a6e22e">Get</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">valuesMap</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">has</span>, <span style="color:#a6e22e">valuesMap</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 等价于 SELECT * FROM user WHERE id = ?  查询单项的数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#a6e22e">user</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">cols</span> <span style="color:#f92672">:=</span> []<span style="color:#66d9ef">string</span>{<span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">Name</span>, <span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">Salt</span>, <span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">Passwd</span>}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">valuesSlice</span> = make([]<span style="color:#66d9ef">interface</span>{}, len(<span style="color:#a6e22e">cols</span>))
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">has</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Table</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user</span>).<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;id = ?&#34;</span>, <span style="color:#ae81ff">8</span>).<span style="color:#a6e22e">Cols</span>(<span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#e6db74">&#34;salt&#34;</span>, <span style="color:#e6db74">&#34;passwd&#34;</span>).<span style="color:#a6e22e">Get</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">valuesSlice</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">has</span>, <span style="color:#a6e22e">valuesSlice</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 等价于 SELECT col1, col2, col3 FROM user WHERE id = ?
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//查询多条数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">users</span> []<span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;name = ?&#34;</span>, <span style="color:#e6db74">&#34;sz&#34;</span>).<span style="color:#a6e22e">And</span>(<span style="color:#e6db74">&#34;age &gt; 10&#34;</span>).<span style="color:#a6e22e">Limit</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">0</span>).<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//等价于 SELECT * FROM user WHERE name = sz AND age &gt; 10 limit 10 offset 0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 当然可以使用Join和extends来组合使用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Detail</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Id</span>     <span style="color:#66d9ef">int64</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">UserId</span> <span style="color:#66d9ef">int64</span> <span style="color:#e6db74">`xorm:&#34;index&#34;`</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">UserDetail</span> <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span> <span style="color:#e6db74">`xorm:&#34;extends&#34;`</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Detail</span>      <span style="color:#e6db74">`xorm:&#34;extends&#34;`</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Sync</span>(new(<span style="color:#a6e22e">Detail</span>))
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">users</span> []<span style="color:#a6e22e">UserDetail</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">Table</span>(<span style="color:#e6db74">&#34;user&#34;</span>).<span style="color:#a6e22e">Select</span>(<span style="color:#e6db74">&#34;user.*, detail.*&#34;</span>).
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Join</span>(<span style="color:#e6db74">&#34;INNER&#34;</span>, <span style="color:#e6db74">&#34;detail&#34;</span>, <span style="color:#e6db74">&#34;detail.user_id = user.id&#34;</span>).
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;user.name = ?&#34;</span>, <span style="color:#e6db74">&#34;sz&#34;</span>).<span style="color:#a6e22e">Limit</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">0</span>).
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">Find</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">err</span>, <span style="color:#a6e22e">users</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 等价于 SELECT user.*, detail.* FROM user INNER JOIN detail WHERE user.name = ? limit 10 offset 0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 需要注意的是 需要先声明一下表的数据
+</span></span></span></code></pre></div><h4 id="5-xorm-的其他操作">5 xorm 的其他操作</h4>
+<ul>
+<li><code>Count</code> 获取记录条数</li>
+</ul>
+<pre tabindex="0"><code>	user := models.User{}
+	counts, err := engine.Count(&amp;user)
+	fmt.Println(counts)
+</code></pre><ul>
+<li><code>Sum</code> 求和函数</li>
+</ul>
+<pre tabindex="0"><code>	user := models.User{}
+	sumFloat64Slice, err := engine.Sums(&amp;user, &#34;age&#34;)
+	fmt.Println(sumFloat64Slice)
+</code></pre><ul>
+<li><code>Iterate</code> 和 <code>Rows</code> 根据条件遍历数据库，可以有两种方式: Iterate and Rows</li>
+</ul>
+<pre tabindex="0"><code>	err = engine.Iterate(&amp;models.User{Name: &#34;sz&#34;}, func(idx int, bean interface{}) error {
+		user := bean.(*models.User)
+		fmt.Println(user)
+		return nil
+	})
+	fmt.Println(err)
+</code></pre><pre tabindex="0"><code>	err = engine.BufferSize(100).Iterate(&amp;models.User{Name: &#34;sz&#34;}, func(idx int, bean interface{}) error {
+		user := bean.(*models.User)
+		fmt.Println(user)
+		return nil
+	})
+	fmt.Println(err)
+</code></pre><pre tabindex="0"><code>	rows, err := engine.Rows(&amp;models.User{Name: &#34;sz&#34;})
+	// SELECT * FROM user
+	defer rows.Close()
+	beans := new(models.User)
+	for rows.Next() {
+		err = rows.Scan(beans)
+		fmt.Println(beans)
+	}
+</code></pre><p>无事务DEMO</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-GO" data-lang="GO"><span style="display:flex;"><span><span style="color:#75715e">// 如下面的方法一样 如果没有事务的话执行到哪一步报错了前面的也会去执行
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">mysqlDemo</span>() <span style="color:#66d9ef">error</span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">dataSourceName</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%s:%s@tcp(%s:%d)/%s?charset=%s&#34;</span>, <span style="color:#a6e22e">username</span>, <span style="color:#a6e22e">password</span>, <span style="color:#a6e22e">ipAddress</span>, <span style="color:#a6e22e">port</span>, <span style="color:#a6e22e">dbName</span>, <span style="color:#a6e22e">charset</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">engine</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">xorm</span>.<span style="color:#a6e22e">NewEngine</span>(<span style="color:#e6db74">&#34;mysql&#34;</span>, <span style="color:#a6e22e">dataSourceName</span>)
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">session</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">engine</span>.<span style="color:#a6e22e">NewSession</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Close</span>()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">user1</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;xiaoxiao&#34;</span>, <span style="color:#a6e22e">Age</span>: <span style="color:#ae81ff">16</span>, <span style="color:#a6e22e">Created</span>: <span style="color:#a6e22e">time</span>.<span style="color:#a6e22e">Now</span>()}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Insert</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user1</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">user2</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">User</span>{<span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;yyy&#34;</span>}
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Where</span>(<span style="color:#e6db74">&#34;id = ?&#34;</span>, <span style="color:#ae81ff">2</span>).<span style="color:#a6e22e">Update</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">user2</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">session</span>.<span style="color:#a6e22e">Exec</span>(<span style="color:#e6db74">&#34;delete from user where name = ?&#34;</span>, <span style="color:#a6e22e">user2</span>.<span style="color:#a6e22e">Name</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">mysqlDemo</span>()
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">err</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>有事务的DEMO</p>
+<pre tabindex="0"><code>func mysqldemo2()  error{
+	dataSourceName := fmt.Sprintf(&#34;%s:%s@tcp(%s:%d)/%s?charset=%s&#34;, username, password, ipAddress, port, dbName, charset)
+	engine, err := xorm.NewEngine(&#34;mysql&#34;, dataSourceName)
+	if err != nil {
+		fmt.Println(err)
+	}
+	session := engine.NewSession()
+	defer session.Close()
+
+	session.Begin()
+	defer func() {
+		err:= recover()
+		if err != nil{
+			session.Rollback()
+		}else{
+			session.Commit()
+		}
+	}()
+
+	user1 := models.User{Name: &#34;xiaoxiao&#34;, Age: 16, Created: time.Now()}
+	if _, err := session.Insert(&amp;user1); err != nil {
+		return err
+	}
+
+	user2 := models.User{Name: &#34;yyy&#34;}
+	if _, err := session.Where(&#34;id = ?&#34;, 2).Update(&amp;user2); err != nil {
+		return err
+	}
+
+	if _, err := session.Exec(&#34;delete from user where name = ?&#34;, user2.Name); err != nil {
+		return err
+	}
+
+	// add Commit() after all actions
+	return session.Commit()
+}
+</code></pre><p>其可以简写为</p>
+<pre tabindex="0"><code>func mysqldemo3() (bool, error) {
+	dataSourceName := fmt.Sprintf(&#34;%s:%s@tcp(%s:%d)/%s?charset=%s&#34;, username, password, ipAddress, port, dbName, charset)
+	engine, err := xorm.NewEngine(&#34;mysql&#34;, dataSourceName)
+	if err != nil {
+		fmt.Println(err)
+	}
+	res, err := engine.Transaction(func(session *xorm.Session) (interface{}, error) {
+		user1 := models.User{Name: &#34;xiaoxiao&#34;, Age: 16, Created: time.Now()}
+		if _, err := session.Insert(&amp;user1); err != nil {
+			return false, err
+		}
+
+		user2 := models.User{Name: &#34;yyy&#34;}
+		if _, err := session.Where(&#34;id = ?&#34;, 2).Update(&amp;user2); err != nil {
+			return false, err
+		}
+
+		if _, err := session.Exec(&#34;delete from user where name = ?&#34;, user2.Name); err != nil {
+			return false, err
+		}
+		return true, nil
+	})
+	return res.(bool), err
+}
+</code></pre>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="--baseUrl=/tags/golang/">golang</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2023/07/grpc/" data-tooltip="Grpc" aria-label="NEXT: Grpc">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2023/07/goroutine%E5%92%8Cchannel/" data-tooltip="Goroutine和channel" aria-label="PREVIOUS: Goroutine和channel">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2023/07/go-%E7%9A%84orm/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2023/07/go-%E7%9A%84orm/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2023/07/go-%E7%9A%84orm/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '--baseUrl=\/2023\/07\/go-%E7%9A%84orm\/';
+        
+          this.page.identifier = '\/2023\/07\/go-%E7%9A%84orm\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2023 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2023/07/grpc/" data-tooltip="Grpc" aria-label="NEXT: Grpc">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2023/07/goroutine%E5%92%8Cchannel/" data-tooltip="Goroutine和channel" aria-label="PREVIOUS: Goroutine和channel">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2023/07/go-%E7%9A%84orm/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2023/07/go-%E7%9A%84orm/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2023/07/go-%E7%9A%84orm/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl%3D%2F2023%2F07%2Fgo-%25E7%259A%2584orm%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl%3D%2F2023%2F07%2Fgo-%25E7%259A%2584orm%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl%3D%2F2023%2F07%2Fgo-%25E7%259A%2584orm%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('--baseUrl=/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="--baseUrl=/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

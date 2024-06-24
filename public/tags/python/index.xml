@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>python on Hugo tranquilpeak theme</title>
+    <link>--baseUrl=/tags/python/</link>
+    <description>Recent content in python on Hugo tranquilpeak theme</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 13 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="--baseUrl=/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>python CONTEXTVARS</title>
+      <link>--baseUrl=/2023/04/python-contextvars/</link>
+      <pubDate>Thu, 13 Apr 2023 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2023/04/python-contextvars/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>安装python3.11</title>
+      <link>--baseUrl=/2022/12/%E5%AE%89%E8%A3%85python3.11/</link>
+      <pubDate>Thu, 29 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/12/%E5%AE%89%E8%A3%85python3.11/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python 3.11 特性1</title>
+      <link>--baseUrl=/2022/12/python-3.11-%E7%89%B9%E6%80%A71/</link>
+      <pubDate>Tue, 13 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/12/python-3.11-%E7%89%B9%E6%80%A71/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python知识点1</title>
+      <link>--baseUrl=/2022/12/python%E7%9F%A5%E8%AF%86%E7%82%B91/</link>
+      <pubDate>Thu, 01 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/12/python%E7%9F%A5%E8%AF%86%E7%82%B91/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>nats 高级特性 </title>
+      <link>--baseUrl=/2022/11/nats-%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/</link>
+      <pubDate>Fri, 18 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/11/nats-%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python 继承多态</title>
+      <link>--baseUrl=/2022/10/python-%E7%BB%A7%E6%89%BF%E5%A4%9A%E6%80%81/</link>
+      <pubDate>Sat, 08 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/10/python-%E7%BB%A7%E6%89%BF%E5%A4%9A%E6%80%81/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python 正则</title>
+      <link>--baseUrl=/2022/07/python-%E6%AD%A3%E5%88%99/</link>
+      <pubDate>Wed, 27 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/07/python-%E6%AD%A3%E5%88%99/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python 设计模式</title>
+      <link>--baseUrl=/2022/07/python-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Wed, 27 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/07/python-%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python 短链</title>
+      <link>--baseUrl=/2022/07/python-%E7%9F%AD%E9%93%BE/</link>
+      <pubDate>Sun, 03 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/07/python-%E7%9F%AD%E9%93%BE/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python contextvars</title>
+      <link>--baseUrl=/2022/06/python-contextvars/</link>
+      <pubDate>Thu, 30 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/06/python-contextvars/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python list set lambda 高级用法</title>
+      <link>--baseUrl=/2022/06/python-list-set-lambda-%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/</link>
+      <pubDate>Wed, 29 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/06/python-list-set-lambda-%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python collections </title>
+      <link>--baseUrl=/2022/06/python-collections/</link>
+      <pubDate>Tue, 28 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/06/python-collections/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python 作用域 元类 深浅拷贝</title>
+      <link>--baseUrl=/2022/06/python-%E4%BD%9C%E7%94%A8%E5%9F%9F-%E5%85%83%E7%B1%BB-%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D/</link>
+      <pubDate>Mon, 27 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/06/python-%E4%BD%9C%E7%94%A8%E5%9F%9F-%E5%85%83%E7%B1%BB-%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python 垃圾回收 </title>
+      <link>--baseUrl=/2022/06/python-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</link>
+      <pubDate>Sun, 26 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/06/python-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python 闭包 装饰器</title>
+      <link>--baseUrl=/2022/06/python-%E9%97%AD%E5%8C%85-%E8%A3%85%E9%A5%B0%E5%99%A8/</link>
+      <pubDate>Thu, 23 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/06/python-%E9%97%AD%E5%8C%85-%E8%A3%85%E9%A5%B0%E5%99%A8/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>python assert 生成器 值传递 反射机制</title>
+      <link>--baseUrl=/2022/06/python-assert-%E7%94%9F%E6%88%90%E5%99%A8-%E5%80%BC%E4%BC%A0%E9%80%92-%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6/</link>
+      <pubDate>Wed, 22 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/06/python-assert-%E7%94%9F%E6%88%90%E5%99%A8-%E5%80%BC%E4%BC%A0%E9%80%92-%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python新特性</title>
+      <link>--baseUrl=/2022/05/python%E6%96%B0%E7%89%B9%E6%80%A7/</link>
+      <pubDate>Fri, 06 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/05/python%E6%96%B0%E7%89%B9%E6%80%A7/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mysql 操作2</title>
+      <link>--baseUrl=/2022/01/mysql-%E6%93%8D%E4%BD%9C2/</link>
+      <pubDate>Tue, 18 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/01/mysql-%E6%93%8D%E4%BD%9C2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mysql 操作1</title>
+      <link>--baseUrl=/2022/01/mysql-%E6%93%8D%E4%BD%9C1/</link>
+      <pubDate>Sat, 15 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>--baseUrl=/2022/01/mysql-%E6%93%8D%E4%BD%9C1/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

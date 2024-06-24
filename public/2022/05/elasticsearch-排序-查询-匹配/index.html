@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Elasticsearch 排序 查询 匹配",
+  
+  "datePublished": "2022-05-20T00:00:00Z",
+  "dateModified": "2022-05-20T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "--baseUrl=\/2022\/05\/elasticsearch-%E6%8E%92%E5%BA%8F-%E6%9F%A5%E8%AF%A2-%E5%8C%B9%E9%85%8D\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.114.1 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elasticsearch 排序 查询 匹配">
+<meta name="twitter:title" content="Elasticsearch 排序 查询 匹配">
+<meta property="og:url" content="--baseUrl=/2022/05/elasticsearch-%E6%8E%92%E5%BA%8F-%E6%9F%A5%E8%AF%A2-%E5%8C%B9%E9%85%8D/">
+<meta property="twitter:url" content="--baseUrl=/2022/05/elasticsearch-%E6%8E%92%E5%BA%8F-%E6%9F%A5%E8%AF%A2-%E5%8C%B9%E9%85%8D/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2022-05-20T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2022-05-20T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="features">
+    
+  
+  
+    
+      <meta property="article:tag" content="Elasticsearch">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>Elasticsearch 排序 查询 匹配</title>
+
+    <link rel="icon" href="--baseUrl=/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="--baseUrl=/2022/05/elasticsearch-%E6%8E%92%E5%BA%8F-%E6%9F%A5%E8%AF%A2-%E5%8C%B9%E9%85%8D/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="--baseUrl=/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="--baseUrl=/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="--baseUrl=/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="--baseUrl=/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" target="_blank" rel="noopener" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      Elasticsearch 排序 查询 匹配
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2022-05-20T00:00:00Z">
+        
+  May 20, 2022
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="--baseUrl=/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="--baseUrl=/categories/features">features</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h3 id="elasticsearch-使用-6">Elasticsearch 使用 6</h3>
+<pre tabindex="0"><code>我们都知到所有的数据库最复杂也最难的就是查询了，接下来我们这一篇文章主要讲的就是查询
+首先我们先创建几条数据
+下面第一个是kibana 的写法 第二个是python 的 index 的写法  第三个是 update 的写法 二者都可以更新或者新增，update需要将 body再套一层 doc
+PUT /test/_doc/4 
+{
+   &#34;name&#34;: &#34;das&#34;,
+    &#34;age&#34;: 21,
+    &#34;desc&#34;: &#34;操作还可以&#34;,
+    &#34;tags&#34;: [&#34;够用&#34;, &#34;还行&#34;, &#34;凑合&#34;]
+}
+es = await AioESService.get()
+body = {
+      &#34;name&#34;: &#34;qqqq&#34;,
+      &#34;age&#34;: 30,
+      &#34;desc&#34;: &#34;操作猛如虎&#34;,
+      &#34;tags&#34;: [&#34;强&#34;, &#34;还行&#34;, &#34;大神&#34;]
+}
+await es.index(index=&#39;test&#39;, id = 3, body=body)
+es = await AioESService.get()
+body = {
+      &#34;name&#34;: &#34;asx&#34;,
+      &#34;age&#34;: 36,
+      &#34;desc&#34;: &#34;没有操作&#34;,
+      &#34;tags&#34;: [&#34;菜&#34;, &#34;太菜&#34;, &#34;玩不了&#34;]
+}
+await es.update(index=&#39;test&#39;, id = 5, body={&#34;doc&#34;: body})
+</code></pre><h5 id="现在有六条数据-如下图显示">现在有六条数据 如下图显示</h5>
+<p><img src="--baseUrl=/img/es6infos1.png" alt=""></p>
+<h5 id="下面我们来做一下搜索看看">下面我们来做一下搜索看看</h5>
+<pre tabindex="0"><code>GET test/_search
+{
+  &#34;query&#34; : {
+    &#34;match&#34;:{
+      &#34;name&#34;:&#34;das&#34;
+    }
+  }
+}
+es = await AioESService.get()
+body = {
+   &#34;query&#34;:{
+         &#34;match&#34;:{
+            &#34;name&#34;:&#34;ass&#34;
+									}
+						}
+}
+result = await es.search(index=&#39;test&#39;,body=body)
+</code></pre><h5 id="可以看到如下图所示">可以看到如下图所示</h5>
+<p><img src="--baseUrl=/img/es6infos2.png" alt=""></p>
+<pre tabindex="0"><code>其中hits ： 索引和文档的信息 查询的所有结果 score 是匹配度 从上往下排列
+</code></pre><pre tabindex="0"><code>当我们只要某些数据时 可以在查询的时候通过 “_source” 去指定
+GET test/_search
+{
+  &#34;query&#34; : {
+    &#34;match&#34;:{
+      &#34;name&#34;:&#34;das&#34;
+    }
+  }
+  , &#34;_source&#34;: [&#34;name&#34;,&#34;desc&#34;]
+}
+</code></pre><h5 id="排序以及分页">排序以及分页</h5>
+<pre tabindex="0"><code>GET test/_search
+{
+  &#34;query&#34;:{
+    &#34;match&#34;:{
+      &#34;name&#34;:&#34;qqqq&#34;
+            }
+          },
+    &#34;sort&#34;: [{
+      &#34;age&#34;:{
+        &#34;order&#34;: &#34;desc&#34;
+      }
+    }]
+}
+es = await AioESService.get()
+body = {
+     &#34;query&#34;:{
+       &#34;match&#34;:{
+       &#34;name&#34;:&#34;qqqq&#34;
+        }
+     },
+      &#34;sort&#34;: [{
+        &#34;age&#34;: {
+           &#34;order&#34;: &#34;desc&#34;
+          }
+        }]
+}
+await es.search(index=&#39;test&#39;,body=body)
+</code></pre><h5 id="可以看到结果如下图所示">可以看到结果如下图所示</h5>
+<p><img src="--baseUrl=/img/es6infos3.png" alt=""></p>
+<pre tabindex="0"><code>可以在加入 from 和 size参数 进行分页 其中size 控制为一页多少个， from 代表从哪个地方开始 
+GET test/_search
+{
+  &#34;query&#34;:{
+    &#34;match&#34;:{
+      &#34;name&#34;:&#34;qqqq&#34;
+            }
+          },
+    &#34;sort&#34;: [{
+      &#34;age&#34;:{
+        &#34;order&#34;: &#34;desc&#34;
+      }
+    }],
+    &#34;from&#34;: 0,
+    &#34;size&#34;: 1
+}
+</code></pre><h5 id="布尔值查询-多条件查询">布尔值查询 多条件查询</h5>
+<pre tabindex="0"><code>must 相当于 mysql and
+GET test/_search
+{
+  &#34;query&#34;:{
+    &#34;bool&#34;:{
+      &#34;must&#34;:[
+        {
+          &#34;match&#34;: {
+            &#34;name&#34;: &#34;qqqq&#34;
+          }
+        },
+        {
+          &#34;match&#34;:{
+            &#34;age&#34;:30
+          }
+        }]
+            }
+          }
+}
+should 相当于 mysql or
+GET test/_search
+{
+  &#34;query&#34;:{
+    &#34;bool&#34;:{
+      &#34;should&#34;:[
+        {
+          &#34;match&#34;: {
+            &#34;name&#34;: &#34;das&#34;
+          }
+        },
+        {
+          &#34;match&#34;:{
+            &#34;age&#34;:24
+          }
+        }]
+            }
+          }
+}
+must_not 相当于 not 
+GET test/_search
+{
+  &#34;query&#34;:{
+    &#34;bool&#34;:{
+      &#34;must_not&#34;:[
+        {
+          &#34;match&#34;: {
+            &#34;name&#34;: &#34;das&#34;
+          }
+        },
+        {
+          &#34;match&#34;:{
+            &#34;age&#34;:24
+          }
+        }]
+            }
+          }
+}
+</code></pre><h4 id="制定过滤器-filter">制定过滤器 filter</h4>
+<pre tabindex="0"><code>filter 是和 must 同级的
+GET test/_search
+{
+  &#34;query&#34;:{
+    &#34;bool&#34;:{
+      &#34;must&#34;:[
+        {
+          &#34;match&#34;: {
+            &#34;name&#34;: &#34;qqqq&#34;
+          }
+        }
+        ],
+        &#34;filter&#34;: [
+          {&#34;range&#34;: {
+            &#34;age&#34;: {
+              &#34;gte&#34;: 28
+            }
+          }}
+]
+}
+}
+}
+</code></pre><h5 id="匹配多个条件">匹配多个条件</h5>
+<pre tabindex="0"><code>多个条件使用空格 隔开即可 而且会自动分词
+GET test/_search
+{
+  &#34;query&#34;:{
+    &#34;match&#34;: {
+      &#34;tags&#34;: &#34;还行 大神&#34;
+    }
+  }
+}
+</code></pre><h5 id="精确查询">精确查询！</h5>
+<pre tabindex="0"><code>term 查询 是直接 通过倒排索引指定的词条进程精确查找的！
+关于分词：
+term , 直接查询精确的
+match ,会使用分词器解析 （先分析文档，然后通过分析的文档进行查询）
+</code></pre>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="--baseUrl=/tags/elasticsearch/">Elasticsearch</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/05/elasticsearch-bucket-aggregations/" data-tooltip="Elasticsearch Bucket aggregations" aria-label="NEXT: Elasticsearch Bucket aggregations">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/05/elasticsearch-ik-%E5%88%86%E8%AF%8D%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8/" data-tooltip="Elasticsearch ik 分词器的使用" aria-label="PREVIOUS: Elasticsearch ik 分词器的使用">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2022/05/elasticsearch-%E6%8E%92%E5%BA%8F-%E6%9F%A5%E8%AF%A2-%E5%8C%B9%E9%85%8D/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2022/05/elasticsearch-%E6%8E%92%E5%BA%8F-%E6%9F%A5%E8%AF%A2-%E5%8C%B9%E9%85%8D/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2022/05/elasticsearch-%E6%8E%92%E5%BA%8F-%E6%9F%A5%E8%AF%A2-%E5%8C%B9%E9%85%8D/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '--baseUrl=\/2022\/05\/elasticsearch-%E6%8E%92%E5%BA%8F-%E6%9F%A5%E8%AF%A2-%E5%8C%B9%E9%85%8D\/';
+        
+          this.page.identifier = '\/2022\/05\/elasticsearch-%E6%8E%92%E5%BA%8F-%E6%9F%A5%E8%AF%A2-%E5%8C%B9%E9%85%8D\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2023 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/05/elasticsearch-bucket-aggregations/" data-tooltip="Elasticsearch Bucket aggregations" aria-label="NEXT: Elasticsearch Bucket aggregations">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/05/elasticsearch-ik-%E5%88%86%E8%AF%8D%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8/" data-tooltip="Elasticsearch ik 分词器的使用" aria-label="PREVIOUS: Elasticsearch ik 分词器的使用">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2022/05/elasticsearch-%E6%8E%92%E5%BA%8F-%E6%9F%A5%E8%AF%A2-%E5%8C%B9%E9%85%8D/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2022/05/elasticsearch-%E6%8E%92%E5%BA%8F-%E6%9F%A5%E8%AF%A2-%E5%8C%B9%E9%85%8D/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2022/05/elasticsearch-%E6%8E%92%E5%BA%8F-%E6%9F%A5%E8%AF%A2-%E5%8C%B9%E9%85%8D/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl%3D%2F2022%2F05%2Felasticsearch-%25E6%258E%2592%25E5%25BA%258F-%25E6%259F%25A5%25E8%25AF%25A2-%25E5%258C%25B9%25E9%2585%258D%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl%3D%2F2022%2F05%2Felasticsearch-%25E6%258E%2592%25E5%25BA%258F-%25E6%259F%25A5%25E8%25AF%25A2-%25E5%258C%25B9%25E9%2585%258D%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl%3D%2F2022%2F05%2Felasticsearch-%25E6%258E%2592%25E5%25BA%258F-%25E6%259F%25A5%25E8%25AF%25A2-%25E5%258C%25B9%25E9%2585%258D%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('--baseUrl=/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="--baseUrl=/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

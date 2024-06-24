@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Go 多态 接口",
+  
+  "datePublished": "2023-07-02T00:00:00Z",
+  "dateModified": "2023-07-02T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "--baseUrl=\/2023\/07\/go-%E5%A4%9A%E6%80%81-%E6%8E%A5%E5%8F%A3\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.114.1 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go 多态 接口">
+<meta name="twitter:title" content="Go 多态 接口">
+<meta property="og:url" content="--baseUrl=/2023/07/go-%E5%A4%9A%E6%80%81-%E6%8E%A5%E5%8F%A3/">
+<meta property="twitter:url" content="--baseUrl=/2023/07/go-%E5%A4%9A%E6%80%81-%E6%8E%A5%E5%8F%A3/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2023-07-02T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2023-07-02T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="features">
+    
+  
+  
+    
+      <meta property="article:tag" content="golang">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>Go 多态 接口</title>
+
+    <link rel="icon" href="--baseUrl=/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="--baseUrl=/2023/07/go-%E5%A4%9A%E6%80%81-%E6%8E%A5%E5%8F%A3/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="--baseUrl=/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="--baseUrl=/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="--baseUrl=/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="--baseUrl=/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" target="_blank" rel="noopener" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      Go 多态 接口
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2023-07-02T00:00:00Z">
+        
+  July 2, 2023
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="--baseUrl=/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="--baseUrl=/categories/features">features</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h3 id="go-多态-接口">Go 多态 接口</h3>
+<h4 id="1多态是什么">1:多态是什么？</h4>
+<pre tabindex="0"><code>面向对象语言都是有多态的概念 例如python
+我们看一段简单的python代码  其实就是 相同的方法名 但是却有不同的实现 最后都是走了自己的方法
+
+class Animal:
+    def speak(self):
+        return &#34;Unknown animal sound&#34;
+
+class Dog(Animal):
+    def speak(self):
+        return &#34;Woof!&#34;
+
+class Cat(Animal):
+    def speak(self):
+        return &#34;Meow!&#34;
+
+def animal_sound(animal):
+    return animal.speak()
+
+# 创建不同的动物对象
+animal1 = Animal()
+animal2 = Dog()
+animal3 = Cat()
+
+# 多态性的体现：相同的方法名，不同的实现
+print(animal_sound(animal1)) # 输出: Unknown animal sound
+print(animal_sound(animal2)) # 输出: Woof!
+print(animal_sound(animal3)) # 输出: Meow!
+
+
+那么GO 语言是如何去实现这个功能的呢 这就需要引入一个新的点 interface
+package main
+
+import &#34;fmt&#34;
+
+// 本质是一个指针
+type AnimalTF interface {
+	Sleep()
+	GetColor() string
+	GetType() string
+}
+
+// 具体的 struct
+type Cat struct {
+	color string //
+}
+
+func (this *Cat) Sleep() {
+	fmt.Println(&#34;cat  is  Sleep&#34;)
+}
+
+func (this *Cat) GetColor() string {
+	return this.color
+}
+
+func (this *Cat) GetType() string {
+	return &#34;Cat&#34;
+}
+
+type Dog struct {
+	color string //
+}
+
+func (this *Dog) Sleep() {
+	fmt.Println(&#34;dog  is  Sleep&#34;)
+}
+
+func (this *Dog) GetColor() string {
+	return this.color
+}
+
+func (this *Dog) GetType() string {
+	return &#34;Dog&#34;
+}
+
+func showanimal(animal AnimalTF) {
+	animal.Sleep()
+	fmt.Println(&#34;color is &#34;, animal.GetColor())
+	fmt.Println(&#34;type is &#34;, animal.GetType())
+}
+
+func main() {
+	// 第一种方式
+	var animal AnimalTF // 定义一个接口的数据类型 父类的指针
+	animal = &amp;Cat{&#34;Green&#34;}
+	animal.Sleep()
+
+	var animal1 AnimalTF
+	animal1 = &amp;Dog{&#34;Yellow&#34;}
+	animal1.Sleep()
+
+	//第二种方式
+	cat := Cat{&#34;red&#34;}
+	dog := Dog{&#34;black&#34;}
+	showanimal(&amp;cat)
+	showanimal(&amp;dog)
+}
+
+可以看出来 GO语言中的多态性主要依赖于接口（Interfaces）和方法（Methods）的结合。通过定义接口，并让不同的类型实现这些接口，可以在调用相同的方法时实现不同的行为。这样，就可以达到类似多态的效果。
+</code></pre><h4 id="2-struct-两种实现方法的区别">2: struct 两种实现方法的区别</h4>
+<pre tabindex="0"><code>来看一段代码
+
+type Dog struct{}
+
+func (d Dog) Speak() string {
+	return &#34;Woof!&#34;
+}
+
+
+type Dog struct{}
+
+func (this *Dog) Speak() string {
+	return &#34;Woof!&#34;
+}
+
+
+两种写法中，都定义了 Dog 结构体并实现了 Speak() 方法，但它们之间有一个细微的差别：方法的接收者。
+
+第一种写法：
+在这种写法中，Speak() 方法的接收者是 Dog 结构体的一个值类型（非指针类型）。这意味着在调用 Speak() 方法时，Go 语言会对 Dog 类型的对象进行值拷贝，方法中对对象的修改不会影响原始对象。这种方式适用于不需要修改对象状态的情况，例如只是返回一些信息。
+
+第二种写法：
+在这种写法中，Speak() 方法的接收者是 Dog 结构体的指针类型。这意味着在调用 Speak() 方法时，Go 语言不会对 Dog 类型的对象进行拷贝，而是直接传递对象的指针。因此，方法中对对象的修改会影响原始对象。这种方式适用于需要修改对象状态的情况。
+
+两种写法中的 Speak() 方法的功能都是一样的，只是接收者类型不同，因此在使用时需要根据具体情况来选择合适的写法。
+
+如果你的 Speak() 方法不需要修改 Dog 对象的状态，那么使用第一种写法是更合适的选择。如果 Speak() 方法需要修改 Dog 对象的状态，那么使用第二种写法是更合适的选择。
+
+似乎看不出来区别 那我们用一个具体一点的例子来看
+
+package main
+
+import &#34;fmt&#34;
+
+type Dog struct {
+    Name string
+}
+
+// 非指针接收者方法
+func (d Dog) ChangeNameNonPointer(newName string) {
+    d.Name = newName
+}
+
+// 指针接收者方法
+func (d *Dog) ChangeNameWithPointer(newName string) {
+    d.Name = newName
+}
+
+func main() {
+    // 创建一个 Dog 对象
+    dog1 := Dog{Name: &#34;Buddy&#34;}
+
+    // 使用非指针接收者方法，不会修改原始对象
+    dog1.ChangeNameNonPointer(&#34;Max&#34;)
+    fmt.Println(&#34;dog1 (Non-pointer receiver):&#34;, dog1.Name) // 输出: Buddy
+
+    // 使用指针接收者方法，会修改原始对象
+    (&amp;dog1).ChangeNameWithPointer(&#34;Max&#34;)
+    fmt.Println(&#34;dog1 (Pointer receiver):&#34;, dog1.Name) // 输出: Max
+
+    // 创建一个指向 Dog 对象的指针
+    dog2 := &amp;Dog{Name: &#34;Lucy&#34;}
+
+    // 使用非指针接收者方法，不会修改原始对象
+    dog2.ChangeNameNonPointer(&#34;Molly&#34;)
+    fmt.Println(&#34;dog2 (Non-pointer receiver):&#34;, dog2.Name) // 输出: Lucy
+
+    // 使用指针接收者方法，会修改原始对象
+    dog2.ChangeNameWithPointer(&#34;Molly&#34;)
+    fmt.Println(&#34;dog2 (Pointer receiver):&#34;, dog2.Name) // 输出: Molly
+}
+
+在上面的例子中，我们定义了一个 Dog 结构体，其中包含一个 Name 字段。然后，我们分别定义了 ChangeNameNonPointer 方法和 ChangeNameWithPointer 方法，前者使用非指针接收者，后者使用指针接收者。
+
+在 main 函数中，我们创建了两个 Dog 对象 dog1 和 dog2，一个是值类型对象，一个是指针类型对象。
+
+首先，我们使用非指针接收者方法 ChangeNameNonPointer 尝试修改 dog1 和 dog2 的名字。但是，由于使用了非指针接收者，这两个对象的名字没有被修改，输出的名字依然是原始的值。
+
+接着，我们使用指针接收者方法 ChangeNameWithPointer 尝试修改 dog1 和 dog2 的名字。由于使用了指针接收者，这两个对象的名字被成功修改了。
+
+这个例子清楚地展示了使用不同接收者类型时的区别。非指针接收者方法不会对原始对象进行修改，而指针接收者方法可以修改原始对象。因此，在选择接收者类型时，需要根据方法是否需要修改对象的状态来进行判断。如果需要修改对象状态，使用指针接收者；如果不需要修改对象状态，使用非指针接收者即可。
+</code></pre><h4 id="3interface-万能类型">3:interface (万能类型)</h4>
+<pre tabindex="0"><code>interface 空接口 以及类型断言机制
+
+package main
+
+import &#34;fmt&#34;
+
+// interface() 是万能数据类型
+func myFunc(arg interface{}) {
+
+	fmt.Println(&#34;myFunc is called&#34;)
+	fmt.Println(arg)
+	// interface{} 该如何区分 此时引用的底层数据类型是什么？
+	//给 interface{} 提供 “断言” 的机制
+	value, ok := arg.(string)
+	if !ok {
+		fmt.Println(&#34;arg is not string type&#34;)
+	} else {
+		fmt.Println(&#34;arg is string type&#34;)
+		fmt.Printf(&#34;value type is %T\n&#34;, value)
+	}
+}
+
+type Book struct {
+	auth string
+}
+
+func main() {
+	book := Book{&#34;Golang&#34;}
+	myFunc(book)
+	myFunc(1000)
+	myFunc(&#34;111&#34;)
+
+}
+</code></pre><h4 id="4pair">4:Pair</h4>
+<pre tabindex="0"><code>在Golang 中一个变量是含有 type 和 value 两个属性的。其中type 又分为static type 和 concrete type
+这两个合在一起 称之为 pair对
+</code></pre>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="--baseUrl=/tags/golang/">golang</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2023/07/golang-%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E4%B8%8E%E7%BB%93%E6%9E%84%E4%BD%93%E6%A0%87%E7%AD%BE/" data-tooltip="Golang 反射机制与结构体标签" aria-label="NEXT: Golang 反射机制与结构体标签">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2023/07/aigc%E5%88%9D%E4%BD%93%E9%AA%8C/" data-tooltip="AIGC初体验" aria-label="PREVIOUS: AIGC初体验">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2023/07/go-%E5%A4%9A%E6%80%81-%E6%8E%A5%E5%8F%A3/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2023/07/go-%E5%A4%9A%E6%80%81-%E6%8E%A5%E5%8F%A3/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2023/07/go-%E5%A4%9A%E6%80%81-%E6%8E%A5%E5%8F%A3/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '--baseUrl=\/2023\/07\/go-%E5%A4%9A%E6%80%81-%E6%8E%A5%E5%8F%A3\/';
+        
+          this.page.identifier = '\/2023\/07\/go-%E5%A4%9A%E6%80%81-%E6%8E%A5%E5%8F%A3\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2023 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2023/07/golang-%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E4%B8%8E%E7%BB%93%E6%9E%84%E4%BD%93%E6%A0%87%E7%AD%BE/" data-tooltip="Golang 反射机制与结构体标签" aria-label="NEXT: Golang 反射机制与结构体标签">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2023/07/aigc%E5%88%9D%E4%BD%93%E9%AA%8C/" data-tooltip="AIGC初体验" aria-label="PREVIOUS: AIGC初体验">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2023/07/go-%E5%A4%9A%E6%80%81-%E6%8E%A5%E5%8F%A3/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2023/07/go-%E5%A4%9A%E6%80%81-%E6%8E%A5%E5%8F%A3/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2023/07/go-%E5%A4%9A%E6%80%81-%E6%8E%A5%E5%8F%A3/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl%3D%2F2023%2F07%2Fgo-%25E5%25A4%259A%25E6%2580%2581-%25E6%258E%25A5%25E5%258F%25A3%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl%3D%2F2023%2F07%2Fgo-%25E5%25A4%259A%25E6%2580%2581-%25E6%258E%25A5%25E5%258F%25A3%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl%3D%2F2023%2F07%2Fgo-%25E5%25A4%259A%25E6%2580%2581-%25E6%258E%25A5%25E5%258F%25A3%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('--baseUrl=/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="--baseUrl=/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

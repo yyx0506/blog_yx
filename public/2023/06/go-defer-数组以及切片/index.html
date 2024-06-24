@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Go defer 数组以及切片",
+  
+  "datePublished": "2023-06-13T00:00:00Z",
+  "dateModified": "2023-06-13T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "--baseUrl=\/2023\/06\/go-defer-%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%88%87%E7%89%87\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.114.1 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go defer 数组以及切片">
+<meta name="twitter:title" content="Go defer 数组以及切片">
+<meta property="og:url" content="--baseUrl=/2023/06/go-defer-%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%88%87%E7%89%87/">
+<meta property="twitter:url" content="--baseUrl=/2023/06/go-defer-%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%88%87%E7%89%87/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2023-06-13T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2023-06-13T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="features">
+    
+  
+  
+    
+      <meta property="article:tag" content="golang">
+    
+      <meta property="article:tag" content="设计模式">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>Go defer 数组以及切片</title>
+
+    <link rel="icon" href="--baseUrl=/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="--baseUrl=/2023/06/go-defer-%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%88%87%E7%89%87/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="--baseUrl=/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="--baseUrl=/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="--baseUrl=/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="--baseUrl=/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" target="_blank" rel="noopener" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      Go defer 数组以及切片
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2023-06-13T00:00:00Z">
+        
+  June 13, 2023
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="--baseUrl=/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="--baseUrl=/categories/features">features</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h3 id="golang-快速了解2">Golang 快速了解2</h3>
+<h4 id="1defer语句的调用顺序">1:defer语句的调用顺序</h4>
+<pre tabindex="0"><code>这个关键字在其他语言中很少出现，我们看一下这个关键字的作用是什么
+
+他有点类似于 python 的 final 字段
+例如
+package main
+
+import &#34;fmt&#34;
+
+func main() {
+	// 声明一个整型变量a,并赋值为10
+	var a int = 10
+	// 声明一个整型指针类型变量point，并让他指向a
+	var point1 *int = &amp;a
+	// 声明一个二级整型指针，即指向一个整型指针变量的指针
+	var point2 **int = &amp;point1
+	defer fmt.Println(&#34;end&#34;)
+	fmt.Println(&#34;The address of point2 is &#34;, &amp;point2)
+	fmt.Println(&#34;The value of point2 is &#34;, point2)
+	fmt.Println(&#34;The value stored in the memory space pointed to by pointer2 is &#34;, *point2)
+	fmt.Println(&#34;The address of point1 is &#34;, &amp;point1)
+	fmt.Println(&#34;The value of point1 is &#34;, point1)
+	fmt.Println(&#34;The value stored in the memory space pointed to by pointer2 is &#34;, *point1)
+	fmt.Println(&#34;The value of a is &#34;, a)
+	fmt.Println(&#34;The address of a is &#34;, &amp;a)
+}
+
+他会在这个函数执行完后在执行
+当出现多个defer 时 就会最后面的先执行 这就是压栈
+
+当出现 return 时 时谁先谁后呢 看下面的代码
+
+
+func deferFunc() int {
+	fmt.Println(&#34; defer func called&#34;)
+	return 0
+}
+
+func retutnFunc() int {
+	fmt.Println(&#34; return func called&#34;)
+	return 0
+}
+
+func returnAnddefer() int {
+	defer deferFunc()
+	return retutnFunc()
+}
+
+func main() {
+	returnAnddefer()
+}
+执行后发现的就是。return 执行 defer 最后执行 就是当这个函数的生命周期结束后才会调用
+</code></pre><h4 id="2golang-数组和动态数组的区别">2:Golang 数组和动态数组的区别</h4>
+<pre tabindex="0"><code>我们先声明两个数组 并便利一下
+
+func main() {
+	var myArray1 [10]int
+	for i := 0; i &lt; 10; i++ {
+		fmt.Println(myArray1[i])
+	}
+
+	myArray2 := [10]int{1, 2, 3, 4, 5}
+	for index, value := range myArray2 {
+		fmt.Println(&#34;index = .&#34;, index, &#34; value = &#34;, value)
+	}
+}
+
+如果我们声明 一个动态数组呢 就是 slice 传说的 切片
+
+func printArray(myArray []int) {
+	// 引用传递
+	// _ 表示匿名的变量
+	for _, value := range myArray {
+		fmt.Println(&#34;value = &#34;, value)
+	}
+	myArray[1] = 100
+
+}
+
+func main() {
+	myArray := []int{1, 2, 3, 4}
+	fmt.Printf(&#34;myarray types is %T\n&#34;, myArray)
+	printArray(myArray)
+	fmt.Println(&#34;======&#34;)
+
+	for _, value := range myArray {
+		fmt.Println(&#34;value = &#34;, value)
+	}
+
+}
+
+普通的数组是值传递 而动态数组 是引用传递 这个有点类似于python了
+</code></pre><h4 id="3slice-的声明定义方式-以及切片追加与截取">3:slice 的声明定义方式 以及切片追加与截取</h4>
+<pre tabindex="0"><code>一般来说是有四种方式去声明 判断一个slice 是否是一个空切片 只需要 判读其是否等于nil 即可
+func main() {
+	// 声明slice1 是一个切片 并且初始化 默认数据是1，2，3 长度是3
+	var slice1 = []int{1, 2, 3}
+	fmt.Println(&#34;slice1 = &#34;, slice1)
+	// 声明 slice2 是一个切片 但是并没有 给slice 分配空间 通过make 来创建一个空间
+	var slice2 []int
+	slice2 = make([]int, 3) // 开辟空间 以及 长度
+	fmt.Println(&#34;slice2 = &#34;, slice2)
+
+	// 第三种方式 合二为一
+	var slice3 = make([]int, 3)
+	fmt.Println(&#34;slice3 = &#34;, slice3)
+	
+	// 第四种直接 ：= 
+	slice4 := make([]int, 3)
+	fmt.Println(&#34;slice4 = &#34;, slice4)
+	
+	if slice1 == nil {
+		fmt.Println(&#34;slice1 是一个空切片&#34;)
+	}else {
+		fmt.Println(&#34;slice1 不是一个空切片&#34;)
+	}
+}
+
+切片的 使用方式。切片的追加与 截取
+
+func main() {
+	// 第二个参数是长度，第二个参数是容量
+	var numbers = make([]int, 3, 5)
+
+	fmt.Printf(&#34; len = %d ,cap = %d ,slice = %v\n&#34;, len(numbers), cap(numbers), numbers)
+	// 向 numbers 切片 追加一个元素1 ，numbers len = 4 , [0,0,0,1] ,cap = 5
+
+	numbers = append(numbers, 1)
+	fmt.Printf(&#34; len = %d ,cap = %d ,slice = %v\n&#34;, len(numbers), cap(numbers), numbers)
+
+	numbers = append(numbers, 2)
+	fmt.Printf(&#34; len = %d ,cap = %d ,slice = %v\n&#34;, len(numbers), cap(numbers), numbers)
+
+	//  向一个cap 容量已满的 sliced 追加元素 会新开辟一个指定cap 大小的容量
+	numbers = append(numbers, 3)
+	fmt.Printf(&#34; len = %d ,cap = %d ,slice = %v\n&#34;, len(numbers), cap(numbers), numbers)
+	
+	// 如果不指定容量 的话会根据 生成的长度为容量去开辟一个新的内存 
+}
+
+通过 这段代码我们可以得到 切片的长度和容量不同，长度表示左指针和右指针之间的距离，容量表示左指针至底层数组末尾的距离
+
+切片的扩容机制，append 的时候 如果长度增加超过容量，那么容量增加两倍
+
+func main() {
+	s := []int{1, 2, 3} //len = 3, cap = 3, [1,2,3]
+
+	//[0, 2)
+	s1 := s[0:2] // [1, 2]
+
+	fmt.Println(s1)
+
+	s1[0] = 100
+
+	fmt.Println(s)
+	fmt.Println(s1)
+
+	//copy 可以将底层数组的slice一起进行拷贝
+	s2 := make([]int, 3) //s2 = [0,0,0]
+
+	//将s中的值 依次拷贝到s2中
+	copy(s2, s)
+	fmt.Println(s2)
+
+}
+
+这个有点像python的写法
+
+左开右闭  如果改变了其中的值会发现 原有的结果也会发生变化 说明 切片即是截取的也是地址而已并没有新开辟一块地址(这一点和python不一样)
+如果想要有新的空间去开辟的话 可以使用copy 这一点跟python 类似
+这个切片有点类似于 python 的写法一样
+</code></pre>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="--baseUrl=/tags/golang/">golang</a>
+
+  <a class="tag tag--primary tag--small" href="--baseUrl=/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2023/06/golang-map-%E4%B8%8Estruct/" data-tooltip="Golang Map 与struct" aria-label="NEXT: Golang Map 与struct">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2023/06/go-%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8A%E6%8C%87%E9%92%88/" data-tooltip="Go 函数以及指针" aria-label="PREVIOUS: Go 函数以及指针">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2023/06/go-defer-%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%88%87%E7%89%87/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2023/06/go-defer-%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%88%87%E7%89%87/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2023/06/go-defer-%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%88%87%E7%89%87/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '--baseUrl=\/2023\/06\/go-defer-%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%88%87%E7%89%87\/';
+        
+          this.page.identifier = '\/2023\/06\/go-defer-%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%88%87%E7%89%87\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2023 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2023/06/golang-map-%E4%B8%8Estruct/" data-tooltip="Golang Map 与struct" aria-label="NEXT: Golang Map 与struct">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2023/06/go-%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8A%E6%8C%87%E9%92%88/" data-tooltip="Go 函数以及指针" aria-label="PREVIOUS: Go 函数以及指针">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2023/06/go-defer-%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%88%87%E7%89%87/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2023/06/go-defer-%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%88%87%E7%89%87/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2023/06/go-defer-%E6%95%B0%E7%BB%84%E4%BB%A5%E5%8F%8A%E5%88%87%E7%89%87/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl%3D%2F2023%2F06%2Fgo-defer-%25E6%2595%25B0%25E7%25BB%2584%25E4%25BB%25A5%25E5%258F%258A%25E5%2588%2587%25E7%2589%2587%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl%3D%2F2023%2F06%2Fgo-defer-%25E6%2595%25B0%25E7%25BB%2584%25E4%25BB%25A5%25E5%258F%258A%25E5%2588%2587%25E7%2589%2587%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl%3D%2F2023%2F06%2Fgo-defer-%25E6%2595%25B0%25E7%25BB%2584%25E4%25BB%25A5%25E5%258F%258A%25E5%2588%2587%25E7%2589%2587%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('--baseUrl=/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="--baseUrl=/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

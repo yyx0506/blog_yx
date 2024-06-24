@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Golang 单例应用的实际操作",
+  
+  "datePublished": "2023-07-05T00:00:00Z",
+  "dateModified": "2023-07-05T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "--baseUrl=\/2023\/07\/golang-%E5%8D%95%E4%BE%8B%E5%BA%94%E7%94%A8%E7%9A%84%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.114.1 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang 单例应用的实际操作">
+<meta name="twitter:title" content="Golang 单例应用的实际操作">
+<meta property="og:url" content="--baseUrl=/2023/07/golang-%E5%8D%95%E4%BE%8B%E5%BA%94%E7%94%A8%E7%9A%84%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C/">
+<meta property="twitter:url" content="--baseUrl=/2023/07/golang-%E5%8D%95%E4%BE%8B%E5%BA%94%E7%94%A8%E7%9A%84%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2023-07-05T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2023-07-05T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="features">
+    
+  
+  
+    
+      <meta property="article:tag" content="golang">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>Golang 单例应用的实际操作</title>
+
+    <link rel="icon" href="--baseUrl=/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="--baseUrl=/2023/07/golang-%E5%8D%95%E4%BE%8B%E5%BA%94%E7%94%A8%E7%9A%84%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="--baseUrl=/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="--baseUrl=/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="--baseUrl=/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="--baseUrl=/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" target="_blank" rel="noopener" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      Golang 单例应用的实际操作
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2023-07-05T00:00:00Z">
+        
+  July 5, 2023
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="--baseUrl=/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="--baseUrl=/categories/features">features</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h4 id="golang-单例应用的实际操作">Golang 单例应用的实际操作</h4>
+<pre tabindex="0"><code>
+
+package main
+
+import (
+	&#34;context&#34;
+	&#34;fmt&#34;
+	&#34;github.com/redis/go-redis/v9&#34;
+	&#34;sync&#34;
+)
+
+type RedisDBConfig struct {
+	Host     string
+	Port     string
+	Password string
+}
+
+type RedisInstanceConfig struct {
+	Name     string
+	Instance *redis.Client
+	DBs      map[int]*redis.Client
+}
+
+type RedisManager struct {
+	instances sync.Map
+	once      sync.Once
+}
+
+var (
+	redisDBConfigs = map[string]RedisDBConfig{
+		&#34;instance1&#34;: {&#34;localhost&#34;, &#34;6379&#34;, &#34;&#34;}, // Redis实例1配置
+		&#34;instance2&#34;: {&#34;localhost&#34;, &#34;6380&#34;, &#34;&#34;}, // Redis实例2配置
+		// 可以添加更多的Redis实例配置
+	}
+)
+
+func NewRedisManager() *RedisManager {
+	return &amp;RedisManager{}
+}
+
+func (m *RedisManager) getRedisInstance(redisName string) (*RedisInstanceConfig, error) {
+	instance, ok := m.instances.Load(redisName)
+	if ok {
+		return instance.(*RedisInstanceConfig), nil
+	}
+
+	m.once.Do(func() {
+		for name := range redisDBConfigs {
+			m.instances.Store(name, &amp;RedisInstanceConfig{
+				Name: name,
+				DBs:  make(map[int]*redis.Client),
+			})
+		}
+	})
+
+	config, exists := redisDBConfigs[redisName]
+	if !exists {
+		return nil, fmt.Errorf(&#34;Redis instance &#39;%s&#39; not found&#34;, redisName)
+	}
+
+	address := fmt.Sprintf(&#34;%s:%s&#34;, config.Host, config.Port)
+	opts := &amp;redis.Options{
+		Addr:     address,
+		Password: config.Password,
+	}
+
+	instanceClient := redis.NewClient(opts)
+
+	// Perform a simple ping to test the connection
+	if err := instanceClient.Ping(context.Background()).Err(); err != nil {
+		return nil, err
+	}
+
+	instanceConfig := &amp;RedisInstanceConfig{
+		Name:     redisName,
+		Instance: instanceClient,
+		DBs:      make(map[int]*redis.Client),
+	}
+	m.instances.Store(redisName, instanceConfig)
+
+	return instanceConfig, nil
+}
+
+func (m *RedisManager) GetDB(redisName string, db int) (*redis.Client, error) {
+	instance, err := m.getRedisInstance(redisName)
+	if err != nil {
+		return nil, err
+	}
+
+	dbClient, ok := instance.DBs[db]
+	if !ok {
+		dbClient = redis.NewClient(&amp;redis.Options{
+			Addr:     instance.Instance.Options().Addr,
+			Password: instance.Instance.Options().Password,
+			DB:       db,
+		})
+		instance.DBs[db] = dbClient
+	}
+
+	// Perform a simple ping to test the connection
+	if err := dbClient.Ping(context.Background()).Err(); err != nil {
+		return nil, err
+	}
+
+	return dbClient, nil
+}
+func main() {
+	manager := NewRedisManager()
+
+	// Example usage:
+	redisName := &#34;xjp_odds&#34; // Set the desired redisName here (&#34;instance1&#34;, &#34;instance2&#34;, etc.)
+	db := 0                 // Set the desired database number here
+
+	dbClient, err := manager.GetDB(redisName, db)
+	if err != nil {
+		panic(err)
+	}
+
+	// You now have the Redis client instance for the specified Redis instance and database.
+	// You can use `dbClient` to perform Redis operations on the specified database.
+	fmt.Println(&#34;Connected to Redis instance:&#34;, redisName, &#34;DB:&#34;, db)
+	fmt.Println(dbClient)
+}
+
+解释一下这段代码：
+
+1. 首先我们定义了两个结构体：
+   - `RedisDBConfig`：表示一个Redis数据库的配置，包含主机、端口和密码等字段。
+   - `RedisInstanceConfig`：表示一个Redis实例的配置，包含实例名、指向该实例的Redis客户端指针，以及一个映射将数据库和对应的Redis客户端关联起来。
+
+2. 接着，我们创建了 `RedisManager` 结构体，负责管理单例Redis连接。它包含两个字段：
+   - `instances`：一个 sync.Map，用于使用实例名作为键存储 `RedisInstanceConfig` 实例。
+   - `once`：一个 `sync.Once` 变量，确保单例的初始化仅执行一次。
+
+3. `NewRedisManager`：一个构造函数，用于创建新的 `RedisManager` 实例。它简单地返回一个 `RedisManager` 实例。
+
+4. `getRedisInstance`：`RedisManager` 的私有方法，负责获取特定Redis实例的配置并创建相应的Redis客户端。它以 `redisName` 作为输入参数，从 `redisDBConfigs` 映射中查找配置，如果实例不存在，则为其创建一个新的 `RedisInstanceConfig`，同时为其初始化一个Redis客户端，并将其存储在 `instances` 映射中。
+
+5. `GetDB`：`RedisManager` 的公共方法，用于获取特定Redis实例和数据库的Redis客户端。它以 `redisName` 和 `db` 作为输入参数，首先调用 `getRedisInstance` 方法以确保实例存在且其Redis客户端已初始化。然后，它检查是否已存在指定数据库的Redis客户端；如果不存在，则为该数据库创建一个新的Redis客户端，并将其存储在 `RedisInstanceConfig` 的映射中。
+
+6. 在 `main` 函数中，我们创建了一个 `RedisManager` 实例。然后，我们调用 `GetDB` 方法来获取指定 `redisName` 和 `db` 的Redis客户端。这样，我们可以确保为每个Redis实例和数据库只创建一个Redis客户端，避免不必要的开销和可能的连接问题。
+
+总体而言，这段代码提供了一种简洁的方式来管理Redis连接，并确保每个实例和数据库的Redis客户端仅被创建一次，从而避免不必要的重复连接和潜在的连接问题。 
+
+关于出现的 once.do 算是 Golang 特有的  下面是一个简单的示例代码 
+
+package main
+
+import (
+	&#34;fmt&#34;
+	&#34;sync&#34;
+)
+
+func main() {
+	var once sync.Once
+
+	// 定义一个函数，我们希望它只执行一次
+	doSomething := func() {
+		fmt.Println(&#34;Doing something...&#34;)
+	}
+
+	// 使用 sync.Once 的 Do 方法，传入希望执行的函数
+	// 无论调用多少次，doSomething 函数都只会被执行一次
+	once.Do(doSomething)
+
+	// 尝试多次调用 Do 方法，但函数 doSomething 只会执行一次
+	once.Do(doSomething)
+	once.Do(doSomething)
+}
+</code></pre><h4 id="2golang-单例mysql">2:Golang 单例mysql</h4>
+<pre tabindex="0"><code>package main
+
+import (
+	&#34;database/sql&#34;
+	&#34;encoding/json&#34;
+	&#34;fmt&#34;
+	&#34;io/ioutil&#34;
+	&#34;sync&#34;
+	&#34;time&#34;
+
+	_ &#34;github.com/go-sql-driver/mysql&#34;
+)
+
+type MySQLConfig struct {
+	Host     string `json:&#34;host&#34;`
+	Port     string `json:&#34;port&#34;`
+	User     string `json:&#34;user&#34;`
+	Password string `json:&#34;password&#34;`
+	Database string `json:&#34;database&#34;`
+}
+
+type MySQLManager struct {
+	instances map[string]*sql.DB
+	configs   map[string]MySQLConfig
+	once      sync.Once
+}
+
+var mySQLMgr *MySQLManager
+
+func GetMySQLManager() *MySQLManager {
+	once.Do(func() {
+		mySQLMgr = &amp;MySQLManager{
+			instances: make(map[string]*sql.DB),
+			configs:   make(map[string]MySQLConfig),
+		}
+
+		configData, err := ioutil.ReadFile(&#34;/Users/shou/Desktop/go_project/internal/mysql/mysql_config.json&#34;)
+		if err != nil {
+			panic(&#34;Failed to read MySQL config file&#34;)
+		}
+
+		var configs map[string]MySQLConfig
+		err = json.Unmarshal(configData, &amp;configs)
+		if err != nil {
+			panic(&#34;Failed to parse MySQL config&#34;)
+		}
+		fmt.Println(configs)
+		mySQLMgr.configs = configs
+	})
+
+	return mySQLMgr
+}
+
+func (m *MySQLManager) GetDBInstance(dbName string) (*sql.DB, error) {
+	// Check if the instance already exists in the map
+	if db, ok := m.instances[dbName]; ok {
+		return db, nil
+	}
+
+	// Get the configuration for the requested database
+	config, ok := m.configs[dbName]
+	if !ok {
+		return nil, fmt.Errorf(&#34;database configuration not found for %s&#34;, dbName)
+	}
+
+	// Create a new database connection using the configuration
+	db, err := sql.Open(&#34;mysql&#34;, fmt.Sprintf(&#34;%s:%s@tcp(%s:%s)/%s&#34;, config.User, config.Password, config.Host, config.Port, config.Database))
+	if err != nil {
+		return nil, err
+	}
+
+	// Store the instance in the map
+	m.instances[dbName] = db
+	return db, nil
+}
+
+// 使用 sync.Once 来保证只初始化一次
+var once sync.Once
+
+type Gift struct {
+	id     int
+	logo   string
+	price  int
+	name   string
+	update time.Time
+}
+
+func main() {
+	// Get the MySQLManager singleton instance
+	manager := GetMySQLManager()
+
+	// Get a MySQL database instance by name
+	db1, err := manager.GetDBInstance(&#34;user_yx&#34;)
+	if err != nil {
+		fmt.Println(&#34;Error getting db1:&#34;, err)
+		return
+	}
+	defer db1.Close()
+	// 查询表结构
+	rows, err := db1.Query(&#34;SELECT id, logo, price,name FROM ksgift&#34;)
+	if err != nil {
+		fmt.Println(&#34;Error querying table:&#34;, err)
+		return
+	}
+	defer rows.Close()
+
+	// 解析表结构
+	var gifts []Gift
+
+	for rows.Next() {
+		var gift Gift
+		err := rows.Scan(&amp;gift.id, &amp;gift.logo, &amp;gift.price, &amp;gift.name)
+		if err != nil {
+			fmt.Println(&#34;Error scanning row:&#34;, err)
+			return
+		}
+		gifts = append(gifts, gift)
+	}
+
+	// 打印表结构
+	for _, gift := range gifts {
+		fmt.Println(gift.id, gift.name, gift.logo)
+	}
+
+	// Use the db1 instance for database operations
+	// ...
+
+	// Get another MySQL database instance by name
+	//db2, err := manager.GetDBInstance(&#34;db2&#34;)
+	//if err != nil {
+	//	fmt.Println(&#34;Error getting db2:&#34;, err)
+	//	return
+	//}
+	//defer db2.Close()
+
+	// Use the db2 instance for database operations
+	// ...
+}
+
+为什么 在倒入前 有一个 _  ？
+
+在Go语言中，使用_符号导入包，表示只导入该包，但不直接使用包中的任何变量、函数或方法。这种方式通常用于导入包的初始化操作或者是为了执行包的init()函数，但不需要在代码中使用该包的其他功能。
+
+在你的代码中，_ &#34;github.com/go-sql-driver/mysql&#34;是导入了github.com/go-sql-driver/mysql包，但由于没有在代码中直接使用该包的任何功能，所以加上了_符号，告诉编译器这是一个只导入但不直接使用的包。
+
+实际上，这段代码中并没有直接使用github.com/go-sql-driver/mysql包中的任何功能，而是通过database/sql包的接口调用进行了数据库操作。因此，可以使用_来避免在代码中显式导入该包，而仅仅是为了让github.com/go-sql-driver/mysql包的init()函数被执行，从而注册MySQL数据库驱动。
+
+
+
+这段代码是一个使用Golang实现的单例模式，用于管理多个MySQL数据库连接。它还包含了从数据库表中查询数据的示例。
+
+代码逻辑如下：
+
+1. 定义了MySQLConfig结构体，用于解析存储数据库配置的JSON文件。
+2. 定义了MySQLManager结构体，其中包含了一个用于保存数据库连接实例的map，以及一个用于保存数据库配置的map，还有一个sync.Once来确保单例只被初始化一次。
+3. GetMySQLManager函数返回MySQLManager单例实例，使用sync.Once确保只初始化一次，其中读取mysql_config.json配置文件，解析其中的配置，将其保存在MySQLManager的configs字段中。
+4. GetDBInstance方法用于根据数据库名从MySQLManager中获取相应的数据库连接实例，如果实例不存在，则根据配置创建一个新的连接实例，并将其保存在instances字段中。
+5. Gift结构体用于存储数据库表中的一条记录。
+6. 在main函数中，先获取MySQLManager的单例实例，然后通过GetDBInstance方法获取数据库连接实例db1，之后使用db1执行查询表的操作，并将查询结果解析为Gift结构体，最后打印表结构。
+
+请确保在运行代码之前，已经正确配置mysql_config.json文件，并包含了所需的数据库信息，以便能够成功连接到MySQL数据库。
+
+
+我们将 mysql_config.json 可以单独作为一个配置文件来放置
+{
+  &#34;user_yx&#34;: {
+    &#34;host&#34;: &#34;xxxxxxxxx&#34;,
+    &#34;port&#34;: &#34;3306&#34;,
+    &#34;user&#34;: &#34;xxxxxxx&#34;,
+    &#34;password&#34;: &#34;xxxxxx&#34;,
+    &#34;database&#34;: &#34;xxxxxx&#34;
+  },
+  &#34;db2&#34;: {
+    &#34;host&#34;: &#34;localhost&#34;,
+    &#34;port&#34;: &#34;3306&#34;,
+    &#34;user&#34;: &#34;user2&#34;,
+    &#34;password&#34;: &#34;password2&#34;,
+    &#34;database&#34;: &#34;database2&#34;
+  }
+
+}
+</code></pre>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="--baseUrl=/tags/golang/">golang</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2023/07/gopath%E5%92%8Cgomodels/" data-tooltip="Gopath和Gomodels" aria-label="NEXT: Gopath和Gomodels">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2023/07/golang-%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E4%B8%8E%E7%BB%93%E6%9E%84%E4%BD%93%E6%A0%87%E7%AD%BE/" data-tooltip="Golang 反射机制与结构体标签" aria-label="PREVIOUS: Golang 反射机制与结构体标签">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2023/07/golang-%E5%8D%95%E4%BE%8B%E5%BA%94%E7%94%A8%E7%9A%84%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2023/07/golang-%E5%8D%95%E4%BE%8B%E5%BA%94%E7%94%A8%E7%9A%84%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2023/07/golang-%E5%8D%95%E4%BE%8B%E5%BA%94%E7%94%A8%E7%9A%84%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '--baseUrl=\/2023\/07\/golang-%E5%8D%95%E4%BE%8B%E5%BA%94%E7%94%A8%E7%9A%84%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C\/';
+        
+          this.page.identifier = '\/2023\/07\/golang-%E5%8D%95%E4%BE%8B%E5%BA%94%E7%94%A8%E7%9A%84%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2023 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2023/07/gopath%E5%92%8Cgomodels/" data-tooltip="Gopath和Gomodels" aria-label="NEXT: Gopath和Gomodels">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2023/07/golang-%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E4%B8%8E%E7%BB%93%E6%9E%84%E4%BD%93%E6%A0%87%E7%AD%BE/" data-tooltip="Golang 反射机制与结构体标签" aria-label="PREVIOUS: Golang 反射机制与结构体标签">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2023/07/golang-%E5%8D%95%E4%BE%8B%E5%BA%94%E7%94%A8%E7%9A%84%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2023/07/golang-%E5%8D%95%E4%BE%8B%E5%BA%94%E7%94%A8%E7%9A%84%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2023/07/golang-%E5%8D%95%E4%BE%8B%E5%BA%94%E7%94%A8%E7%9A%84%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl%3D%2F2023%2F07%2Fgolang-%25E5%258D%2595%25E4%25BE%258B%25E5%25BA%2594%25E7%2594%25A8%25E7%259A%2584%25E5%25AE%259E%25E9%2599%2585%25E6%2593%258D%25E4%25BD%259C%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl%3D%2F2023%2F07%2Fgolang-%25E5%258D%2595%25E4%25BE%258B%25E5%25BA%2594%25E7%2594%25A8%25E7%259A%2584%25E5%25AE%259E%25E9%2599%2585%25E6%2593%258D%25E4%25BD%259C%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl%3D%2F2023%2F07%2Fgolang-%25E5%258D%2595%25E4%25BE%258B%25E5%25BA%2594%25E7%2594%25A8%25E7%259A%2584%25E5%25AE%259E%25E9%2599%2585%25E6%2593%258D%25E4%25BD%259C%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('--baseUrl=/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="--baseUrl=/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

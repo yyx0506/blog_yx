@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Elasticsearch 基本操作",
+  
+  "datePublished": "2022-05-15T00:00:00Z",
+  "dateModified": "2022-05-15T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "--baseUrl=\/2022\/05\/elasticsearch-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.114.1 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elasticsearch 基本操作">
+<meta name="twitter:title" content="Elasticsearch 基本操作">
+<meta property="og:url" content="--baseUrl=/2022/05/elasticsearch-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">
+<meta property="twitter:url" content="--baseUrl=/2022/05/elasticsearch-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2022-05-15T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2022-05-15T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="features">
+    
+  
+  
+    
+      <meta property="article:tag" content="Elasticsearch">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>Elasticsearch 基本操作</title>
+
+    <link rel="icon" href="--baseUrl=/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="--baseUrl=/2022/05/elasticsearch-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="--baseUrl=/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="--baseUrl=/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="--baseUrl=/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="--baseUrl=/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" target="_blank" rel="noopener" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="--baseUrl=/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      Elasticsearch 基本操作
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2022-05-15T00:00:00Z">
+        
+  May 15, 2022
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="--baseUrl=/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="--baseUrl=/categories/features">features</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h3 id="elasticsearch-使用-1">Elasticsearch 使用 1</h3>
+<h4 id="11-什么是elasticsearch">1.1 什么是Elasticsearch</h4>
+<pre tabindex="0"><code>Elasticsearch，简称为es， es是一个开源的高扩展的分布式全文检索引擎，它可以近乎实时的存储、检索数据；本身扩展性很好，可以扩展到上百台服务器，处理PB级别的数据。es也使用Java开发并使用Lucene作为其核心来实现所有索引和搜索的功能，但是它的目的是通过简单的RESTful API来隐藏Lucene的复杂性，从而让全文搜索变得简单。
+</code></pre><h4 id="12-为什么使用es">1.2 为什么使用es?</h4>
+<pre tabindex="0"><code>系统中的数据， 随着业务的发展，时间的推移， 将会非常多， 而业务中往往采用模糊查询进行数据的搜索， 而模糊查询会导致查询引擎放弃索引，导致系统查询数据时都是全表扫描，在百万级别的数据库中，查询效率是非常低下的，而我们使用 ES 做一个全文索引，将经常查询的系统功能的某些字段,比如某个词，某个指数之类的，说白了就是以空间换取时间（ES的内存占用十分巨大）
+</code></pre><h4 id="13-es的特点和优势">1.3 es的特点和优势</h4>
+<pre tabindex="0"><code>    分布式实时文件存储，可将每一个字段存入索引，使其可以被检索到。 
+
+    近乎实时分析的分布式搜索引擎。 
+
+    分布式：索引分拆成多个分片，每个分片可有零个或多个副本。集群中的每个数据节点都可承载一个或多个分片，并且协调和处理各种操作； 
+
+    负载再平衡和路由在大多数情况下自动完成。 
+
+    可以扩展到上百台服务器，处理PB级别的结构化或非结构化数据（官网是这么说的）。也可以运行在单台PC上（已测试）。 
+
+    支持插件机制，分词插件、同步插件、Hadoop插件、可视化插件等。
+</code></pre><h4 id="21-es的基本操作python">2.1 es的基本操作（python）</h4>
+<p>第一步我们先直接安装elasticsearch (注意 我们在服务器上安装装的elasticsearch 是7.6.2版本的所以我们安装 的 python 版本 的 elasticsearch 也要是7版本 elasticsearch每个版本的api变动还是比较频繁的 )</p>
+<p>Pip3 install elasticsearch == 7.13.0</p>
+<h4 id="首先先创建一个index">首先先创建一个index</h4>
+<pre tabindex="0"><code>from elasticsearch import Elasticsearch
+from datetime import datetime
+# es = Elasticsearch([{&#39;host&#39;: &#39;10.1.26.59&#39;, &#39;port&#39;: 9200}])
+es = Elasticsearch(&#39;http://121.5.58.115:9200/&#39;)
+
+doc = {
+    &#39;author&#39;: &#39;kimchy&#39;,
+    &#39;text&#39;: &#39;Elasticsearch: cool. bonsai cool.&#39;,
+    &#39;timestamp&#39;: datetime.now(),
+}
+resp = es.index(index=&#34;test_index&#34;, id=1, body=doc)
+</code></pre><p>然后我们去查询可以发现 已经有了此条数据</p>
+<p><img src="--baseUrl=/img/py1es1.png" alt=""></p>
+<p>然后我们执行下一条命令 不指定id</p>
+<pre tabindex="0"><code>doc = {
+    &#39;author&#39;: &#39;yyx&#39;,
+    &#39;text&#39;: &#39;test elasticsearch&#39;,
+    &#39;timestamp&#39;: datetime.now(),
+}
+
+resp = es.index(index=&#34;test_index&#34;,  body=doc)
+</code></pre><p>再去es中查询结果，我们发现它并没有自增id为2 而是 直接生成了一个随机的id</p>
+<p><img src="--baseUrl=/img/py1es2.png" alt=""></p>
+<p>我们直接使用python 去对es进行查询</p>
+<pre tabindex="0"><code>res = es.get(index=&#39;test_index&#39;,id = 1)
+print(res)
+{&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;1&#39;, &#39;_version&#39;: 1, &#39;_seq_no&#39;: 0, &#39;_primary_term&#39;: 1, &#39;found&#39;: True, &#39;_source&#39;: {&#39;author&#39;: &#39;kimchy&#39;, &#39;text&#39;: &#39;Elasticsearch: cool. bonsai cool.&#39;, &#39;timestamp&#39;: &#39;2022-05-03T12:50:40.143640&#39;}}
+</code></pre><p>得到的结果为如下值 会发现 es会将结构放在_source下，然后外层会有多个key进行修饰  found 代表找到与否</p>
+<p>然后我们执行删除操作 将此条数据进行删除（elasticsearch 只能通过代码删除，不能在elasticsearch head操作）</p>
+<pre tabindex="0"><code>es.delete(index=&#39;test_index&#39;,id=&#39;sD1QKIEBnZY8SBgf8fba&#39; )
+</code></pre><h3 id="es-的search操作">es 的search操作</h3>
+<p>为了测试接下来的查询 我首先插入了几条数据 用于显示 如图
+<img src="--baseUrl=/img/py1es3.png" alt=""></p>
+<p>tips : es 的查询检索方式称为DSL语句查询</p>
+<h4 id="1term过滤">1：term过滤</h4>
+<p>我们查询一下 author =yyx 的信息 其中 query 和bool 是固定写法, 第三个 must 是可变的 （例如 not must should 等后面都是要跟列表，列表里面的每一个字典都代表着一个条件</p>
+<pre tabindex="0"><code>result = es.search(
+    index=&#34;test_index&#34;,
+    body={
+        &#34;query&#34;:{
+            &#34;bool&#34;:{
+                &#34;must&#34;:[{
+                    &#34;term&#34;:{
+                        &#34;author&#34;:&#34;yyx&#34;
+                    }
+                }]
+            }
+        }
+    }
+)
+{&#39;took&#39;: 2, &#39;timed_out&#39;: False, &#39;_shards&#39;: {&#39;total&#39;: 1, &#39;successful&#39;: 1, &#39;skipped&#39;: 0, &#39;failed&#39;: 0}, &#39;hits&#39;: {&#39;total&#39;: {&#39;value&#39;: 5, &#39;relation&#39;: &#39;eq&#39;}, &#39;max_score&#39;: 0.24116206, &#39;hits&#39;: [{&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;2&#39;, &#39;_score&#39;: 0.24116206, &#39;_source&#39;: {&#39;author&#39;: &#39;yyx&#39;, &#39;test&#39;: &#39;practise&#39;, &#39;text&#39;: &#39;test elasticsearch   use term&#39;}}, {&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;3&#39;, &#39;_score&#39;: 0.24116206, &#39;_source&#39;: {&#39;author&#39;: &#39;yyx&#39;, &#39;test&#39;: &#39;practise&#39;, &#39;text&#39;: &#39;test elasticsearch   use terms&#39;}}, {&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;4&#39;, &#39;_score&#39;: 0.24116206, &#39;_source&#39;: {&#39;author&#39;: &#39;yyx&#39;, &#39;test&#39;: &#39;practise&#39;, &#39;age&#39;: 23, &#39;text&#39;: &#39;test elasticsearch   use range&#39;}}, {&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;5&#39;, &#39;_score&#39;: 0.24116206, &#39;_source&#39;: {&#39;author&#39;: &#39;yyx&#39;, &#39;test&#39;: &#39;practise&#39;, &#39;age&#39;: 28, &#39;text&#39;: &#39;test elasticsearch   use range&#39;}}, {&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;6&#39;, &#39;_score&#39;: 0.24116206, &#39;_source&#39;: {&#39;author&#39;: &#39;yyx&#39;, &#39;test&#39;: &#39;practise&#39;, &#39;age&#39;: 33, &#39;text&#39;: &#39;test elasticsearch   use range&#39;}}]}}
+
+
+最后得到的结果就是这样的一个结果 如果结果不存在的话会是[&#39;hits&#39;][&#39;hits&#39;]的值为空 
+</code></pre><h4 id="2---terms过滤">2 :  terms过滤</h4>
+<pre tabindex="0"><code>terms跟term有点类似，但terms允许指定多个匹配条件。如果某个字段指定了多个值，那么文档需要一起去做匹配：
+{&#34;terms&#34;:{&#34;author&#34;:[&#34;yyx&#34;,&#34;kimchy&#34;]}} 替换掉查询的语句块得到的结果
+{&#39;took&#39;: 13, &#39;timed_out&#39;: False, &#39;_shards&#39;: {&#39;total&#39;: 1, &#39;successful&#39;: 1, &#39;skipped&#39;: 0, &#39;failed&#39;: 0}, &#39;hits&#39;: {&#39;total&#39;: {&#39;value&#39;: 6, &#39;relation&#39;: &#39;eq&#39;}, &#39;max_score&#39;: 1.0, &#39;hits&#39;: [{&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;2&#39;, &#39;_score&#39;: 1.0, &#39;_source&#39;: {&#39;author&#39;: &#39;yyx&#39;, &#39;test&#39;: &#39;practise&#39;, &#39;text&#39;: &#39;test elasticsearch   use term&#39;}}, {&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;3&#39;, &#39;_score&#39;: 1.0, &#39;_source&#39;: {&#39;author&#39;: &#39;yyx&#39;, &#39;test&#39;: &#39;practise&#39;, &#39;text&#39;: &#39;test elasticsearch   use terms&#39;}}, {&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;1&#39;, &#39;_score&#39;: 1.0, &#39;_source&#39;: {&#39;author&#39;: &#39;kimchy&#39;, &#39;text&#39;: &#39;Elasticsearch: cool. bonsai cool.&#39;, &#39;timestamp&#39;: &#39;2022-06-03T12:50:40.143640&#39;}}, {&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;4&#39;, &#39;_score&#39;: 1.0, &#39;_source&#39;: {&#39;author&#39;: &#39;yyx&#39;, &#39;test&#39;: &#39;practise&#39;, &#39;age&#39;: 23, &#39;text&#39;: &#39;test elasticsearch   use range&#39;}}, {&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;5&#39;, &#39;_score&#39;: 1.0, &#39;_source&#39;: {&#39;author&#39;: &#39;yyx&#39;, &#39;test&#39;: &#39;practise&#39;, &#39;age&#39;: 28, &#39;text&#39;: &#39;test elasticsearch   use range&#39;}}, {&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;6&#39;, &#39;_score&#39;: 1.0, &#39;_source&#39;: {&#39;author&#39;: &#39;yyx&#39;, &#39;test&#39;: &#39;practise&#39;, &#39;age&#39;: 33, &#39;text&#39;: &#39;test elasticsearch   use range&#39;}}]}}
+将author 是yyx 和 kimchy 都筛选了出来
+</code></pre><h4 id="3range-过滤-只针对数字">3:range 过滤 （只针对数字）</h4>
+<pre tabindex="0"><code>{&#34;range&#34;:{&#34;age&#34;:{&#34;gte&#34;:20,&#34;lt&#34;:30}}} 替换掉查询的语句块得到的结果
+{&#39;took&#39;: 5, &#39;timed_out&#39;: False, &#39;_shards&#39;: {&#39;total&#39;: 1, &#39;successful&#39;: 1, &#39;skipped&#39;: 0, &#39;failed&#39;: 0}, &#39;hits&#39;: {&#39;total&#39;: {&#39;value&#39;: 2, &#39;relation&#39;: &#39;eq&#39;}, &#39;max_score&#39;: 1.0, &#39;hits&#39;: [{&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;4&#39;, &#39;_score&#39;: 1.0, &#39;_source&#39;: {&#39;author&#39;: &#39;yyx&#39;, &#39;test&#39;: &#39;practise&#39;, &#39;age&#39;: 23, &#39;text&#39;: &#39;test elasticsearch   use range&#39;}}, {&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;5&#39;, &#39;_score&#39;: 1.0, &#39;_source&#39;: {&#39;author&#39;: &#39;yyx&#39;, &#39;test&#39;: &#39;practise&#39;, &#39;age&#39;: 28, &#39;text&#39;: &#39;test elasticsearch   use range&#39;}}]}}
+得到了 年龄在20 -30 的数据
+范围操作符包含：
+gt	::	大于
+gte	::	大于等于
+lt	::	小于
+lte	::	小于等于
+</code></pre><h4 id="4-exists和missing过滤">4: exists和missing过滤</h4>
+<pre tabindex="0"><code>exists和missing过滤可以用于查找文档中是否包含指定字段或没有某个字段，类似于SQL语句中的IS_NULL条件
+目前官方已经将 missing 这个api 删除了
+{&#34;exists&#34;:{&#34;field&#34;:&#34;test&#34;}}
+{&#39;took&#39;: 3, &#39;timed_out&#39;: False, &#39;_shards&#39;: {&#39;total&#39;: 1, &#39;successful&#39;: 1, &#39;skipped&#39;: 0, &#39;failed&#39;: 0}, &#39;hits&#39;: {&#39;total&#39;: {&#39;value&#39;: 5, &#39;relation&#39;: &#39;eq&#39;}, &#39;max_score&#39;: 1.0, &#39;hits&#39;: [{&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;2&#39;, &#39;_score&#39;: 1.0, &#39;_source&#39;: {&#39;author&#39;: &#39;yyx&#39;, &#39;test&#39;: &#39;practise&#39;, &#39;text&#39;: &#39;test elasticsearch   use term&#39;}}, {&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;3&#39;, &#39;_score&#39;: 1.0, &#39;_source&#39;: {&#39;author&#39;: &#39;yyx&#39;, &#39;test&#39;: &#39;practise&#39;, &#39;text&#39;: &#39;test elasticsearch   use terms&#39;}}, {&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;4&#39;, &#39;_score&#39;: 1.0, &#39;_source&#39;: {&#39;author&#39;: &#39;yyx&#39;, &#39;test&#39;: &#39;practise&#39;, &#39;age&#39;: 23, &#39;text&#39;: &#39;test elasticsearch   use range&#39;}}, {&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;5&#39;, &#39;_score&#39;: 1.0, &#39;_source&#39;: {&#39;author&#39;: &#39;yyx&#39;, &#39;test&#39;: &#39;practise&#39;, &#39;age&#39;: 28, &#39;text&#39;: &#39;test elasticsearch   use range&#39;}}, {&#39;_index&#39;: &#39;test_index&#39;, &#39;_type&#39;: &#39;_doc&#39;, &#39;_id&#39;: &#39;6&#39;, &#39;_score&#39;: 1.0, &#39;_source&#39;: {&#39;author&#39;: &#39;yyx&#39;, &#39;test&#39;: &#39;practise&#39;, &#39;age&#39;: 33, &#39;text&#39;: &#39;test elasticsearch   use range&#39;}}]}
+这个过滤只是针对已经查出一批数据来，但是想区分出某个字段是否存在的时候使用。
+</code></pre><h4 id="5--bool-过滤">5 : bool 过滤</h4>
+<pre tabindex="0"><code>bool过滤可以用来合并多个过滤条件查询结果的布尔逻辑，它包含一下操作符：
+
+must		::	多个查询条件的完全匹配,相当于	and	。
+must_not	::	多个查询条件的相反匹配，相当于	not	。
+should		::	至少有一个查询条件匹配,相当于	or	。
+这些参数可以分别继承一个过滤条件或者一个过滤条件的数组：
+就像第一个语法一样
+</code></pre><h4 id="6-match_all-查询">6: match_all 查询</h4>
+<pre tabindex="0"><code>使用match_all可以查询到所有文档，是没有查询条件下的默认语句。
+
+{&#34;match_all&#34;:{}}
+
+此查询常用于合并过滤条件。比如说你需要检索所有的邮箱,所有的文档相关性都是相同的，所以得到的_score为1
+</code></pre><h4 id="7-multi_match查询">7: multi_match查询</h4>
+<pre tabindex="0"><code>multi_match	查询允许你做match查询的基础上同时搜索多个字段：
+
+{&#34;multi_match&#34;:	{&#34;query&#34;:&#34;full text	search&#34;,&#34;fields&#34;:[&#34;title&#34;,&#34;body&#34;]}}
+</code></pre><h4 id="8-bool-查询">8: bool 查询</h4>
+<pre tabindex="0"><code>bool查询与bool过滤相似，用于合并多个查询子句。不同的是，bool过滤可以直接给出是否匹配成功，而bool查询要计算每一个查询子句的_score（相关性分值）。
+
+must	 ::	查询指定文档一定要被包含。
+must_not ::	查询指定文档一定不要被包含。
+should	 ::	查询指定文档，有则可以为文档相关性加分。
+
+以下查询将会找到title字段中包含&#34;how to make millions&#34;，并且&#34;tag&#34;字段没有被标为spam	。如果有标识为&#34;starred&#34;或者发布日期为2014年之前，那么这些匹配的文档将比同类网站等级高：
+
+{&#34;bool&#34;:{&#34;must&#34;:{&#34;match&#34;:{&#34;title&#34;:&#34;how to make millions&#34;}},&#34;must_not&#34;:{&#34;match&#34;:{&#34;tag&#34;:&#34;spam&#34;}},&#34;should&#34;:[{&#34;match&#34;:{&#34;tag&#34;:&#34;starred&#34;}},{&#34;range&#34;:{&#34;date&#34;:{&#34;gte&#34;:&#34;2022-05-01&#34;}}}]}}
+
+提示：	如果bool查询下没有must子句，那至少应该有一个should子句。但是如果有must子句，那么没有should子句也可以进行查询。
+</code></pre><h3 id="本篇到此结束下一篇我会介绍一下python-异步连接-elasticsearch">本篇到此结束，下一篇我会介绍一下python 异步连接 elasticsearch</h3>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="--baseUrl=/tags/elasticsearch/">Elasticsearch</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/05/elasticsearch-python-aioelasticsearch-%E6%93%8D%E4%BD%9C/" data-tooltip="Elasticsearch python  aioelasticsearch 操作" aria-label="NEXT: Elasticsearch python  aioelasticsearch 操作">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/05/elasticsearch-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" data-tooltip="Elasticsearch 核心概念" aria-label="PREVIOUS: Elasticsearch 核心概念">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2022/05/elasticsearch-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2022/05/elasticsearch-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2022/05/elasticsearch-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '--baseUrl=\/2022\/05\/elasticsearch-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C\/';
+        
+          this.page.identifier = '\/2022\/05\/elasticsearch-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2023 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/05/elasticsearch-python-aioelasticsearch-%E6%93%8D%E4%BD%9C/" data-tooltip="Elasticsearch python  aioelasticsearch 操作" aria-label="NEXT: Elasticsearch python  aioelasticsearch 操作">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="--baseUrl=/2022/05/elasticsearch-%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" data-tooltip="Elasticsearch 核心概念" aria-label="PREVIOUS: Elasticsearch 核心概念">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl=/2022/05/elasticsearch-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl=/2022/05/elasticsearch-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl=/2022/05/elasticsearch-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=--baseUrl%3D%2F2022%2F05%2Felasticsearch-%25E5%259F%25BA%25E6%259C%25AC%25E6%2593%258D%25E4%25BD%259C%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=--baseUrl%3D%2F2022%2F05%2Felasticsearch-%25E5%259F%25BA%25E6%259C%25AC%25E6%2593%258D%25E4%25BD%259C%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=--baseUrl%3D%2F2022%2F05%2Felasticsearch-%25E5%259F%25BA%25E6%259C%25AC%25E6%2593%258D%25E4%25BD%259C%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('--baseUrl=/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="--baseUrl=/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+

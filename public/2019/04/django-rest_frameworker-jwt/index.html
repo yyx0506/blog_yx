@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <script type="application/ld+json">
+
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "django rest_frameworker jwt",
+  
+  "datePublished": "2019-04-27T00:00:00Z",
+  "dateModified": "2019-04-27T00:00:00Z",
+  "author": {
+    "@type": "Person",
+    "name": "yyx Bolg",
+    
+    "image": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    
+  },
+  "mainEntityOfPage": { 
+    "@type": "WebPage",
+    "@id": "\/2019\/04\/django-rest_frameworker-jwt\/" 
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hugo tranquilpeak theme",
+    
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59"
+    }
+    
+  },
+  "description": "",
+  "keywords": []
+}
+
+</script>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.88.1 with theme Tranquilpeak 0.5.3-BETA">
+<meta name="author" content="yyx Bolg">
+<meta name="keywords" content="">
+<meta name="description" content="">
+
+
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:title" content="django rest_frameworker jwt">
+<meta name="twitter:title" content="django rest_frameworker jwt">
+<meta property="og:url" content="/2019/04/django-rest_frameworker-jwt/">
+<meta property="twitter:url" content="/2019/04/django-rest_frameworker-jwt/">
+<meta property="og:site_name" content="Hugo tranquilpeak theme">
+<meta property="og:description" content="">
+<meta name="twitter:description" content="">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2019-04-27T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2019-04-27T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="tranquilpeak">
+    
+      <meta property="article:section" content="features">
+    
+  
+  
+    
+      <meta property="article:tag" content="django">
+    
+      <meta property="article:tag" content="jwt">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=640">
+
+
+
+
+
+
+    <title>django rest_frameworker jwt</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2019/04/django-rest_frameworker-jwt/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    
+    
+    <link rel="stylesheet" href="/css/style-h6ccsoet3mzkbb0wngshlfbaweimexgqcxj0h5hu4h82olsdzz6wmqdkajm.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/" aria-label="Go to homepage">Hugo tranquilpeak theme</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about" aria-label="Open the link: /#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about" aria-label="Read more about the author">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">yyx Bolg</h4>
+        
+          <h5 class="sidebar-profile-bio">Super bio with markdown support <strong>COOL</strong></h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/" title="Home">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-home" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories" title="Categories">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-bookmark" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/tags" title="Tags">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-tags" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Tags</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/archives" title="Archives">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-archive" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Archives</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about" title="About">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-question" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://gitee.com/" title="Git">
+    
+      <i class="sidebar-button-icon fab fa-lg fa-github" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">Git</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/index.xml" title="RSS">
+    
+      <i class="sidebar-button-icon fas fa-lg fa-rss" aria-hidden="true"></i>
+      
+      <span class="sidebar-button-desc">RSS</span>
+    </a>
+  </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" id="top">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title">
+      django rest_frameworker jwt
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time datetime="2019-04-27T00:00:00Z">
+        
+  April 27, 2019
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="/categories/features">features</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown">
+            <div class="main-content-wrap">
+              <h2 id="django-rest_frameworker-jwt">django rest_frameworker jwt</h2>
+<ul>
+<li>
+<p>首先需要声明，rest_frameworker jwt 是基于django自带的认证系统来实现的</p>
+<p>(也就是说我们的用户表(user)直接继承django自带的AbstractUser表，在此基础上添加字段)</p>
+</li>
+<li>
+<p>rest_frameworker jwt token的生成</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> rest_framework_jwt.settings <span style="color:#f92672">import</span> api_settings
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">lll</span>(APIView):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get</span>(self,request):
+        user <span style="color:#f92672">=</span> User<span style="color:#f92672">.</span>objects<span style="color:#f92672">.</span>get(id<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+        <span style="color:#75715e">#token生成过程</span>
+        jwt_payload_handler <span style="color:#f92672">=</span> api_settings<span style="color:#f92672">.</span>JWT_PAYLOAD_HANDLER
+        jwt_encode_handler <span style="color:#f92672">=</span> api_settings<span style="color:#f92672">.</span>JWT_ENCODE_HANDLER
+        <span style="color:#75715e">#往添加token的数据</span>
+        payload <span style="color:#f92672">=</span> jwt_payload_handler(user) <span style="color:#75715e">#这里需要修改为自己的数据</span>
+        <span style="color:#75715e">#生成对token进行加密</span>
+        token <span style="color:#f92672">=</span> jwt_encode_handler(payload)
+
+        <span style="color:#66d9ef">return</span> Response({<span style="color:#e6db74">&#39;code&#39;</span>:<span style="color:#ae81ff">200</span>,<span style="color:#e6db74">&#39;token&#39;</span>:token})
+</code></pre></div></li>
+</ul>
+<hr>
+<p>自己定义注册用户，返回自己要的响应</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#views.py</span>
+<span style="color:#75715e">#返回的响应 可以自己添加</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Reg</span>(APIView):
+    <span style="color:#75715e">#用户注册</span>
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">post</span>(self,request):
+        <span style="color:#75715e">#往用户表里添加用户 并且返回用户信息和token</span>
+        User<span style="color:#f92672">.</span>objects<span style="color:#f92672">.</span>create_user(username<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;khgiuh&#39;</span>,phone<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;123456&#39;</span>,password<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;123456&#34;</span>) 
+        
+        user <span style="color:#f92672">=</span> 查找当前用户信息
+        jwt_payload_handler <span style="color:#f92672">=</span> api_settings<span style="color:#f92672">.</span>JWT_PAYLOAD_HANDLER
+        jwt_encode_handler <span style="color:#f92672">=</span> api_settings<span style="color:#f92672">.</span>JWT_ENCODE_HANDLER
+        <span style="color:#75715e">#往添加token的数据</span>
+        payload <span style="color:#f92672">=</span> jwt_payload_handler(user) <span style="color:#75715e">#这里需要修改为自己的数据</span>
+        <span style="color:#75715e">#生成对token进行加密</span>
+        token <span style="color:#f92672">=</span> jwt_encode_handler(payload)
+        
+        <span style="color:#66d9ef">return</span> Response({
+                <span style="color:#e6db74">&#39;code&#39;</span>:<span style="color:#ae81ff">200</span>,
+             <span style="color:#e6db74">&#39;token&#39;</span>:token
+            })
+    
+    <span style="color:#75715e">#用户登录只返回 code：200，不会token(因为没用obtain_jwt_token)</span>
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get</span>(self,request):
+        <span style="color:#75715e">#用来验证登录用户信息  参数只能是用户名 和密码   true：返回用户名  flase：返回None</span>
+        r <span style="color:#f92672">=</span> authenticate(username<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;peter&#34;</span>,password<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;123456&#34;</span>)
+        user <span style="color:#f92672">=</span> 查找当前用户信息
+        jwt_payload_handler <span style="color:#f92672">=</span> api_settings<span style="color:#f92672">.</span>JWT_PAYLOAD_HANDLER
+        jwt_encode_handler <span style="color:#f92672">=</span> api_settings<span style="color:#f92672">.</span>JWT_ENCODE_HANDLER
+        <span style="color:#75715e">#往添加token的数据</span>
+        payload <span style="color:#f92672">=</span> jwt_payload_handler(user) <span style="color:#75715e">#这里需要修改为自己的数据</span>
+        <span style="color:#75715e">#生成对token进行加密</span>
+        token <span style="color:#f92672">=</span> jwt_encode_handler(payload)
+        
+        
+        print(r)
+        <span style="color:#66d9ef">return</span> Response({
+                <span style="color:#e6db74">&#39;code&#39;</span>:<span style="color:#ae81ff">200</span>,
+             <span style="color:#e6db74">&#39;token&#39;</span>:token
+            })
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#models</span>
+<span style="color:#f92672">from</span> django.contrib.auth.models <span style="color:#f92672">import</span> AbstractUser
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span>(AbstractUser):
+    <span style="color:#75715e">#创建自己需要的字段</span>
+    username <span style="color:#f92672">=</span> models<span style="color:#f92672">.</span>CharField(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">32</span>,unique<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>) <span style="color:#75715e">#unique  唯一认证</span>
+    phone <span style="color:#f92672">=</span> models<span style="color:#f92672">.</span>CharField(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">32</span>,unique<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+
+    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Meta</span>:
+        db_table <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;user&#39;</span>
+</code></pre></div><ul>
+<li>
+<p>在settings里导入jwt配置</p>
+<pre tabindex="0"><code class="language-pytohn" data-lang="pytohn">AUTH_USER_MODEL='project_cs.User'   # 指定使用users APP中的 model
+(#自己定义的user表继承了django自带user表，通过上面的赋值来调用自己定义的user表)
+</code></pre><hr>
+</li>
+</ul>
+<h2 id="通过序列化器注册用户并将用户信息和token-返回给前端">通过序列化器注册用户并将用户信息和token 返回给前端</h2>
+<ul>
+<li>
+<p>创建自己的用户表(user)并继承django的AbstractUser</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#models</span>
+<span style="color:#f92672">from</span> django.contrib.auth.models <span style="color:#f92672">import</span> AbstractUser
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">User</span>(AbstractUser):
+    <span style="color:#75715e">#创建自己需要的字段</span>
+    username <span style="color:#f92672">=</span> models<span style="color:#f92672">.</span>CharField(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">32</span>,unique<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>) <span style="color:#75715e">#unique  唯一认证</span>
+    phone <span style="color:#f92672">=</span> models<span style="color:#f92672">.</span>CharField(max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">32</span>,unique<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+
+    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Meta</span>:
+        db_table <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;user&#39;</span>
+</code></pre></div></li>
+<li>
+<p>在settings里导入jwt配置</p>
+<pre tabindex="0"><code class="language-pytohn" data-lang="pytohn">AUTH_USER_MODEL='project_cs.User'   # 指定使用users APP中的 model
+(#自己定义的user表继承了django自带user表，通过上面的赋值来调用自己定义的user表)
+</code></pre></li>
+<li>
+<p>视图</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> rest_framework.views <span style="color:#f92672">import</span> APIView
+<span style="color:#f92672">from</span> rest_framework.response <span style="color:#f92672">import</span> Response
+<span style="color:#f92672">from</span> rest_framework.request <span style="color:#f92672">import</span> Request
+<span style="color:#f92672">from</span> project_cs.models <span style="color:#f92672">import</span> User
+
+<span style="color:#75715e">#用来验证用户</span>
+<span style="color:#f92672">from</span> django.contrib.auth <span style="color:#f92672">import</span> authenticate
+
+
+
+
+<span style="color:#75715e">#通过序列化器注册用户并将用户信息和token 返回给前端</span>
+<span style="color:#75715e"># 用户注册</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RegisterView</span>(APIView):
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">post</span>(self, request, <span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+        serializer <span style="color:#f92672">=</span> UserSerializer(data<span style="color:#f92672">=</span>request<span style="color:#f92672">.</span>data)
+        <span style="color:#66d9ef">if</span> serializer<span style="color:#f92672">.</span>is_valid():
+            serializer<span style="color:#f92672">.</span>save()
+            <span style="color:#66d9ef">return</span> Response(serializer<span style="color:#f92672">.</span>data, status<span style="color:#f92672">=</span><span style="color:#ae81ff">201</span>)
+        <span style="color:#66d9ef">return</span> Response(serializer<span style="color:#f92672">.</span>errors, status<span style="color:#f92672">=</span><span style="color:#ae81ff">400</span>)
+
+
+
+<span style="color:#75715e"># 重新用户登录返回函数 (登录url调用obtain_jwt_token方法，可以使用下面的返回函数)</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">jwt_response_payload_handler</span>(token, user<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, request<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+    <span style="color:#e6db74">&#39;&#39;&#39;
+</span><span style="color:#e6db74">    :param token: jwt生成的token值
+</span><span style="color:#e6db74">    :param user: User对象
+</span><span style="color:#e6db74">    :param request: 请求
+</span><span style="color:#e6db74">    &#39;&#39;&#39;</span>
+    <span style="color:#75715e">#指定返回信息</span>
+    <span style="color:#66d9ef">return</span> {
+        <span style="color:#e6db74">&#39;token&#39;</span>: token,
+        <span style="color:#e6db74">&#39;user&#39;</span>: user<span style="color:#f92672">.</span>username,
+        <span style="color:#e6db74">&#39;userid&#39;</span>: user<span style="color:#f92672">.</span>id
+    }
+</code></pre></div></li>
+<li>
+<p>url表</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> project_cs.views <span style="color:#f92672">import</span> Reg,RegisterView
+<span style="color:#75715e">#用来登录时候的验证,并返回token</span>
+<span style="color:#f92672">from</span> rest_framework_jwt.views <span style="color:#f92672">import</span> obtain_jwt_token
+
+urlpatterns <span style="color:#f92672">=</span> [
+    path(<span style="color:#e6db74">&#39;admin/&#39;</span>, admin<span style="color:#f92672">.</span>site<span style="color:#f92672">.</span>urls),
+    <span style="color:#75715e">#使用 obtain_jwt_token方法时候，会自动使用rest_framework_jwt进行登录信息验证</span>
+    path(<span style="color:#e6db74">&#39;get_token/&#39;</span>, obtain_jwt_token), <span style="color:#75715e">#注意要使用post请求方式</span>
+
+
+    path(<span style="color:#e6db74">&#39;reg/&#39;</span>, Reg<span style="color:#f92672">.</span>as_view()),
+    path(<span style="color:#e6db74">&#39;regs/&#39;</span>, RegisterView<span style="color:#f92672">.</span>as_view()),
+]
+</code></pre></div></li>
+<li>
+<p>ser序列化器</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> rest_framework_jwt.settings <span style="color:#f92672">import</span> api_settings
+<span style="color:#f92672">from</span> rest_framework <span style="color:#f92672">import</span> serializers
+<span style="color:#f92672">from</span> project_cs.models <span style="color:#f92672">import</span> User
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserSerializer</span>(serializers<span style="color:#f92672">.</span>Serializer):
+    username <span style="color:#f92672">=</span> serializers<span style="color:#f92672">.</span>CharField()
+    password <span style="color:#f92672">=</span> serializers<span style="color:#f92672">.</span>CharField()
+    phone <span style="color:#f92672">=</span> serializers<span style="color:#f92672">.</span>CharField()
+    token <span style="color:#f92672">=</span> serializers<span style="color:#f92672">.</span>CharField(read_only<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">create</span>(self, data):
+        user <span style="color:#f92672">=</span> User<span style="color:#f92672">.</span>objects<span style="color:#f92672">.</span>create(<span style="color:#f92672">**</span>data)
+        user<span style="color:#f92672">.</span>set_password(data<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;password&#39;</span>))
+        user<span style="color:#f92672">.</span>save()
+        <span style="color:#75715e">#token生成国产车</span>
+        <span style="color:#75715e"># 补充生成记录登录状态的token</span>
+        jwt_payload_handler <span style="color:#f92672">=</span> api_settings<span style="color:#f92672">.</span>JWT_PAYLOAD_HANDLER
+        jwt_encode_handler <span style="color:#f92672">=</span> api_settings<span style="color:#f92672">.</span>JWT_ENCODE_HANDLER
+        <span style="color:#75715e">#往添加token的数据</span>
+        payload <span style="color:#f92672">=</span> jwt_payload_handler(user) <span style="color:#75715e">#这里需要修改为自己的数据</span>
+        <span style="color:#75715e">#生成对token进行加密</span>
+        token <span style="color:#f92672">=</span> jwt_encode_handler(payload)
+
+        <span style="color:#75715e">#往user数据里添加token，返回时好带上token</span>
+        user<span style="color:#f92672">.</span>token <span style="color:#f92672">=</span> token
+        <span style="color:#66d9ef">return</span> user
+</code></pre></div><hr>
+</li>
+</ul>
+<h3 id="jwt-登录验证的扩充">JWT 登录验证的扩充</h3>
+<ul>
+<li>
+<p>自定义验证方式：要求手机或者邮箱也可作为登陆手段</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#settings.py</span>
+<span style="color:#75715e">#配置自定义验证方式</span>
+AUTHENTICATION_BACKENDS <span style="color:#f92672">=</span> [
+    <span style="color:#e6db74">&#39;userapp.views.UsernameMobileAuthBackend&#39;</span>,
+]
+</code></pre></div></li>
+<li>
+<p>视图</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> django.db.models <span style="color:#f92672">import</span> Q
+<span style="color:#f92672">from</span> django.contrib.auth.backends <span style="color:#f92672">import</span> ModelBackend <span style="color:#75715e">#验证基类</span>
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UsernameMobileAuthBackend</span>(ModelBackend):
+    <span style="color:#75715e">#重写authenticate自定义验证方式  </span>
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">authenticate</span>(self, request, username<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, password<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>, <span style="color:#f92672">**</span>kwargs):
+        <span style="color:#75715e">#用户名或手机号都可以登录</span>
+        user <span style="color:#f92672">=</span> MyUser<span style="color:#f92672">.</span>objects<span style="color:#f92672">.</span>get(Q(username<span style="color:#f92672">=</span>username) <span style="color:#f92672">|</span> Q(phone<span style="color:#f92672">=</span>username))
+        <span style="color:#75715e">#如果用户密码都正确返回响应</span>
+        <span style="color:#66d9ef">if</span> user <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span> <span style="color:#f92672">and</span> user<span style="color:#f92672">.</span>check_password(password):
+            <span style="color:#66d9ef">return</span> user
+</code></pre></div><hr>
+</li>
+</ul>
+<h3 id="jwt-权限验证">JWT 权限验证</h3>
+<ul>
+<li>
+<p>局部权限</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> rest_framework.permissions <span style="color:#f92672">import</span> IsAuthenticated,AllowAny,IsAdminUser
+<span style="color:#75715e">#可以用在用户登录以后，根据当用户的权限判断是否可以访问当API接口</span>
+permission_classes <span style="color:#f92672">=</span> [IsAuthenticated]
+
+
+<span style="color:#75715e">#django rest_framework jwt 自带三种权限  IsAuthenticated ,AllowAny,IsAdminUser</span>
+<span style="color:#75715e">#只有登录才可以访问该接口</span>
+IsAuthenticated 
+<span style="color:#75715e">#(也就是说前端需要给后端传递一个(Authorization:JWT token)则为已经登陆，反之没有登录)</span>
+
+<span style="color:#75715e">#所有人都能访问</span>
+AllowAny
+<span style="color:#75715e">#(带不带token都可以访问)</span>
+
+<span style="color:#75715e">#只有管理员才能访问</span>
+IsAdminUser
+<span style="color:#75715e">#(is_staff为1可以访问)</span>
+<span style="color:#75715e">#只有登录以后才可以访问该接口</span>
+
+
+
+<span style="color:#75715e"># 简单例子   </span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">UserList</span>(APIView):
+    <span style="color:#75715e">#局部权限 可以再自定义的API里加入</span>
+    permission_classes <span style="color:#f92672">=</span> [IsAuthenticated]  <span style="color:#75715e"># 接口中加权限</span>
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get</span>(self,request, <span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+        print(request<span style="color:#f92672">.</span>META<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;HTTP_AUTHORIZATION&#39;</span>, <span style="color:#66d9ef">None</span>))
+        <span style="color:#66d9ef">return</span> Response({<span style="color:#e6db74">&#39;name&#39;</span>:<span style="color:#e6db74">&#39;zhangsan&#39;</span>})
+    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">post</span>(self,request, <span style="color:#f92672">*</span>args, <span style="color:#f92672">**</span>kwargs):
+        <span style="color:#66d9ef">return</span> Response({<span style="color:#e6db74">&#39;name&#39;</span>:<span style="color:#e6db74">&#39;zhangsan&#39;</span>})
+</code></pre></div></li>
+<li>
+<p>settings配置以及全局权限</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#修改验证方式  改为JSONWebTokenAuthentication  （jwt的验证方式）</span>
+REST_FRAMEWORK <span style="color:#f92672">=</span> {
+    <span style="color:#75715e"># 身份认证</span>
+    <span style="color:#e6db74">&#39;DEFAULT_AUTHENTICATION_CLASSES&#39;</span>: (
+        <span style="color:#e6db74">&#39;rest_framework_jwt.authentication.JSONWebTokenAuthentication&#39;</span>,
+        <span style="color:#e6db74">&#39;rest_framework.authentication.SessionAuthentication&#39;</span>,
+        <span style="color:#e6db74">&#39;rest_framework.authentication.BasicAuthentication&#39;</span>,
+    ),
+    <span style="color:#75715e">#全局配置JWT验证设置</span>
+<span style="color:#75715e"># &#39;DEFAULT_PERMISSION_CLASSES&#39;: (</span>
+<span style="color:#75715e">#             &#39;rest_framework.permissions.IsAuthenticated&#39;,</span>
+<span style="color:#75715e">#         ),</span>
+}
+</code></pre></div><hr>
+</li>
+</ul>
+<h3 id="jwt权限扩充">JWT权限扩充</h3>
+<pre><code>```python
+from rest_framework.permissions import BasePermission
+class SVIPPermission(BasePermission):
+    message = '必须高级会员才能访问'
+
+    def has_permission(self,request,view):
+        #这里的user.id  可以换城你定义的字段如 user.type
+        if request.user.id != 1:  
+            return False
+        return True
+    
+  #如何调用自定义jwt扩充的权限
+permission_classes = [SVIPPermission]  #添加自己的定义权限的名
+```
+</code></pre>
+              
+
+
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/django/">django</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/jwt/">jwt</a>
+
+                  </div>
+                
+              
+            
+            
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/git%E5%91%BD%E4%BB%A4/" data-tooltip="Git命令" aria-label="NEXT: Git命令">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2018/04/go-lang-hugo%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B9%B6%E4%BD%BF%E7%94%A8gitpages%E8%BF%9B%E8%A1%8C%E9%83%A8%E7%BD%B2/" data-tooltip="GO Lang &#43; Hugo建立一个简单的博客并使用gitpages进行部署" aria-label="PREVIOUS: GO Lang &#43; Hugo建立一个简单的博客并使用gitpages进行部署">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2019/04/django-rest_frameworker-jwt/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2019/04/django-rest_frameworker-jwt/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=/2019/04/django-rest_frameworker-jwt/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+            
+  
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+    <script type="text/javascript">
+      var disqus_config = function() {
+        this.page.url = '\/2019\/04\/django-rest_frameworker-jwt\/';
+        
+          this.page.identifier = '\/2019\/04\/django-rest_frameworker-jwt\/'
+        
+      };
+      (function() {
+        
+        
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+          document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+          return;
+        }
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        var disqus_shortname = 'hugo-tranquilpeak-theme';
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  
+
+
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2022 yyx Bolg. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+<div class="post-actions-wrap">
+  <nav >
+    <ul class="post-actions post-action-nav">
+      
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/git%E5%91%BD%E4%BB%A4/" data-tooltip="Git命令" aria-label="NEXT: Git命令">
+          
+              <i class="fa fa-angle-left"></i>
+              <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+            </a>
+        </li>
+        <li class="post-action">
+          
+            <a class="post-action-btn btn btn--default tooltip--top" href="/2018/04/go-lang-hugo%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E5%8D%9A%E5%AE%A2%E5%B9%B6%E4%BD%BF%E7%94%A8gitpages%E8%BF%9B%E8%A1%8C%E9%83%A8%E7%BD%B2/" data-tooltip="GO Lang &#43; Hugo建立一个简单的博客并使用gitpages进行部署" aria-label="PREVIOUS: GO Lang &#43; Hugo建立一个简单的博客并使用gitpages进行部署">
+          
+              <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+              <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+      
+    </ul>
+  </nav>
+<ul class="post-actions post-action-share" >
+  
+    <li class="post-action hide-lg hide-md hide-sm">
+      <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>
+      </a>
+    </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2019/04/django-rest_frameworker-jwt/" title="Share on Facebook" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2019/04/django-rest_frameworker-jwt/" title="Share on Twitter" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+      <li class="post-action hide-xs">
+        <a class="post-action-btn btn btn--default" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=/2019/04/django-rest_frameworker-jwt/" title="Share on Linkedin" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>
+        </a>
+      </li>
+    
+  
+  
+    <li class="post-action">
+      <a class="post-action-btn btn btn--default" href="#disqus_thread" aria-label="Leave a comment">
+        <i class="far fa-comment"></i>
+      </a>
+    </li>
+  
+  <li class="post-action">
+    
+      <a class="post-action-btn btn btn--default" href="#top" aria-label="Back to top">
+      <i class="fa fa-arrow-up" aria-hidden="true"></i>
+    
+    </a>
+  </li>
+</ul>
+</div>
+
+
+      </div>
+      
+<div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-times"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2019%2F04%2Fdjango-rest_frameworker-jwt%2F" aria-label="Share on Facebook">
+          <i class="fab fa-facebook-square" aria-hidden="true"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2019%2F04%2Fdjango-rest_frameworker-jwt%2F" aria-label="Share on Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.linkedin.com/sharing/share-offsite/?url=%2F2019%2F04%2Fdjango-rest_frameworker-jwt%2F" aria-label="Share on Linkedin">
+          <i class="fab fa-linkedin" aria-hidden="true"></i><span>Share on Linkedin</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-times"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/a89e61d04ddda2ec62ac31180aeb5e59?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">yyx Bolg</h4>
+    
+      <div id="about-card-bio">Super bio with markdown support <strong>COOL</strong></div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Your job title
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker-alt"></i>
+        <br/>
+        France
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('/images/cover.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/highlight.min.js" integrity="sha512-z+/WWfyD5tccCukM4VvONpEtLmbAm5LDu7eKiyMQJ9m7OfPEDL7gENyDRL3Yfe8XAuGsS2fS4xSMnl6d30kqGQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<script src="/js/script-yqzy9wdlzix4lbbwdnzvwx3egsne77earqmn73v9uno8aupuph8wfguccut.min.js"></script>
+
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-gE8KAQyFIzV1C9+GZ8TKJHZS2s+n7EjNtC+IMRn1l5+WYJTHOODUM6JSjZhFhqXmc7bG8Av6XXpckA4tYhflnw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/apache.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-EWROca+bote+7Oaaar1F6y74iZj1r1F9rm/ly7o+/FwJopbBaWtsFDmaKoZDd3QiGU2pGacBirHJNivmGLYrow==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/go.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-GDVzAn0wpx1yVtQsRWmFc6PhJiLBPdUic+h4GWgljBh904O3JU10fk9EKNpVyIoPqkFn54rgL2QBG4BmUTMpiQ==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/http.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-UgZlma8NzkrDb/NWgmLIcTrH7i/CSnLLDRFqCSNF5NGPpjKmzyM25qcoXGOup8+cDakKyaiTDd7N4dyH4YT+IA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/less.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-lot9koe73sfXIrUvIPM/UEhuMciN56RPyBdOyZgfO53P2lkWyyXN7J+njcxIIBRV+nVDQeiWtiXg+bLAJZDTfg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/nginx.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-Zd3e7XxHP00TD0Imr0PIfeM0fl0v95kMWuhyAS3Wn1UTSXTkz0OhtRgBAr4JlmADRgiXr4x7lpeUdqaGN8xIog==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/puppet.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-qtqDO052iXMSP+5d/aE/jMtL9vIIGvONgTJziC2K/ZIB1yEGa55WVxGE9/08rSQ62EoDifS9SWVGZ7ihSLhzMA==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/scss.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-1NmkjnEDnwwwcu28KoQF8vs3oaPFokQHbmbtwGhFfeDsQZtVFI8zW2aE9O8yMYdpdyKV/5blE4pSWw4Z/Sv97w==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/stylus.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-B2wSfruPjr8EJL6IIzQr1eAuDwrsfIfccNf/LCEdxELCgC/S/ZMt/Uvk80aD79m7IqOqW+Sw8nbkvha20yZpzg==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/swift.min.js"></script>
+  
+
+  
+    <script async crossorigin="anonymous" defer integrity="sha512-28oDiQZGKUVN6wQ7PSLPNipOcmkCALXKwOi7bnkyFf8QiMZQxG9EQoy/iiNx6Zxj2cG2SbVa4dXKigQhu7GiFw==" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/languages/yaml.min.js"></script>
+  
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+
+
+    
+  </body>
+</html>
+
